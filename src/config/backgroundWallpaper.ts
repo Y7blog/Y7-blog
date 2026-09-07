@@ -73,17 +73,23 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 是否启用主页横幅文字
 			enable: true,
 			// 主页横幅主标题
-			title: "Lovely firefly!",
+			title: "爱钱的鱼七",
 			// 主页横幅主标题字体大小
 			titleSize: "4.5rem",
 			// 主页横幅副标题
 			subtitle: [
-				"In Reddened Chrysalis, I Once Rest",
-				"From Shattered Sky, I Free Fall",
-				"Amidst Silenced Stars, I Deep Sleep",
-				"Upon Lighted Fyrefly, I Soon Gaze",
-				"From Undreamt Night, I Thence Shine",
-				"In Finalized Morrow, I Full Bloom",
+				"In Silent Chains,I Plant the Seed"
+
+                "From Thinking Machines,I Gather Light"
+
+                "Amidst Digital Stars,I Follow the Flow"
+
+                "Upon Invisible Signals,I See the Dawn"
+
+				"From Tokenized Dreams,I Harvest Gold"
+
+				"In the New Dawn,I Bloom with Fortune"
+
 			],
 			// 主页横幅副标题字体大小
 			subtitleSize: "1.5rem",
