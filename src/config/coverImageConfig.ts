@@ -33,8 +33,9 @@ export const coverImageConfig: CoverImageConfig = {
 		// 封面图API列表
 		apis: [
 			"https://www.y7img.ccwu.cc/file/1788796291197_Leonardo_Diffusion_XL_Science_fiction_scene_of_space_explorati_0.jpg",
-			"https://www.dmoe.cc/random.php",
-			"https://uapis.cn/api/v1/random/image?category=acg&type=pc",
+			"https://www.y7img.ccwu.cc/file/1788860465740_机器人背景.jpg",
+			"https://www.y7img.ccwu.cc/file/1788860509419_水墨背景.jpg",
+			"https://www.y7img.ccwu.cc/file/1788860482331_战机背景.jpg",
 		],
 	},
 };
