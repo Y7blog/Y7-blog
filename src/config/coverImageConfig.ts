@@ -32,7 +32,7 @@ export const coverImageConfig: CoverImageConfig = {
 		enable: false,
 		// 封面图API列表
 		apis: [
-			"https://t.alcy.cc/pc",
+			"https://www.y7img.ccwu.cc/file/1788796291197_Leonardo_Diffusion_XL_Science_fiction_scene_of_space_explorati_0.jpg",
 			"https://www.dmoe.cc/random.php",
 			"https://uapis.cn/api/v1/random/image?category=acg&type=pc",
 		],
