@@ -92,7 +92,7 @@ export const siteConfig: SiteConfig = {
 	favicon: [
 		{
 			// 图标文件路径
-			 src: "/assets/images/logo/favicon-gold.svg",
+			 src: "public/favicon/fish-32.png",
 			// 可选，指定主题 'light' | 'dark'
 			// theme: "light",
 			// 可选，图标大小
