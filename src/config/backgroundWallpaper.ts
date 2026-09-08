@@ -117,7 +117,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 				},
 				{
 					name: "Youtube",
-					icon: "youtube-white16",
+					icon: "youtube-white16-2",
 					url: "",
 				},
 				

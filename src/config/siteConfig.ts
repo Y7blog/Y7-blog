@@ -112,10 +112,10 @@ export const siteConfig: SiteConfig = {
 		// 例如: { type: "image", value: "assets/images/logo.png", valueDark: "assets/images/logo-dark.png", alt: "Logo" }
 		// 使用 Astro 图标库时不需要设置 valueDark，图标会自动跟随主题亮暗色切换
 		logo: {
-			type: "image",
-			value: "assets/images/logo/fish-light.png",
-			valueDark: "assets/images/logo/fish-dark.png",
-			alt: "Y7",
+			type: "icon",
+			value: "LOGO1-fish-black32",
+			valueDark: "LOGO1-fish-white32",
+			alt: "🐟️",
 		},
 		// 导航栏标题
 		title: "鱼七的金库",
