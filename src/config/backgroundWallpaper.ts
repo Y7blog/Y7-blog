@@ -35,26 +35,20 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	 *   "assets/images/MobileWallpaper/m2.avif",
 	 * ],
 	 */
-	src: {
+	 src: {
 		// 桌面背景图片（支持单张或多张随机）
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
 		desktop: [
-			"assets/images/DesktopWallpaper/d1.avif",
-			"assets/images/DesktopWallpaper/d2.avif",
-			"assets/images/DesktopWallpaper/d3.avif",
-			"assets/images/DesktopWallpaper/d4.avif",
-			"assets/images/DesktopWallpaper/d5.avif",
-			"assets/images/DesktopWallpaper/d6.avif",
+			"https://www.y7img.ccwu.cc/file/1788860465740_机器人背景.jpg",
+			"https://www.y7img.ccwu.cc/file/1788860482331_战机背景.jpg",
+			"https://www.y7img.ccwu.cc/file/1788860509419_水墨背景.jpg",			
 		],
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
 		mobile: [
-			"assets/images/MobileWallpaper/m1.avif",
-			"assets/images/MobileWallpaper/m2.avif",
-			"assets/images/MobileWallpaper/m3.avif",
-			"assets/images/MobileWallpaper/m4.avif",
-			"assets/images/MobileWallpaper/m5.avif",
-			"assets/images/MobileWallpaper/m6.avif",
+			"https://www.y7img.ccwu.cc/file/1788860465740_机器人背景.jpg",
+			"https://www.y7img.ccwu.cc/file/1788860482331_战机背景.jpg",
+			"https://www.y7img.ccwu.cc/file/1788860509419_水墨背景.jpg",
 		],
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）
@@ -78,15 +72,15 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			titleSize: "4.5rem",
 			// 主页横幅副标题
 			subtitle: [
-				"In Silent Chains,I Plant the Seed"
+				"In Silent Chains,I Plant the Seed",
 
-                "From Thinking Machines,I Gather Light"
+                "From Thinking Machines,I Gather Light",
 
-                "Amidst Digital Stars,I Follow the Flow"
+                "Amidst Digital Stars,I Follow the Flow",
 
-                "Upon Invisible Signals,I See the Dawn"
+                "Upon Invisible Signals,I See the Dawn",
 
-				"From Tokenized Dreams,I Harvest Gold"
+				"From Tokenized Dreams,I Harvest Gold",
 
 				"In the New Dawn,I Bloom with Fortune"
 
