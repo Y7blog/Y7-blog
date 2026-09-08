@@ -54,7 +54,10 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）
 		// 支持远程视频URL，本地视频请放在 public/assets/videos/ 目录下
 		// playerUrl: "/assets/videos/firefly.mp4",
-		playerUrl: "https://bed.twoleaf.cn/file/1785658612716_firefly.mp4",
+		playerUrl: [
+			"https://www.y7img.ccwu.cc/file/背景/1788795695361_风中.mp4",
+			"https://www.y7img.ccwu.cc/file/背景/1788795873797_星空.mp4",
+		],
 	},
 	// 横幅壁纸和全屏壁纸共享配置
 	common: {
@@ -112,12 +115,12 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 				},
 				{
 					name: "Telegram",
-					icon: "telegram-white16",
+					icon: "logo-telegramr-white16",
 					url: "https://t.me/+ZegDSfLwOjFiOTJl",
 				},
 				{
 					name: "Youtube",
-					icon: "youtube-white16-2",
+					icon: "logo-youtube-white16",
 					url: "",
 				},
 				

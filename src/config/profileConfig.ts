@@ -12,7 +12,7 @@ export const profileConfig: ProfileConfig = {
 	name: "鱼七",
 
 	// 个人签名
-	bio: "认真赚钱，好好生活！",
+	bio: "做个俗人，贪财好色！",
 
 	// 链接配置
 	// 已经预装的图标集：fa7-brands，fa7-regular，fa7-solid，material-symbols，simple-icons
@@ -22,21 +22,21 @@ export const profileConfig: ProfileConfig = {
 	// showName: true 时显示图标和名称，false 时只显示图标
 	links: [
 		{
-			name: "TG",
-			icon: "fa7-brands:qq",
-			url: "https://t.me/+ZegDSfLwOjFiOTJl",
-			showName: false,
-		},
-		{
-			name: "X",
-			icon: "fa7-brands:github",
+			name: "Twitter",
+			icon: "logo-twitter-green16",
 			url: "https://x.com/0x100U",
 			showName: false,
 		},
 		{
-			name: "Email",
-			icon: "fa7-solid:envelope",
-			url: "mailto:xiaye@msn.com",
+			name: "Telegram",
+			icon: "logo-telegramr-green16",
+			url: "https://t.me/+ZegDSfLwOjFiOTJl",
+			showName: false,
+		},
+		{
+			name: "YouTube",
+			icon: "logo-youtube-green16",
+			url: "",
 			showName: false,
 		},
 		{

@@ -38,7 +38,7 @@ export const booknavConfig: BooknavGroup[] = [
 				// icon 字段可以使用 astro-icon 图标库的图标名称
 				// 也可以使用图片 URL 和本地图片路径
 				// 不填则会通过接口自动获取目标站点的 favicon 图标（需要在上面配置）
-				icon: "fa7-brands:github",
+				icon: "logo-Binance460",
 				weight: 10,
 			},
 			{
@@ -67,7 +67,7 @@ export const booknavConfig: BooknavGroup[] = [
 				title: "GMGN",
 				url: "https://gmgn.ai/r/ekea6Yeb",
 				desc: "链上猎手，发现百倍机会",
-				icon: "/favicon/firefly-32.png",
+				icon: "https://www.y7img.ccwu.cc/file/1788884886808_logo-GMGN460.png",
 				weight: 10,
 			},
 		],
@@ -82,13 +82,15 @@ export const booknavConfig: BooknavGroup[] = [
 			{
 				title: "Twitter",
 				url: "https://ronvip.pages.dev/?ref=RP6G2I5B6E1A1J611I",
-				desc: "X会员3月低至4U，畅享专属特权",
+				desc: "3个月Twitter会员低至4U",
+				icon: "https://www.y7img.ccwu.cc/file/1788886627451_logo-Twitter400.jpg",
 				weight: 10,
 			},
 			{
 				title: "Telegram",
 				url: "https://ronvip.pages.dev/?ref=RP6G2I5B6E1A1J611I",
-				desc: "优惠充值TG会员，支持链上链下多种支付",
+				desc: "充值TG会员，支持链上支付",
+				icon: "https://www.y7img.ccwu.cc/file/1788887765905_logo-tg512.png",
 				weight: 9,
 			},
 		],
@@ -97,13 +99,14 @@ export const booknavConfig: BooknavGroup[] = [
 		id: "tools",
 		name: "VPN",
 		icon: "material-symbols:build-outline-rounded",
-		desc: "顺手的在线小工具",
+		desc: "安全稳定，自由连接全球",
 		weight: 80,
 		items: [
 			{
 				title: "云边VPN",
 				url: "https://cruise.54678999.xyz/#/register?code=9dF4lfAb",
 				desc: "高速稳定，每天免费1小时",
+				icon: "https://www.y7img.ccwu.cc/file/1788890088487_logo-VPN512.jpg",
 				weight: 10,
 			},
 			
@@ -113,20 +116,21 @@ export const booknavConfig: BooknavGroup[] = [
 		id: "resources",
 		name: "查询工具",
 		icon: "material-symbols:auto-stories-outline-rounded",
-		desc: "文档、教程与阅读",
+		desc: "多维查询，快人一步",
 		weight: 70,
 		items: [
 			{
-				title: "钱包追踪",
-				url: "",
+				title: "MetaSleuth",
+				url: "https://metasleuth.io/",
 				desc: "链上追踪，看清资金走向",
-				icon: "https://docs-firefly.cuteleaf.cn/logo.png",
+				icon: "https://www.y7img.ccwu.cc/file/1788889467075_LOGO-MetaSleuth500.jpg",
 				weight: 10,
 			},
 			{
-				title: "推特查询",
-				url: "",
-				desc: "让骗局无处遁形",
+				title: "pumpscam",
+				url: "https://pumpscam.com/",
+				desc: "推特查询，让骗局无处遁形",
+				icon: "https://www.y7img.ccwu.cc/file/1788889832491_logo-pumpscam512.png",
 				weight: 9,
 			},
 		],
