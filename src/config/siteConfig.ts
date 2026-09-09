@@ -87,7 +87,7 @@ export const siteConfig: SiteConfig = {
 		followTheme: false,
 	},
 
-	// Favicon 配置
+	// Favicon 配置(浏览器上的图标配置)
 	// 如果启用了OpenGraph图片功能，数组中需要包含png格式的favicon图标
 	favicon: [
 		{
@@ -96,7 +96,7 @@ export const siteConfig: SiteConfig = {
 			// 可选，指定主题 'light' | 'dark'
 			// theme: "light",
 			// 可选，图标大小
-			// sizes: "32x32",
+			 sizes: "32x32",
 		},
 	],
 
