@@ -8,6 +8,7 @@ category: 博客指南
 slug: guide/firefly-layout-system
 series: "Firefly 功能示例"
 seriesOrder: 2
+draft: true
 ---
 
 ## 📖 概述
