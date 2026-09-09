@@ -5,7 +5,7 @@ export const announcementConfig: AnnouncementConfig = {
 	title: "",
 
 	// 公告内容
-	content: "欢迎来到我的博客！这是一则示例公告。",
+	content: "2026年9月9日Y7 Blog 框架已经搭建完成，一起期待后续成长吧，记得点赞、关注、投币哦！",
 
 	// 是否允许用户关闭公告
 	closable: true,
