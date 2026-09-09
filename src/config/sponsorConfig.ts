@@ -26,7 +26,7 @@ export const sponsorConfig: SponsorConfig = {
 			name: "Binance（BNB）",
 			icon: "logo-Binance48",
 			// 收款码图片路径（需要放在 public 目录下）
-			qrCode: "/assets/images/sponsor/BSC-BEP20.png",
+			qrCode: "/assets/images/sponsor/1-BSC-BEP20.png",
 			link: "",
 			description: "使用 BNB钱包 扫码打赏",
 			enabled: true,
@@ -34,7 +34,7 @@ export const sponsorConfig: SponsorConfig = {
 		{
 			name: "TRON（TRX）",
 			icon: "logo-TRX48",
-			qrCode: "/assets/images/sponsor/TRX-TRC20.png",
+			qrCode: "/assets/images/sponsor/1-TRX-TRC20.png",
 			link: "",
 			description: "使用 TRON钱包 扫码打赏",
 			enabled: true,
@@ -42,7 +42,7 @@ export const sponsorConfig: SponsorConfig = {
 		{
 			name: "Solana（SOL）",
 			icon: "logo-SOL48",
-			qrCode: "/assets/images/sponsor/solana.png",
+			qrCode: "/assets/images/sponsor/1-solana.png",
 			link: "",
 			description: "使用 Solana钱包 扫码打赏",
 			enabled: true,
@@ -50,7 +50,7 @@ export const sponsorConfig: SponsorConfig = {
 		{
 			name: "Polygon（POL）",
 			icon: "logo-POL48",
-			qrCode: "/assets/images/sponsor/polygon-ERC20.png",
+			qrCode: "/assets/images/sponsor/1-polygon-ERC20.png",
 			link: "",
 			description: "使用 Polygon钱包 扫码打赏",
 			enabled: true,
@@ -80,7 +80,7 @@ export const sponsorConfig: SponsorConfig = {
 			name: "夏叶",
 			avatar:
 				"https://weavatar.com/avatar/d252655d40d6874417a720bad0a6c5f77f8f6a1fd2f882f8f338402dc37e4190?s=640",
-			amount: "5U",
+			amount: "5 USDT",
 			date: "2026-09-09",
 		},
 
@@ -88,7 +88,7 @@ export const sponsorConfig: SponsorConfig = {
 		{
 			name: "匿名用户",
 			// avatar: "",
-			amount: "1U",
+			amount: "1 USDT",
 			date: "2026-09-07",
 		},
 	],

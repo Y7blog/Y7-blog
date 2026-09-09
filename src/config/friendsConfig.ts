@@ -26,8 +26,8 @@ export const friendsConfig: FriendLink[] = [
 		title: "鱼七图床",
 		imgurl:     //头像图片 URL
 			"https://www.y7img.ccwu.cc/file/1788947795658_logo-Y7img500.png",
-		desc: "感谢每一份打赏，鱼七图床免费为你服务。",  //描述
-		siteurl: "https://www.y7img.ccwu.cc/",  //链接地址
+		desc: "打赏免费用鱼七图床",  //描述
+		siteurl: "https://www.y7img.ccwu.cc",  //链接地址
 		tags: ["ImgHub"],  //标签
 		weight: 10, // 权重，数字越大排序越靠前
 		enabled: true, // 是否启用
