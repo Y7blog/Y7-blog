@@ -2,16 +2,15 @@
 title: 我的第一篇文章
 published: 2026-09-09
 pinned: true
-description: 欢迎来到我的 Blog。这里没有“财富密码”，也没有所谓的成功学。但是希望你能认真看完这篇文章。接下来这个 Blog 会记录自己在区块链、AI领域的所见所闻，分享真正用过的工具，也记录自己的成长、折腾与踩坑。希望这个 Blog 不只是记录我的重新出发，也能让你在这里找到一些有价值的东西。
-
-**一起学习，一起成长，一起看看未来会走到哪里。**
-
+draft: false
+comment: true
+description: 欢迎来到我的 Blog!这里没有“财富密码”，也没有所谓的成功学。但是希望你能认真看完这篇文章。接下来这个 Blog 会记录自己在区块链、AI领域的所见所闻，分享自己用过的工具，也记录自己的成长、折腾与踩坑。希望这个 Blog 不只是记录我的重新出发，也能让你在这里找到一些有价值的东西。
 image: ./blog-images/y7blog-welcome1.avif
 tags: [Web3, AI,Web3工具,负债300万,重新开始,个人成长]
 category: Blog导读
+slug: blog/y7blog-welcome
 series: "鱼七的金库"
 seriesOrder: 1
-draft: false
 ---
 
 

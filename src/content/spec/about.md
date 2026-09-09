@@ -1,25 +1,47 @@
 # 关于我 / About Me
 
-你好！我是 **夏叶** ，一个在数字世界中默默无闻的一片叶子。
+你好，我是 Y7。
+
+一个还在不断折腾、学习和重新出发的普通人。
+
+我对新鲜事物一直比较感兴趣，尤其是 区块链、AI、互联网产品以及各种新工具。
+
+过去做过一些事情，也走过一些弯路。踩过坑、亏过钱，也经历过不少失败。
+
+现在，我不太喜欢把自己包装成所谓的“成功人士”。
+
+相比告诉别人“我是怎么赚到钱的”，我更想记录：
+
+我是怎么学习的、怎么做的、怎么踩坑的，以及怎么一点一点重新走起来的。
+
+所以有了这个 Blog。
 
 ## 🛠️ 关于本站
 
-这个网站使用 **Astro** 框架构建，采用了 [Firefly](https://github.com/CuteLeaf/Firefly) 模板，Firefly 是基于 [Fuwari](https://github.com/saicaca/fuwari) 的二次开发。
+Y7 Blog 目前主要围绕几个方向：
 
-**Firefly** 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。
+Web3｜AI｜互联网工具｜项目观察｜个人成长
+
+Web3 / 区块链
+
+分享区块链行业的见闻、项目观察、工具使用以及个人思考。
+
+我不是投资专家，也不会把任何内容包装成投资建议。
+
+这里更多的是：
+
+我看到什么，就研究什么；我经历什么，就记录什么。
 
 
-**🖥️在线预览： [Firefly - Demo site](https://firefly.cuteleaf.cn/)**
+**想了解更多关于我和本站可以看下面这篇文章**
 
-**📝Firefly使用文档： [https://docs-firefly.cuteleaf.cn](https://docs-firefly.cuteleaf.cn/)**
+[[blog/y7blog-welcome]]
 
-**⭐Firefly开源地址：[https://github.com/CuteLeaf/Firefly](https://github.com/CuteLeaf/Firefly)** 
+还告诉你一个小秘密
 
-**⭐Fuwari开源地址：[https://github.com/saicaca/fuwari](https://github.com/saicaca/fuwari)**
+如果我被[打赏](https://y7ai.ccwu.cc/sponsor/)支持！我会非常开心(*^▽^*)
 
-::github{repo="CuteLeaf/Firefly"}
-
-::github{repo="saicaca/fuwari"}
+作为回报我会把[图床](https://www.y7img.ccwu.cc/)终身免费给你使用哦！
 
 ---
 
