@@ -101,19 +101,19 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				name: "推特",
 				url: "https://x.com/0x100U",
 				external: true,
-				icon: "logo-twitter-current color16",
+				icon: "logo-twitter-currentcolor16",
 			},
 			{
 				name: "TG",
 				url: "https://t.me/+ZegDSfLwOjFiOTJl",
 				external: true,
-				icon: "logo-telegramr-current color16",
+				icon: "logo-telegramr-currentcolor16",
 			},
 			{
 				name: "图床",
 				url: "https://www.y7img.ccwu.cc/",
 				external: true,
-				icon: "logo-img-current color16",
+				icon: "logo-img-currentcolor16",
 			},
 			// 打赏
 			LinkPresets.Sponsor,
