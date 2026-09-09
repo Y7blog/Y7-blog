@@ -120,7 +120,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 				},
 				{
 					name: "Youtube",
-					icon: "logo-youtube-white18",
+					icon: "logo-youtube-currentcolor18",
 					url: "",
 				},
 				
