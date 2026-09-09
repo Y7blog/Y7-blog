@@ -9,6 +9,7 @@ category: "文章示例"
 slug: markdown-extended
 series: "Firefly 功能示例2"
 seriesOrder: 2
+draft: true
 ---
 
 ## GitHub 仓库卡片

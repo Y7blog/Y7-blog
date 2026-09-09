@@ -8,6 +8,7 @@ category: 文章示例
 slug: markdown-mermaid
 series: "Firefly 功能示例2"
 seriesOrder: 3
+draft: true
 ---
 ## Markdown 中 Mermaid 图表完整指南
 
