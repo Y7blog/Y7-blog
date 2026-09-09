@@ -111,43 +111,42 @@ function getQrLqipProps(qrCode: string) {
       </button>
     </div>
 
-    <!-- 二维码高清预览弹窗 -->
+    <!-- 二维码站内预览 -->
     <div
-      id="qr-preview-modal"
-      class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/90 p-4"
-      aria-hidden="true"
-      onclick="closeQrPreview(event)"
-    >
-      <!-- 关闭按钮 -->
-      <button
-        type="button"
-        class="absolute right-4 top-4 z-[10001] flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/20 active:bg-white/30"
-        aria-label="关闭二维码预览"
-        onclick="closeQrPreview()"
-      >
-        ×
-      </button>
-
-      <!-- 图片操作提示 -->
+  id="qr-preview-overlay"
+  class="fixed inset-0 z-[9999] hidden items-center justify-center bg-gray-200/40 p-4 backdrop-blur-sm"
+  aria-hidden="true"
+>
+      <!-- 图片弹窗主体 -->
       <div
-        class="pointer-events-none absolute bottom-5 left-1/2 z-[10000] -translate-x-1/2 whitespace-nowrap rounded-full bg-black/50 px-4 py-2 text-xs text-white/80"
+        id="qr-preview-box"
+        class="relative max-w-[90vw] max-h-[90vh]"
       >
-        手机双指缩放 · 电脑滚轮缩放 · 拖动查看
-      </div>
 
-      <!-- 图片容器 -->
-      <div
-        id="qr-preview-container"
-        class="relative flex h-full w-full items-center justify-center overflow-hidden touch-none"
-        onclick="event.stopPropagation()"
-      >
-        <img
-          id="qr-preview-image"
-          src=""
-          alt="二维码高清原图"
-          class="max-h-none max-w-none select-none object-contain will-change-transform"
-          draggable="false"
-        />
+        <!-- 右上角关闭按钮 -->
+        <button
+          type="button"
+          id="qr-preview-close"
+          class="absolute -right-3 -top-3 z-[10001] flex h-9 w-9 items-center justify-center rounded-full bg-white text-2xl font-bold leading-none text-black shadow-lg transition-transform hover:scale-110 active:scale-95"
+          aria-label="关闭二维码预览"
+        >
+          ×
+        </button>
+
+        <!-- 图片区域 -->
+        <div
+          id="qr-preview-container"
+          class="overflow-hidden rounded-lg bg-white shadow-2xl touch-none"
+        >
+          <img
+            id="qr-preview-image"
+            src=""
+            alt="二维码高清原图"
+            class="block max-h-[90vh] max-w-[90vw] select-none object-contain will-change-transform"
+            draggable="false"
+          />
+        </div>
+
       </div>
     </div>
   </>
@@ -160,17 +159,34 @@ function getQrLqipProps(qrCode: string) {
     let qrTranslateY = 0;
 
     let isDragging = false;
+
     let dragStartX = 0;
     let dragStartY = 0;
+
     let startTranslateX = 0;
     let startTranslateY = 0;
 
     let initialDistance = 0;
     let initialScale = 1;
 
-    const getModal = () => document.getElementById("qr-preview-modal");
-    const getImage = () => document.getElementById("qr-preview-image");
+    const getOverlay = () =>
+      document.getElementById("qr-preview-overlay");
 
+    const getBox = () =>
+      document.getElementById("qr-preview-box");
+
+    const getContainer = () =>
+      document.getElementById("qr-preview-container");
+
+    const getImage = () =>
+      document.getElementById("qr-preview-image");
+
+    const getCloseButton = () =>
+      document.getElementById("qr-preview-close");
+
+    /*
+     * 更新图片缩放和位置
+     */
     const updateQrTransform = () => {
       const image = getImage();
 
@@ -180,6 +196,9 @@ function getQrLqipProps(qrCode: string) {
         `translate3d(${qrTranslateX}px, ${qrTranslateY}px, 0) scale(${qrScale})`;
     };
 
+    /*
+     * 重置图片
+     */
     const resetQrTransform = () => {
       qrScale = 1;
       qrTranslateX = 0;
@@ -188,48 +207,98 @@ function getQrLqipProps(qrCode: string) {
       updateQrTransform();
     };
 
+    /*
+     * 打开二维码
+     */
     window.openQrPreview = (imageUrl) => {
-      const modal = getModal();
+      const overlay = getOverlay();
       const image = getImage();
 
-      if (!modal || !image) return;
+      if (!overlay || !image) return;
 
       image.src = imageUrl;
 
       resetQrTransform();
 
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-      modal.setAttribute("aria-hidden", "false");
+      overlay.classList.remove("hidden");
+      overlay.classList.add("flex");
+
+      overlay.setAttribute("aria-hidden", "false");
 
       document.body.style.overflow = "hidden";
     };
 
-    window.closeQrPreview = (event) => {
-      if (event && event.target !== event.currentTarget) {
-        return;
-      }
+    /*
+     * 关闭二维码
+     */
+    const closeQrPreview = () => {
+      const overlay = getOverlay();
+      const image = getImage();
 
-      const modal = getModal();
+      if (!overlay) return;
 
-      if (!modal) return;
+      overlay.classList.add("hidden");
+      overlay.classList.remove("flex");
 
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-      modal.setAttribute("aria-hidden", "true");
+      overlay.setAttribute("aria-hidden", "true");
 
       document.body.style.overflow = "";
+
+      if (image) {
+        image.src = "";
+      }
 
       resetQrTransform();
     };
 
-    const container = document.getElementById("qr-preview-container");
-    const image = document.getElementById("qr-preview-image");
+    window.closeQrPreview = closeQrPreview;
 
-    if (!container || !image) return;
+    const overlay = getOverlay();
+    const box = getBox();
+    const container = getContainer();
+    const image = getImage();
+    const closeButton = getCloseButton();
+
+    if (!overlay || !box || !container || !image || !closeButton) {
+      return;
+    }
 
     /*
-     * PC：鼠标滚轮缩放
+     * 点击右上角 X
+     */
+    closeButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeQrPreview();
+    });
+
+    /*
+     * 点击黑色背景区域关闭
+     *
+     * 只有点击 overlay 本身才关闭，
+     * 点击图片、图片容器、X 不会触发。
+     */
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) {
+        closeQrPreview();
+      }
+    });
+
+    /*
+     * ESC 关闭
+     */
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        const isOpen =
+          !overlay.classList.contains("hidden");
+
+        if (isOpen) {
+          closeQrPreview();
+        }
+      }
+    });
+
+    /*
+     * PC 鼠标滚轮缩放
      */
     container.addEventListener(
       "wheel",
@@ -244,7 +313,10 @@ function getQrLqipProps(qrCode: string) {
           qrScale -= zoomStep;
         }
 
-        qrScale = Math.min(Math.max(qrScale, 0.5), 5);
+        qrScale = Math.min(
+          Math.max(qrScale, 0.5),
+          5
+        );
 
         updateQrTransform();
       },
@@ -252,7 +324,7 @@ function getQrLqipProps(qrCode: string) {
     );
 
     /*
-     * PC：鼠标拖动
+     * PC 鼠标拖动
      */
     container.addEventListener("pointerdown", (event) => {
       if (event.pointerType === "touch") return;
@@ -269,13 +341,19 @@ function getQrLqipProps(qrCode: string) {
     });
 
     container.addEventListener("pointermove", (event) => {
-      if (!isDragging || event.pointerType === "touch") return;
+      if (!isDragging || event.pointerType === "touch") {
+        return;
+      }
 
       qrTranslateX =
-        startTranslateX + event.clientX - dragStartX;
+        startTranslateX +
+        event.clientX -
+        dragStartX;
 
       qrTranslateY =
-        startTranslateY + event.clientY - dragStartY;
+        startTranslateY +
+        event.clientY -
+        dragStartY;
 
       updateQrTransform();
     });
@@ -289,7 +367,7 @@ function getQrLqipProps(qrCode: string) {
     });
 
     /*
-     * 手机：双指缩放
+     * 手机双指缩放
      */
     container.addEventListener(
       "touchstart",
@@ -306,7 +384,9 @@ function getQrLqipProps(qrCode: string) {
           event.touches[0].clientY -
           event.touches[1].clientY;
 
-        initialDistance = Math.sqrt(dx * dx + dy * dy);
+        initialDistance =
+          Math.sqrt(dx * dx + dy * dy);
+
         initialScale = qrScale;
       },
       { passive: false }
@@ -333,11 +413,16 @@ function getQrLqipProps(qrCode: string) {
         if (!initialDistance) return;
 
         const scaleRatio =
-          currentDistance / initialDistance;
+          currentDistance /
+          initialDistance;
 
-        qrScale = initialScale * scaleRatio;
+        qrScale =
+          initialScale * scaleRatio;
 
-        qrScale = Math.min(Math.max(qrScale, 0.5), 5);
+        qrScale = Math.min(
+          Math.max(qrScale, 0.5),
+          5
+        );
 
         updateQrTransform();
       },
@@ -345,10 +430,11 @@ function getQrLqipProps(qrCode: string) {
     );
 
     /*
-     * 手机：单指拖动
+     * 手机单指拖动
      */
     let touchStartX = 0;
     let touchStartY = 0;
+
     let touchStartTranslateX = 0;
     let touchStartTranslateY = 0;
 
@@ -357,11 +443,17 @@ function getQrLqipProps(qrCode: string) {
       (event) => {
         if (event.touches.length !== 1) return;
 
-        touchStartX = event.touches[0].clientX;
-        touchStartY = event.touches[0].clientY;
+        touchStartX =
+          event.touches[0].clientX;
 
-        touchStartTranslateX = qrTranslateX;
-        touchStartTranslateY = qrTranslateY;
+        touchStartY =
+          event.touches[0].clientY;
+
+        touchStartTranslateX =
+          qrTranslateX;
+
+        touchStartTranslateY =
+          qrTranslateY;
       },
       { passive: false }
     );
@@ -389,15 +481,6 @@ function getQrLqipProps(qrCode: string) {
       },
       { passive: false }
     );
-
-    /*
-     * ESC 关闭
-     */
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        window.closeQrPreview();
-      }
-    });
   })();
 </script>
 
