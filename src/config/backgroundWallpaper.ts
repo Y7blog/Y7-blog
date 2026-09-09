@@ -109,7 +109,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			links: [
 				{
 					name: "Twitter",
-					icon: "twitter-white16",
+					icon: "logo-twitter-currentcolor16",
 					url: "https://x.com/0x100U",
 					showName: true,
 				},
