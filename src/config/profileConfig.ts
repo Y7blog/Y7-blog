@@ -23,7 +23,7 @@ export const profileConfig: ProfileConfig = {
 	links: [
 		{
 			name: "Twitter",
-			icon: "logo-twitter-white16",
+			icon: "twitter-white16",
 			url: "https://x.com/0x100U",
 			showName: false,
 		},
