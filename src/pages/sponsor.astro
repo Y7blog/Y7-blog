@@ -87,29 +87,319 @@ function getQrLqipProps(qrCode: string) {
 
                         <!-- 二维码或链接 -->
                         {method.qrCode && (
-                           <div class="relative w-full max-w-[200px] aspect-square bg-white rounded-lg p-4 shadow-md mb-4 overflow-hidden">
-                               <div
-                                  class="lqip-placeholder absolute inset-0 rounded-lg pointer-events-none"
-                                  style={getQrLqipProps(method.qrCode).style}
-                                  aria-hidden="true"
-                                ></div>
+  <>
+    <!-- 二维码缩略图 -->
+    <div class="relative w-full max-w-[200px] aspect-square bg-white rounded-lg p-4 shadow-md mb-4 overflow-hidden">
+      <div
+        class="lqip-placeholder absolute inset-0 rounded-lg pointer-events-none"
+        style={getQrLqipProps(method.qrCode).style}
+        aria-hidden="true"
+      ></div>
 
-                                <a
-                                   href={url(method.qrCode)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                   class="relative block w-full h-full cursor-zoom-in"
-                                    title="点击核对地址和网络协议"
-                                >
-                                  <img
-                                    src={url(method.qrCode)}
-                                    alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
-                                   class="relative w-full h-full object-contain opacity-0 transition-opacity duration-500 ease-out"
-                                    loading="lazy"
-                                 />
-                                </a>
-                               </div>
-                          )}
+      <button
+        type="button"
+        class="relative block w-full h-full cursor-zoom-in p-0 border-0 bg-transparent"
+        aria-label={`查看${method.name}二维码高清原图`}
+        onclick={`openQrPreview('${url(method.qrCode)}')`}
+      >
+        <img
+          src={url(method.qrCode)}
+          alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
+          class="relative w-full h-full object-contain opacity-0 transition-opacity duration-500 ease-out"
+          loading="lazy"
+        />
+      </button>
+    </div>
+
+    <!-- 二维码高清预览弹窗 -->
+    <div
+      id="qr-preview-modal"
+      class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/90 p-4"
+      aria-hidden="true"
+      onclick="closeQrPreview(event)"
+    >
+      <!-- 关闭按钮 -->
+      <button
+        type="button"
+        class="absolute right-4 top-4 z-[10001] flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/20 active:bg-white/30"
+        aria-label="关闭二维码预览"
+        onclick="closeQrPreview()"
+      >
+        ×
+      </button>
+
+      <!-- 图片操作提示 -->
+      <div
+        class="pointer-events-none absolute bottom-5 left-1/2 z-[10000] -translate-x-1/2 whitespace-nowrap rounded-full bg-black/50 px-4 py-2 text-xs text-white/80"
+      >
+        手机双指缩放 · 电脑滚轮缩放 · 拖动查看
+      </div>
+
+      <!-- 图片容器 -->
+      <div
+        id="qr-preview-container"
+        class="relative flex h-full w-full items-center justify-center overflow-hidden touch-none"
+        onclick="event.stopPropagation()"
+      >
+        <img
+          id="qr-preview-image"
+          src=""
+          alt="二维码高清原图"
+          class="max-h-none max-w-none select-none object-contain will-change-transform"
+          draggable="false"
+        />
+      </div>
+    </div>
+  </>
+)}
+
+<script is:inline>
+  (() => {
+    let qrScale = 1;
+    let qrTranslateX = 0;
+    let qrTranslateY = 0;
+
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let startTranslateX = 0;
+    let startTranslateY = 0;
+
+    let initialDistance = 0;
+    let initialScale = 1;
+
+    const getModal = () => document.getElementById("qr-preview-modal");
+    const getImage = () => document.getElementById("qr-preview-image");
+
+    const updateQrTransform = () => {
+      const image = getImage();
+
+      if (!image) return;
+
+      image.style.transform =
+        `translate3d(${qrTranslateX}px, ${qrTranslateY}px, 0) scale(${qrScale})`;
+    };
+
+    const resetQrTransform = () => {
+      qrScale = 1;
+      qrTranslateX = 0;
+      qrTranslateY = 0;
+
+      updateQrTransform();
+    };
+
+    window.openQrPreview = (imageUrl) => {
+      const modal = getModal();
+      const image = getImage();
+
+      if (!modal || !image) return;
+
+      image.src = imageUrl;
+
+      resetQrTransform();
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      modal.setAttribute("aria-hidden", "false");
+
+      document.body.style.overflow = "hidden";
+    };
+
+    window.closeQrPreview = (event) => {
+      if (event && event.target !== event.currentTarget) {
+        return;
+      }
+
+      const modal = getModal();
+
+      if (!modal) return;
+
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      modal.setAttribute("aria-hidden", "true");
+
+      document.body.style.overflow = "";
+
+      resetQrTransform();
+    };
+
+    const container = document.getElementById("qr-preview-container");
+    const image = document.getElementById("qr-preview-image");
+
+    if (!container || !image) return;
+
+    /*
+     * PC：鼠标滚轮缩放
+     */
+    container.addEventListener(
+      "wheel",
+      (event) => {
+        event.preventDefault();
+
+        const zoomStep = 0.15;
+
+        if (event.deltaY < 0) {
+          qrScale += zoomStep;
+        } else {
+          qrScale -= zoomStep;
+        }
+
+        qrScale = Math.min(Math.max(qrScale, 0.5), 5);
+
+        updateQrTransform();
+      },
+      { passive: false }
+    );
+
+    /*
+     * PC：鼠标拖动
+     */
+    container.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch") return;
+
+      isDragging = true;
+
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+
+      startTranslateX = qrTranslateX;
+      startTranslateY = qrTranslateY;
+
+      container.setPointerCapture(event.pointerId);
+    });
+
+    container.addEventListener("pointermove", (event) => {
+      if (!isDragging || event.pointerType === "touch") return;
+
+      qrTranslateX =
+        startTranslateX + event.clientX - dragStartX;
+
+      qrTranslateY =
+        startTranslateY + event.clientY - dragStartY;
+
+      updateQrTransform();
+    });
+
+    container.addEventListener("pointerup", () => {
+      isDragging = false;
+    });
+
+    container.addEventListener("pointercancel", () => {
+      isDragging = false;
+    });
+
+    /*
+     * 手机：双指缩放
+     */
+    container.addEventListener(
+      "touchstart",
+      (event) => {
+        if (event.touches.length !== 2) return;
+
+        event.preventDefault();
+
+        const dx =
+          event.touches[0].clientX -
+          event.touches[1].clientX;
+
+        const dy =
+          event.touches[0].clientY -
+          event.touches[1].clientY;
+
+        initialDistance = Math.sqrt(dx * dx + dy * dy);
+        initialScale = qrScale;
+      },
+      { passive: false }
+    );
+
+    container.addEventListener(
+      "touchmove",
+      (event) => {
+        if (event.touches.length !== 2) return;
+
+        event.preventDefault();
+
+        const dx =
+          event.touches[0].clientX -
+          event.touches[1].clientX;
+
+        const dy =
+          event.touches[0].clientY -
+          event.touches[1].clientY;
+
+        const currentDistance =
+          Math.sqrt(dx * dx + dy * dy);
+
+        if (!initialDistance) return;
+
+        const scaleRatio =
+          currentDistance / initialDistance;
+
+        qrScale = initialScale * scaleRatio;
+
+        qrScale = Math.min(Math.max(qrScale, 0.5), 5);
+
+        updateQrTransform();
+      },
+      { passive: false }
+    );
+
+    /*
+     * 手机：单指拖动
+     */
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTranslateX = 0;
+    let touchStartTranslateY = 0;
+
+    container.addEventListener(
+      "touchstart",
+      (event) => {
+        if (event.touches.length !== 1) return;
+
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+
+        touchStartTranslateX = qrTranslateX;
+        touchStartTranslateY = qrTranslateY;
+      },
+      { passive: false }
+    );
+
+    container.addEventListener(
+      "touchmove",
+      (event) => {
+        if (event.touches.length !== 1) return;
+
+        event.preventDefault();
+
+        const touch = event.touches[0];
+
+        qrTranslateX =
+          touchStartTranslateX +
+          touch.clientX -
+          touchStartX;
+
+        qrTranslateY =
+          touchStartTranslateY +
+          touch.clientY -
+          touchStartY;
+
+        updateQrTransform();
+      },
+      { passive: false }
+    );
+
+    /*
+     * ESC 关闭
+     */
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        window.closeQrPreview();
+      }
+    });
+  })();
+</script>
 
                         {method.link && (
                           <a
