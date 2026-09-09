@@ -38,7 +38,7 @@ export const booknavConfig: BooknavGroup[] = [
 				// icon 字段可以使用 astro-icon 图标库的图标名称
 				// 也可以使用图片 URL 和本地图片路径
 				// 不填则会通过接口自动获取目标站点的 favicon 图标（需要在上面配置）
-				icon: "logo-Binance460",
+				icon: "https://www.y7img.ccwu.cc/file/1788943695254_logo-BNB500.png",
 				weight: 10,
 			},
 			{
