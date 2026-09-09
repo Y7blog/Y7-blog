@@ -64,9 +64,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			// 相册
 			LinkPresets.Gallery,
 
-			// 书签导航
-			LinkPresets.Booknav,
-
 			// 哔哩哔哩追番
 			LinkPresets.Bilibili,
 
@@ -83,15 +80,11 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 
 	// 关于及其子菜单
 	links.push({
-		name: "关于",
+		name: "宝藏",
 		url: "#",
 		icon: "material-symbols:info",
 		children: [
-			// 打赏
-			LinkPresets.Sponsor,
-
-			// 关于页面
-			LinkPresets.About,
+			
 			// 书签导航
 			LinkPresets.Booknav,
 		],
@@ -108,13 +101,19 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				name: "推特",
 				url: "https://x.com/0x100U",
 				external: true,
-				icon: "fa7-brands:github",
+				icon: "twitter-white16",
 			},
 			{
 				name: "TG",
 				url: "https://t.me/+ZegDSfLwOjFiOTJl",
 				external: true,
-				icon: "fa7-brands:gitee",
+				icon: "logo-telegramr-white18",
+			},
+			{
+				name: "图床",
+				url: "https://www.y7img.ccwu.cc/",
+				external: true,
+				icon: "",
 			},
 			// 打赏
 			LinkPresets.Sponsor,
