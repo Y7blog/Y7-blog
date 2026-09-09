@@ -23,19 +23,19 @@ export const profileConfig: ProfileConfig = {
 	links: [
 		{
 			name: "Twitter",
-			icon: "twitter-white16",
+			icon: "logo-twitter-current color16",
 			url: "https://x.com/0x100U",
 			showName: false,
 		},
 		{
 			name: "Telegram",
-			icon: "logo-currentcolor-telegramr-white18",
+			icon: "logo-telegramr-current color18",
 			url: "https://t.me/+ZegDSfLwOjFiOTJl",
 			showName: false,
 		},
 		{
 			name: "YouTube",
-			icon: "logo-youtube-white18",
+			icon: "logo-youtube-current color18",
 			url: "",
 			showName: false,
 		},
