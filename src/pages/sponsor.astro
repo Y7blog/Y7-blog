@@ -87,16 +87,29 @@ function getQrLqipProps(qrCode: string) {
 
                         <!-- 二维码或链接 -->
                         {method.qrCode && (
-                          <div class="relative w-full max-w-[200px] aspect-square bg-white rounded-lg p-4 shadow-md mb-4 overflow-hidden">
-                            <div class="lqip-placeholder absolute inset-0 rounded-lg pointer-events-none" style={getQrLqipProps(method.qrCode).style} aria-hidden="true"></div>
-                            <img
-                              src={url(method.qrCode)}
-                              alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
-                              class="relative w-full h-full object-contain opacity-0 transition-opacity duration-500 ease-out"
-                              loading="lazy"
-                            />
-                          </div>
-                        )}
+                           <div class="relative w-full max-w-[200px] aspect-square bg-white rounded-lg p-4 shadow-md mb-4 overflow-hidden">
+                               <div
+                                  class="lqip-placeholder absolute inset-0 rounded-lg pointer-events-none"
+                                  style={getQrLqipProps(method.qrCode).style}
+                                  aria-hidden="true"
+                                ></div>
+
+                                <a
+                                   href={url(method.qrCode)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                   class="relative block w-full h-full cursor-zoom-in"
+                                    title="点击核对地址和网络协议"
+                                >
+                                  <img
+                                    src={url(method.qrCode)}
+                                    alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
+                                   class="relative w-full h-full object-contain opacity-0 transition-opacity duration-500 ease-out"
+                                    loading="lazy"
+                                 />
+                                </a>
+                               </div>
+                          )}
 
                         {method.link && (
                           <a
