@@ -115,12 +115,12 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 				},
 				{
 					name: "Telegram",
-					icon: "logo-telegramr-white16",
+					icon: "logo-telegramr-white18",
 					url: "https://t.me/+ZegDSfLwOjFiOTJl",
 				},
 				{
 					name: "Youtube",
-					icon: "logo-youtube-white16",
+					icon: "logo-youtube-white18",
 					url: "",
 				},
 				
