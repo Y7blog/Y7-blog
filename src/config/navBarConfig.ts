@@ -56,6 +56,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		url: "#",
 		icon: "material-symbols:person",
 		children: [
+			// 关于页面
+			LinkPresets.About,
 			// 动态
 			LinkPresets.Dynamic,
 
@@ -90,6 +92,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 
 			// 关于页面
 			LinkPresets.About,
+			// 书签导航
+			LinkPresets.Booknav,
 		],
 	});
 
@@ -112,18 +116,10 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				external: true,
 				icon: "fa7-brands:gitee",
 			},
-			{
-				name: "QQ交流群",
-				url: " ",
-				external: true,
-				icon: "fa7-brands:qq",
-			},
-			{
-				name: "Firefly文档",
-				url: "https://docs-firefly.cuteleaf.cn",
-				external: true,
-				icon: "material-symbols:docs",
-			},
+			// 打赏
+			LinkPresets.Sponsor,
+			
+
 		],
 	});
 
@@ -198,7 +194,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		pageKey: "gallery",
 	},
 	Booknav: {
-		name: "书签导航",
+		name: "工具导航",
 		url: "/booknav/",
 		icon: "material-symbols:bookmarks",
 		pageKey: "booknav",
