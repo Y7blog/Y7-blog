@@ -79,11 +79,15 @@ function getQrLqipProps(qrCode: string) {
                         </div>
 
                         <!-- 描述 -->
-                        {method.description && (
-                          <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4 text-center">
-                            {method.description}
-                          </p>
-                        )}
+{method.description && (
+  <div class="flex flex-col items-center justify-center gap-1.5 mb-4 text-center">
+    {method.description.split("\n").map((line) => (
+      <p class="text-sm leading-6 text-neutral-600 dark:text-neutral-400">
+        {line}
+      </p>
+    ))}
+  </div>
+)}
 
                         <!-- 二维码或链接 -->
                         {method.qrCode && (
