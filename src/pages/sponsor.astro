@@ -91,402 +91,30 @@ function getQrLqipProps(qrCode: string) {
 
                         <!-- 二维码或链接 -->
                         {method.qrCode && (
-  <>
-    <!-- 二维码缩略图 -->
-    <div class="relative w-full max-w-[200px] aspect-square bg-white rounded-lg p-4 shadow-md mb-4 overflow-hidden">
-      <div
-        class="lqip-placeholder absolute inset-0 rounded-lg pointer-events-none"
-        style={getQrLqipProps(method.qrCode).style}
-        aria-hidden="true"
-      ></div>
-
-      <button
-        type="button"
-        class="relative block w-full h-full cursor-zoom-in p-0 border-0 bg-transparent"
-        aria-label={`查看${method.name}二维码高清原图`}
-        onclick={`openQrPreview('${url(method.qrCode)}')`}
-      >
-        <img
-          src={url(method.qrCode)}
-          alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
-          class="relative w-full h-full object-contain opacity-0 transition-opacity duration-500 ease-out"
-          loading="lazy"
-        />
-      </button>
-    </div>
-
-    <!-- 二维码站内预览 -->
+  <div class="relative w-full max-w-[200px] aspect-square bg-white rounded-lg p-4 shadow-md mb-4 overflow-hidden">
     <div
-  id="qr-preview-overlay"
-  class="fixed inset-0 z-[9999] hidden items-center justify-center bg-gray-200/40 p-4 backdrop-blur-sm"
-  aria-hidden="true"
->
-      <!-- 图片弹窗主体 -->
-      <div
-        id="qr-preview-box"
-        class="relative max-w-[90vw] max-h-[90vh]"
-      >
+      class="lqip-placeholder absolute inset-0 rounded-lg pointer-events-none"
+      style={getQrLqipProps(method.qrCode).style}
+      aria-hidden="true"
+    ></div>
 
-        <!-- 右上角关闭按钮 -->
-        <button
-          type="button"
-          id="qr-preview-close"
-          class="absolute -right-3 -top-3 z-[10001] flex h-9 w-9 items-center justify-center rounded-full bg-white text-2xl font-bold leading-none text-black shadow-lg transition-transform hover:scale-110 active:scale-95"
-          aria-label="关闭二维码预览"
-        >
-          ×
-        </button>
-
-        <!-- 图片区域 -->
-        <div
-          id="qr-preview-container"
-          class="overflow-hidden rounded-lg bg-white shadow-2xl touch-none"
-        >
-          <img
-            id="qr-preview-image"
-            src=""
-            alt="二维码高清原图"
-            class="block max-h-[90vh] max-w-[90vw] select-none object-contain will-change-transform"
-            draggable="false"
-          />
-        </div>
-
-      </div>
-    </div>
-  </>
+    <button
+      type="button"
+      data-sponsor-qr
+      data-src={url(method.qrCode)}
+      data-caption={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
+      class="sponsor-qr-btn relative block w-full h-full cursor-zoom-in p-0 border-0 bg-transparent text-left"
+      aria-label={`查看${method.name}二维码高清原图`}
+    >
+      <img
+        src={url(method.qrCode)}
+        alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
+        class="relative w-full h-full object-contain opacity-0 transition-opacity duration-500 ease-out"
+        loading="lazy"
+      />
+    </button>
+  </div>
 )}
-
-<script is:inline>
-  (() => {
-    let qrScale = 1;
-    let qrTranslateX = 0;
-    let qrTranslateY = 0;
-
-    let isDragging = false;
-
-    let dragStartX = 0;
-    let dragStartY = 0;
-
-    let startTranslateX = 0;
-    let startTranslateY = 0;
-
-    let initialDistance = 0;
-    let initialScale = 1;
-
-    const getOverlay = () =>
-      document.getElementById("qr-preview-overlay");
-
-    const getBox = () =>
-      document.getElementById("qr-preview-box");
-
-    const getContainer = () =>
-      document.getElementById("qr-preview-container");
-
-    const getImage = () =>
-      document.getElementById("qr-preview-image");
-
-    const getCloseButton = () =>
-      document.getElementById("qr-preview-close");
-
-    /*
-     * 更新图片缩放和位置
-     */
-    const updateQrTransform = () => {
-      const image = getImage();
-
-      if (!image) return;
-
-      image.style.transform =
-        `translate3d(${qrTranslateX}px, ${qrTranslateY}px, 0) scale(${qrScale})`;
-    };
-
-    /*
-     * 重置图片
-     */
-    const resetQrTransform = () => {
-      qrScale = 1;
-      qrTranslateX = 0;
-      qrTranslateY = 0;
-
-      updateQrTransform();
-    };
-
-    /*
-     * 打开二维码
-     */
-    window.openQrPreview = (imageUrl) => {
-      const overlay = getOverlay();
-      const image = getImage();
-
-      if (!overlay || !image) return;
-
-      image.src = imageUrl;
-
-      resetQrTransform();
-
-      overlay.classList.remove("hidden");
-      overlay.classList.add("flex");
-
-      overlay.setAttribute("aria-hidden", "false");
-
-      document.body.style.overflow = "hidden";
-    };
-
-    /*
-     * 关闭二维码
-     */
-    const closeQrPreview = () => {
-      const overlay = getOverlay();
-      const image = getImage();
-
-      if (!overlay) return;
-
-      overlay.classList.add("hidden");
-      overlay.classList.remove("flex");
-
-      overlay.setAttribute("aria-hidden", "true");
-
-      document.body.style.overflow = "";
-
-      if (image) {
-        image.src = "";
-      }
-
-      resetQrTransform();
-    };
-
-    window.closeQrPreview = closeQrPreview;
-
-    const overlay = getOverlay();
-    const box = getBox();
-    const container = getContainer();
-    const image = getImage();
-    const closeButton = getCloseButton();
-
-    if (!overlay || !box || !container || !image || !closeButton) {
-      return;
-    }
-
-    /*
-     * 点击右上角 X
-     */
-    closeButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      closeQrPreview();
-    });
-
-    /*
-     * 点击黑色背景区域关闭
-     *
-     * 只有点击 overlay 本身才关闭，
-     * 点击图片、图片容器、X 不会触发。
-     */
-    overlay.addEventListener("click", (event) => {
-      if (event.target === overlay) {
-        closeQrPreview();
-      }
-    });
-
-    /*
-     * ESC 关闭
-     */
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        const isOpen =
-          !overlay.classList.contains("hidden");
-
-        if (isOpen) {
-          closeQrPreview();
-        }
-      }
-    });
-
-    /*
-     * PC 鼠标滚轮缩放
-     */
-    container.addEventListener(
-      "wheel",
-      (event) => {
-        event.preventDefault();
-
-        const zoomStep = 0.15;
-
-        if (event.deltaY < 0) {
-          qrScale += zoomStep;
-        } else {
-          qrScale -= zoomStep;
-        }
-
-        qrScale = Math.min(
-          Math.max(qrScale, 0.5),
-          5
-        );
-
-        updateQrTransform();
-      },
-      { passive: false }
-    );
-
-    /*
-     * PC 鼠标拖动
-     */
-    container.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "touch") return;
-
-      isDragging = true;
-
-      dragStartX = event.clientX;
-      dragStartY = event.clientY;
-
-      startTranslateX = qrTranslateX;
-      startTranslateY = qrTranslateY;
-
-      container.setPointerCapture(event.pointerId);
-    });
-
-    container.addEventListener("pointermove", (event) => {
-      if (!isDragging || event.pointerType === "touch") {
-        return;
-      }
-
-      qrTranslateX =
-        startTranslateX +
-        event.clientX -
-        dragStartX;
-
-      qrTranslateY =
-        startTranslateY +
-        event.clientY -
-        dragStartY;
-
-      updateQrTransform();
-    });
-
-    container.addEventListener("pointerup", () => {
-      isDragging = false;
-    });
-
-    container.addEventListener("pointercancel", () => {
-      isDragging = false;
-    });
-
-    /*
-     * 手机双指缩放
-     */
-    container.addEventListener(
-      "touchstart",
-      (event) => {
-        if (event.touches.length !== 2) return;
-
-        event.preventDefault();
-
-        const dx =
-          event.touches[0].clientX -
-          event.touches[1].clientX;
-
-        const dy =
-          event.touches[0].clientY -
-          event.touches[1].clientY;
-
-        initialDistance =
-          Math.sqrt(dx * dx + dy * dy);
-
-        initialScale = qrScale;
-      },
-      { passive: false }
-    );
-
-    container.addEventListener(
-      "touchmove",
-      (event) => {
-        if (event.touches.length !== 2) return;
-
-        event.preventDefault();
-
-        const dx =
-          event.touches[0].clientX -
-          event.touches[1].clientX;
-
-        const dy =
-          event.touches[0].clientY -
-          event.touches[1].clientY;
-
-        const currentDistance =
-          Math.sqrt(dx * dx + dy * dy);
-
-        if (!initialDistance) return;
-
-        const scaleRatio =
-          currentDistance /
-          initialDistance;
-
-        qrScale =
-          initialScale * scaleRatio;
-
-        qrScale = Math.min(
-          Math.max(qrScale, 0.5),
-          5
-        );
-
-        updateQrTransform();
-      },
-      { passive: false }
-    );
-
-    /*
-     * 手机单指拖动
-     */
-    let touchStartX = 0;
-    let touchStartY = 0;
-
-    let touchStartTranslateX = 0;
-    let touchStartTranslateY = 0;
-
-    container.addEventListener(
-      "touchstart",
-      (event) => {
-        if (event.touches.length !== 1) return;
-
-        touchStartX =
-          event.touches[0].clientX;
-
-        touchStartY =
-          event.touches[0].clientY;
-
-        touchStartTranslateX =
-          qrTranslateX;
-
-        touchStartTranslateY =
-          qrTranslateY;
-      },
-      { passive: false }
-    );
-
-    container.addEventListener(
-      "touchmove",
-      (event) => {
-        if (event.touches.length !== 1) return;
-
-        event.preventDefault();
-
-        const touch = event.touches[0];
-
-        qrTranslateX =
-          touchStartTranslateX +
-          touch.clientX -
-          touchStartX;
-
-        qrTranslateY =
-          touchStartTranslateY +
-          touch.clientY -
-          touchStartY;
-
-        updateQrTransform();
-      },
-      { passive: false }
-    );
-  })();
-</script>
 
                         {method.link && (
                           <a
@@ -603,4 +231,112 @@ function getQrLqipProps(qrCode: string) {
     gap: 0.75rem;
   }
 </style>
+
+<script>
+  const QRC_SELECTOR = "button[data-sponsor-qr]";
+
+  let cssUrlsPromise: Promise<string[]> | null = null;
+  async function injectCssOnce() {
+    if (!cssUrlsPromise) {
+      cssUrlsPromise = Promise.all([
+        import("@fancyapps/ui/dist/fancybox/fancybox.css?url"),
+        import("@/styles/fancybox-custom.css?url"),
+      ]).then((mods) =>
+        mods.map((m) => m.default).filter((u): u is string => typeof u === "string"),
+      );
+    }
+    const urls = await cssUrlsPromise;
+    for (const url of urls) {
+      if (!document.head.querySelector(`link[href="${url}"]`)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = url;
+        document.head.appendChild(link);
+      }
+    }
+  }
+
+  type FancyboxAPI = {
+    show: (items: any[], options?: any) => void;
+    isActive?: boolean;
+    close?: () => void;
+  };
+  let fancyboxPromise: Promise<FancyboxAPI> | null = null;
+  async function ensureFancyboxReady(): Promise<FancyboxAPI> {
+    await injectCssOnce();
+    if (!fancyboxPromise) {
+      fancyboxPromise = import("@fancyapps/ui").then((m) => m.Fancybox as FancyboxAPI);
+    }
+    return fancyboxPromise;
+  }
+
+  const singleOptions = {
+    Thumbs: { autoStart: false, showOnStart: "hide" },
+    Toolbar: {
+      display: {
+        left: [],
+        middle: [
+          "zoomIn",
+          "zoomOut",
+          "toggle1to1",
+          "rotateCCW",
+          "rotateCW",
+          "flipX",
+          "flipY",
+        ],
+        right: ["fullscreen", "close"],
+      },
+    },
+    animated: true,
+    dragToClose: true,
+    keyboard: {
+      Escape: "close",
+      Delete: "close",
+      Backspace: "close",
+    },
+    fitToView: true,
+    Panzoom: { maxScale: 3, minScale: 1 },
+    caption: false,
+    Carousel: { finite: true },
+    trapFocus: true,
+    closeButton: true,
+    contentClick: "toggleCover",
+    backdropClick: "close",
+  };
+
+  let isOpening = false;
+  document.addEventListener(
+    "click",
+    async (event) => {
+      const btn = (event.target as HTMLElement)?.closest?.(QRC_SELECTOR) as
+        | HTMLButtonElement
+        | null;
+      if (!btn) return;
+
+      if (isOpening) return;
+      isOpening = true;
+
+      const item = {
+        src: btn.getAttribute("data-src") || "",
+        type: "image" as const,
+        caption: btn.getAttribute("data-caption") || "",
+      };
+
+      try {
+        const Fancybox = await ensureFancyboxReady();
+        if (Fancybox.isActive) {
+          Fancybox.close?.();
+        }
+        Fancybox.show([item], singleOptions);
+      } catch (err) {
+        console.error("[Sponsor] Fancybox open failed:", err);
+      } finally {
+        setTimeout(() => {
+          isOpening = false;
+        }, 350);
+      }
+    },
+    true,
+  );
+</script>
 
