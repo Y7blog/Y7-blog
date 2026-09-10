@@ -32,12 +32,13 @@ export const coverImageConfig: CoverImageConfig = {
 		enable: false,
 		// 封面图API列表
 		apis: [
-			"assets/images/DesktopWallpaper/img-001.avif",
-			"assets/images/DesktopWallpaper/img-002.avif",
-			"assets/images/DesktopWallpaper/img-003.avif",
-            "assets/images/DesktopWallpaper/img-004.avif",
-            "assets/images/DesktopWallpaper/img-005.avif",
-		],
-		 fallback: "assets/images/DesktopWallpaper/img-001.avif",
+		"/assets/random-cover/img-001.avif",
+		"/assets/random-cover/img-002.avif",
+		"/assets/random-cover/img-003.avif",
+		"/assets/random-cover/img-004.avif",
+		"/assets/random-cover/img-005.avif",
+	],
+
+	fallback: "/assets/random-cover/img-001.avif",
 	},
 };
