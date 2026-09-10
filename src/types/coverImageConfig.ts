@@ -5,5 +5,6 @@ export type CoverImageConfig = {
 	randomCoverImage: {
 		enable: boolean; // 是否启用随机图功能
 		apis: string[]; // 随机图API列表
+		fallback: string;  //API 失败时的回退图片
 	};
 };

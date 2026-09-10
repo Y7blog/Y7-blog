@@ -32,9 +32,12 @@ export const coverImageConfig: CoverImageConfig = {
 		enable: false,
 		// 封面图API列表
 		apis: [
-			"https://www.y7img.ccwu.cc/file/1788860465740_机器人背景.jpg",
-			"https://www.y7img.ccwu.cc/file/1788860509419_水墨背景.jpg",
-			"https://www.y7img.ccwu.cc/file/1788860482331_战机背景.jpg",
+			"assets/images/DesktopWallpaper/img-001.avif",
+			"assets/images/DesktopWallpaper/img-002.avif",
+			"assets/images/DesktopWallpaper/img-003.avif",
+            "assets/images/DesktopWallpaper/img-004.avif",
+            "assets/images/DesktopWallpaper/img-005.avif",
 		],
+		 fallback: "assets/images/DesktopWallpaper/img-001.avif",
 	},
 };
