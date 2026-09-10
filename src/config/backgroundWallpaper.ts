@@ -39,16 +39,20 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 桌面背景图片（支持单张或多张随机）
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
 		desktop: [
-			"https://www.y7img.ccwu.cc/file/1788860465740_机器人背景.jpg",
-			"https://www.y7img.ccwu.cc/file/1788860482331_战机背景.jpg",
-			"https://www.y7img.ccwu.cc/file/1788860509419_水墨背景.jpg",			
+					"/assets/random-cover/img-001.avif",
+       				 "/assets/random-cover/img-002.avif",
+    				  "/assets/random-cover/img-003.avif",
+       				 "/assets/random-cover/img-004.avif",
+      				  "/assets/random-cover/img-005.avif",			
 		],
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
 		mobile: [
-			"https://www.y7img.ccwu.cc/file/1788860465740_机器人背景.jpg",
-			"https://www.y7img.ccwu.cc/file/1788860482331_战机背景.jpg",
-			"https://www.y7img.ccwu.cc/file/1788860509419_水墨背景.jpg",
+					"/assets/random-cover/img-001.avif",
+      			  "/assets/random-cover/img-002.avif",
+      			  "/assets/random-cover/img-003.avif",
+      			  "/assets/random-cover/img-004.avif",
+      			  "/assets/random-cover/img-005.avif",
 		],
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）
