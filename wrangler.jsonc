@@ -1,6 +1,8 @@
 {
 	"name": "firefly",
-	"compatibility_date": "2026-09-07",
+	// 不能超过本地 workerd 二进制支持的日期（当前为 2026-09-04），
+	// 否则 astro dev 的本地 Workers 运行时无法启动；线上无此限制
+	"compatibility_date": "2026-09-04",
 	"compatibility_flags": ["nodejs_compat"],
 	"assets": {
 		"directory": "./dist"
