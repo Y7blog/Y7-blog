@@ -6,11 +6,12 @@
 		"directory": "./dist"
 	},
 	// 用 Worker Route 接管现有域名解析（记录仍指向 GitHub Pages 也没关系，
-	// 路由优先于回源；无需删除/修改 DNS 记录）
+	// 路由优先于回源；无需删除/修改 DNS 记录）。
+	// 注意：zone 是以子域名形式加进 Cloudflare 的，zone_name 必须写 y7ai.ccwu.cc 全称
 	"routes": [
 		{
 			"pattern": "y7ai.ccwu.cc/*",
-			"zone_name": "ccwu.cc"
+			"zone_name": "y7ai.ccwu.cc"
 		}
 	],
 	"kv_namespaces": [
