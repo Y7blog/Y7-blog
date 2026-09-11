@@ -1,0 +1,103 @@
+---
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import SiteStatsCard from "@/components/analytics/SiteStatsCard.astro";
+import WidgetLayout from "@/components/common/WidgetLayout.astro";
+import { analyticsConfig, siteConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getSortedPosts } from "@/utils/content-utils";
+import { formatNumber } from "@/utils/format-number";
+
+// 页面开关：任一条件不满足即视为不存在，与 sitemap 过滤保持一致
+if (
+	!siteConfig.pages.stats ||
+	analyticsConfig.enabled === false ||
+	analyticsConfig.statsPage === false
+) {
+	return Astro.redirect("/404/");
+}
+
+const title = i18n(I18nKey.statsSiteTitle);
+const description = i18n(I18nKey.statsSiteSubtitle);
+
+const posts = await getSortedPosts();
+const dynamics = await getCollection("dynamic");
+
+const contentStats = [
+	{
+		icon: "custom/articles",
+		label: i18n(I18nKey.statsArticleTotal),
+		value: posts.length,
+	},
+	{
+		icon: "custom/dynamics",
+		label: i18n(I18nKey.statsDynamicTotal),
+		value: dynamics.length,
+	},
+];
+---
+
+<MainGridLayout title={title} description={description}>
+	<div class="flex w-full flex-col gap-4">
+		<!-- 页头 -->
+		<div class="card-base relative w-full px-6 py-6 md:px-9">
+			<div class="mb-3 flex items-center gap-3">
+				<div
+					class="flex h-8 w-8 items-center justify-center rounded-lg bg-(--primary) text-white dark:text-black/70"
+				>
+					<Icon name="custom/analytics" class="text-[1.5rem]" aria-hidden="true"></Icon>
+				</div>
+				<div class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 md:text-3xl">
+					{title}
+				</div>
+			</div>
+			<p class="text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
+				{description}
+			</p>
+		</div>
+
+		<!-- 网站数据概览：六项指标由 analytics-client 异步回填，失败时保持 "--" -->
+		<SiteStatsCard
+			id="stats-overview"
+			title={i18n(I18nKey.statsOverview)}
+			columns={3}
+		/>
+
+		<!-- 内容数据：构建期静态统计 -->
+		<WidgetLayout id="stats-content" name={i18n(I18nKey.statsContentOverview)}>
+			<div class="grid grid-cols-2 gap-2">
+				{
+					contentStats.map((stat) => (
+						<div class="flex min-w-0 flex-col gap-1 rounded-xl bg-(--btn-regular-bg) px-3 py-2.5">
+							<span class="flex items-center gap-1.5 text-xs text-(--content-meta)">
+								<Icon
+									name={stat.icon}
+									class="shrink-0 text-base text-(--primary)"
+									aria-hidden="true"
+								/>
+								<span class="truncate">{stat.label}</span>
+							</span>
+							<span class="text-xl font-bold tabular-nums text-neutral-900 dark:text-neutral-100">
+								{formatNumber(stat.value)}
+							</span>
+						</div>
+					))
+				}
+			</div>
+		</WidgetLayout>
+
+		<!-- 趋势统计：预留位，仅用 KV 的方案暂不提供时序图表 -->
+		<div class="card-base w-full px-6 py-8 text-center md:px-9">
+			<div
+				class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-(--btn-regular-bg)"
+			>
+				<Icon name="custom/analytics" class="text-3xl text-(--primary)" aria-hidden="true"></Icon>
+			</div>
+			<p class="text-base text-(--content-meta)">
+				{i18n(I18nKey.statsTrendPlaceholder)}
+			</p>
+		</div>
+	</div>
+</MainGridLayout>

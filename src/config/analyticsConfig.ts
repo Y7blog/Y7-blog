@@ -1,6 +1,13 @@
 import type { AnalyticsConfig } from "../types/analyticsConfig";
 
 export const analyticsConfig: AnalyticsConfig = {
+	// 本站 KV 统计系统（Cloudflare KV）
+	enabled: true,
+	siteStats: true,
+	articleViews: true,
+	dynamicViews: true,
+	statsPage: true,
+
 	// Google Analytics ID
 	googleAnalyticsId: "",
 	// Microsoft Clarity ID

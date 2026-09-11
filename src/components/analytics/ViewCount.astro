@@ -1,0 +1,92 @@
+---
+/**
+ * 可复用阅读量组件（文章 / 动态共用）。
+ *
+ * 只负责渲染结构与 DOM 契约，数字由 src/utils/analytics-client.ts 异步回填，
+ * 因此不会阻塞渲染，接口失败时保持占位符 "--"。
+ *
+ * 用法：
+ *   <ViewCount type="article" slug={id} />
+ *   <ViewCount type="article" slug={id} tone="cover" />
+ *   <ViewCount type="dynamic" id={entryId} variant="inline" />
+ *   <ViewCount type="dynamic" variant="inline" deferredId />  // id 由客户端克隆模板后填入
+ */
+import { Icon } from "astro-icon/components";
+import { analyticsConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+
+interface Props {
+	type: "article" | "dynamic";
+	/** type="article" 时的文章 slug */
+	slug?: string;
+	/** type="dynamic" 时的动态 id */
+	id?: string;
+	/** postMeta：文章元信息区；inline：紧凑行内，用于动态元信息 */
+	variant?: "postMeta" | "inline";
+	/** cover：位于封面渐变层上，改用白色前景（父组件的 scoped 样式无法穿透子组件） */
+	tone?: "default" | "cover";
+	/** 是否显示「次阅读」文案，默认 true */
+	showLabel?: boolean;
+	/** id 在构建期未知（如动态列表克隆 <template>），渲染空 data-view-id 交由客户端填充 */
+	deferredId?: boolean;
+	class?: string;
+}
+
+const {
+	type,
+	slug,
+	id,
+	variant = "postMeta",
+	tone = "default",
+	showLabel = true,
+	deferredId = false,
+	class: className,
+} = Astro.props;
+
+const targetId = (type === "article" ? slug : id)?.trim() ?? "";
+const enabled =
+	analyticsConfig.enabled !== false &&
+	(type === "article"
+		? analyticsConfig.articleViews !== false
+		: analyticsConfig.dynamicViews !== false);
+const label = i18n(I18nKey.statsViewCountLabel);
+const isCover = tone === "cover";
+const isPostMeta = variant === "postMeta";
+const textClass = isPostMeta
+	? isCover
+		? "text-sm font-medium"
+		: "text-50 text-sm font-medium"
+	: "";
+---
+
+{enabled && (targetId || deferredId) && (
+	<span
+		class:list={[
+			"view-count items-center",
+			isPostMeta ? "flex" : "dynamic-view inline-flex",
+			{ "text-white/90": isCover },
+			className,
+		]}
+		data-view-count
+		data-view-type={type}
+		data-view-id={targetId || undefined}
+		data-view-filled="false"
+	>
+		{isPostMeta ? (
+			<span
+				class:list={[
+					isCover
+						? "mr-1.5 flex h-[1.125rem] w-[1.125rem] shrink-0 items-center justify-center"
+						: "meta-icon",
+				]}
+			>
+				<Icon name="custom/views" class="text-xl" aria-hidden="true" />
+			</span>
+		) : (
+			<Icon name="custom/views" class="text-base shrink-0" aria-hidden="true" />
+		)}
+		<span class={textClass} data-view-number>--</span>
+		{showLabel && <span class:list={[textClass, "ml-1"]}>{label}</span>}
+	</span>
+)}

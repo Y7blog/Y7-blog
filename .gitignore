@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# Cloudflare 本地开发状态（KV / 缓存 / 追踪 sqlite）
+.wrangler/
+
 # generated vndb covers
 public/vndb-covers/
 

@@ -506,4 +506,20 @@ export const zh_CN: Translation = {
 	[Key.exitImmersiveReading]: "退出沉浸阅读",
 	[Key.tocExpand]: "展开目录",
 	[Key.tocCollapse]: "折叠目录",
+
+	// 网站统计 (Analytics)
+	[Key.statsSiteTitle]: "网站统计",
+	[Key.statsSiteSubtitle]: "记录网站访问与内容阅读数据",
+	[Key.statsOverview]: "网站数据概览",
+	[Key.statsTotalViews]: "总浏览量",
+	[Key.statsTotalVisitors]: "总访客",
+	[Key.statsMonthlyViews]: "本月浏览",
+	[Key.statsMonthlyVisitors]: "本月访客",
+	[Key.statsDailyViews]: "今日浏览",
+	[Key.statsDailyVisitors]: "今日访客",
+	[Key.statsViewCountLabel]: "次阅读",
+	[Key.statsContentOverview]: "内容数据",
+	[Key.statsArticleTotal]: "文章总数",
+	[Key.statsDynamicTotal]: "动态总数",
+	[Key.statsTrendPlaceholder]: "趋势统计（敬请期待）",
 };

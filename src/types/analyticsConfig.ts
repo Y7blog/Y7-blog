@@ -1,4 +1,9 @@
 export type AnalyticsConfig = {
+	enabled?: boolean; // 本站 KV 统计总开关，false 时全部静默
+	siteStats?: boolean; // 是否显示站点统计卡
+	articleViews?: boolean; // 是否显示文章阅读量
+	dynamicViews?: boolean; // 是否显示动态阅读量
+	statsPage?: boolean; // 是否注册 /stats/ 页面
 	googleAnalyticsId?: string; // Google Analytics ID
 	microsoftClarityId?: string; // Microsoft Clarity ID
 	umamiAnalytics?: {

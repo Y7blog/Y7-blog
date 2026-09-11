@@ -1,0 +1,51 @@
+---
+/**
+ * 全站统计入口：把服务端配置交给浏览器端唯一客户端 initAnalytics()。
+ *
+ * 放在 Layout 中渲染一次即可。Swup 切页由客户端内部的
+ * swup:page:view / hashchange 监听器驱动，不会重复注册。
+ */
+import { analyticsConfig, siteConfig } from "@/config";
+import type { AnalyticsClientConfig } from "@/utils/analytics-client";
+import { dynamicAnchor } from "@/utils/dynamic-utils";
+import { url } from "@/utils/url-utils";
+
+const enabled = analyticsConfig.enabled !== false;
+const dynamicPageEnabled = siteConfig.pages?.dynamic !== false;
+
+const clientConfig: AnalyticsClientConfig = {
+	enabled,
+	siteStats: analyticsConfig.siteStats !== false,
+	articleViews: analyticsConfig.articleViews !== false,
+	dynamicViews: analyticsConfig.dynamicViews !== false && dynamicPageEnabled,
+	postPathPrefix: url("/posts/"),
+	dynamicPath: url("/dynamic/"),
+	dynamicAnchorPrefix: dynamicAnchor(""),
+};
+
+// "<" 转义后写入 <script type="application/json">，避免任何字符串提前闭合标签
+const configJson = JSON.stringify(clientConfig).replace(/</g, "\\u003c");
+---
+
+{enabled && (
+	<script
+		type="application/json"
+		id="y7-analytics-config"
+		is:inline
+		set:html={configJson}
+	/>
+)}
+
+<script>
+	import { initAnalytics } from "@/utils/analytics-client";
+	import type { AnalyticsClientConfig } from "@/utils/analytics-client";
+
+	const carrier = document.getElementById("y7-analytics-config");
+	if (carrier?.textContent) {
+		try {
+			initAnalytics(JSON.parse(carrier.textContent) as AnalyticsClientConfig);
+		} catch {
+			/* 配置异常时静默跳过统计，不影响页面 */
+		}
+	}
+</script>

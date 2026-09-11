@@ -519,4 +519,20 @@ export const ru: Translation = {
 	[Key.exitImmersiveReading]: "Выйти из режима чтения",
 	[Key.tocExpand]: "Развернуть оглавление",
 	[Key.tocCollapse]: "Свернуть оглавление",
+
+	// Analytics
+	[Key.statsSiteTitle]: "Статистика сайта",
+	[Key.statsSiteSubtitle]: "Собирает данные о посещениях и прочтениях",
+	[Key.statsOverview]: "Обзор данных сайта",
+	[Key.statsTotalViews]: "Всего просмотров",
+	[Key.statsTotalVisitors]: "Всего посетителей",
+	[Key.statsMonthlyViews]: "Просмотры за месяц",
+	[Key.statsMonthlyVisitors]: "Посетители за месяц",
+	[Key.statsDailyViews]: "Просмотры за день",
+	[Key.statsDailyVisitors]: "Посетители за день",
+	[Key.statsViewCountLabel]: "прочтений",
+	[Key.statsContentOverview]: "Данные о материалах",
+	[Key.statsArticleTotal]: "Всего статей",
+	[Key.statsDynamicTotal]: "Всего моментов",
+	[Key.statsTrendPlaceholder]: "Статистика трендов (скоро)",
 };

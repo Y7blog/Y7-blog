@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
+import SiteStatsCard from "@/components/analytics/SiteStatsCard.astro";
 import Advertisement from "@/components/widget/Advertisement.astro";
 import Announcement from "@/components/widget/Announcement.astro";
 import Calendar from "@/components/widget/Calendar.astro";
@@ -49,6 +50,7 @@ const componentMap = {
 	sidebarToc: SidebarTOC,
 	advertisement: Advertisement,
 	stats: SiteStats,
+	analyticsStats: SiteStatsCard,
 	calendar: Calendar,
 	music: Music,
 	siteInfo: SiteInfo,

@@ -253,7 +253,8 @@ dynamic-feed {
 	color: var(--primary);
 }
 
-.dynamic-location {
+.dynamic-location,
+.dynamic-view {
 	display: inline-flex;
 	min-width: 0;
 	align-items: center;
@@ -267,7 +268,8 @@ dynamic-feed {
 	display: none;
 }
 
-.dynamic-location svg {
+.dynamic-location svg,
+.dynamic-view svg {
 	width: 1rem;
 	height: 1rem;
 	flex: 0 0 auto;

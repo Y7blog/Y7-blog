@@ -508,4 +508,20 @@ export const zh_TW: Translation = {
 	[Key.exitImmersiveReading]: "退出沉浸閱讀",
 	[Key.tocExpand]: "展開目錄",
 	[Key.tocCollapse]: "摺疊目錄",
+
+	// 網站統計 (Analytics)
+	[Key.statsSiteTitle]: "網站統計",
+	[Key.statsSiteSubtitle]: "記錄網站訪問與內容閱讀數據",
+	[Key.statsOverview]: "網站數據概覽",
+	[Key.statsTotalViews]: "總瀏覽量",
+	[Key.statsTotalVisitors]: "總訪客",
+	[Key.statsMonthlyViews]: "本月瀏覽",
+	[Key.statsMonthlyVisitors]: "本月訪客",
+	[Key.statsDailyViews]: "今日瀏覽",
+	[Key.statsDailyVisitors]: "今日訪客",
+	[Key.statsViewCountLabel]: "次閱讀",
+	[Key.statsContentOverview]: "內容數據",
+	[Key.statsArticleTotal]: "文章總數",
+	[Key.statsDynamicTotal]: "動態總數",
+	[Key.statsTrendPlaceholder]: "趨勢統計（敬請期待）",
 };

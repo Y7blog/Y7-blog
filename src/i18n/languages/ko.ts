@@ -515,4 +515,20 @@ export const ko: Translation = {
 	[Key.exitImmersiveReading]: "몰입형 읽기 종료",
 	[Key.tocExpand]: "목차 펼치기",
 	[Key.tocCollapse]: "목차 접기",
+
+	// Analytics
+	[Key.statsSiteTitle]: "사이트 통계",
+	[Key.statsSiteSubtitle]: "사이트 방문과 열람 데이터를 기록합니다",
+	[Key.statsOverview]: "사이트 데이터 개요",
+	[Key.statsTotalViews]: "총 조회수",
+	[Key.statsTotalVisitors]: "총 방문자",
+	[Key.statsMonthlyViews]: "이번 달 조회수",
+	[Key.statsMonthlyVisitors]: "이번 달 방문자",
+	[Key.statsDailyViews]: "오늘 조회수",
+	[Key.statsDailyVisitors]: "오늘 방문자",
+	[Key.statsViewCountLabel]: "회 열람",
+	[Key.statsContentOverview]: "콘텐츠 데이터",
+	[Key.statsArticleTotal]: "전체 글 수",
+	[Key.statsDynamicTotal]: "전체 일상 수",
+	[Key.statsTrendPlaceholder]: "추이 통계 (준비 중)",
 };

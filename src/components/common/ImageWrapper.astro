@@ -73,11 +73,11 @@ const isPublic = src.startsWith("/");
 // https://github.com/withastro/astro/issues/3373
 let img: ImageMetadata | null = null;
 if (isLocal) {
-	const files = import.meta.glob<ImageMetadata>(
+	// 不要给 import.meta.glob 传 { import: "default" }：rolldown 的依赖扫描器
+	// 会把 .astro frontmatter 里的 `import:` 当成 import 语句而解析失败，
+	// 导致 dev 跳过预打包。改为手动取模块命名空间的 default 导出。
+	const files = import.meta.glob<{ default: ImageMetadata }>(
 		"../../**/*.{png,jpg,jpeg,webp,avif}",
-		{
-			import: "default",
-		},
 	);
 	let normalizedPath = path
 		.normalize(path.join("../../", basePath, src))
@@ -88,7 +88,7 @@ if (isLocal) {
 			`\n[ERROR] Image file not found: ${normalizedPath.replace("../../", "src/")}`,
 		);
 	} else {
-		img = await file();
+		img = (await file()).default;
 	}
 }
 

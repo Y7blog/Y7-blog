@@ -130,6 +130,16 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			showOnPostPage: false,
 		},
 		{
+			// 组件类型：网站访问统计组件（Cloudflare KV：总/月/日 浏览量与访客数）
+			type: "analyticsStats",
+			// 是否启用该组件
+			enable: true,
+			// 组件位置
+			position: "top",
+			// 是否在文章详情页显示
+			showOnPostPage: false,
+		},
+		{
 			// 组件类型：站点信息组件
 			type: "siteInfo",
 			// 是否启用该组件
@@ -302,6 +312,14 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			enable: true,
 			// 是否在文章详情页显示
 			showOnPostPage: true,
+		},
+		{
+			// 组件类型：网站访问统计组件（Cloudflare KV：总/月/日 浏览量与访客数）
+			type: "analyticsStats",
+			// 是否启用该组件
+			enable: true,
+			// 是否在文章详情页显示
+			showOnPostPage: false,
 		},
 		{
 			// 组件类型：站点信息组件

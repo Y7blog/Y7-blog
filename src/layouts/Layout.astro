@@ -1,4 +1,5 @@
 ---
+import AnalyticsTracker from "@components/analytics/AnalyticsTracker.astro";
 import GoogleAnalytics from "@components/analytics/GoogleAnalytics.astro";
 import La51Analytics from "@components/analytics/La51Analytics.astro";
 import MicrosoftClarity from "@components/analytics/MicrosoftClarity.astro";
@@ -564,6 +565,9 @@ const ogImageAlt = propsOgImageAlt ?? pageTitle;
 
     <!-- GitHub 卡片客户端实时补全（forks/stars） -->
     <GithubCardManager />
+
+    <!-- 本站统计（Cloudflare KV）：PV/UV 上报 + 统计卡/阅读量回填 -->
+    <AnalyticsTracker />
   </body>
 </html>
 

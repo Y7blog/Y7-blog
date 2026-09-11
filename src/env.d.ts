@@ -6,6 +6,16 @@ declare global {
 		readonly MEILI_MASTER_KEY: string;
 		// 视图设置面板总开关，可在部署平台配置（true / 1 / on / yes 开启）
 		readonly PUBLIC_DISPLAY_SETTINGS?: string;
+		// Cloudflare Workers KV Namespace（本地开发可选 undefined）
+		readonly Y7BLOG_KV?: KVNamespaceLike | undefined;
+	}
+
+	// 最小 KV 类型，避免依赖 @cloudflare/workers-types
+	interface KVNamespaceLike {
+		get(key: string, opts?: unknown): Promise<string | null>;
+		put(key: string, value: string, opts?: unknown): Promise<void>;
+		list?(opts?: unknown): Promise<{ keys: { name: string }[] }>;
+		getWithMetadata?(key: string, opts?: unknown): Promise<{ value: string | null; metadata?: unknown }>;
 	}
 
 	interface ITOCManager {

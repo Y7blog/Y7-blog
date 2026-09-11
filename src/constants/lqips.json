@@ -32,6 +32,21 @@
   "src:assets/images/DesktopWallpaper/d2.avif": "e8f3e6b0bdb4f5e6de",
   "src:assets/images/DesktopWallpaper/d1.avif": "8b9bb59ba6bae7d7dd",
   "public:assets/images/sponsor/wechat.png": "d5d5d5dad9d7dbd8cf",
-  "public:assets/images/sponsor/alipay.png": "8ebbde91bedf93c0e0",
-  "public:assets/images/ad/ad1.webp": "a1b8b68a8e918c8f93"
+  "public:assets/images/ad/ad1.webp": "a1b8b68a8e918c8f93",
+  "src:assets/images/Y7avatar.avif": "6c4b9a405a70353b59",
+  "public:gallery/encrypted-test/y7blog-welcome1.png": "38536d4a64776d594d",
+  "public:assets/random-cover/img-005.avif": "3d58a68292c3674e69",
+  "public:assets/random-cover/img-004.avif": "4e54778c72884e5371",
+  "public:assets/random-cover/img-003.avif": "4a3c3d847265766055",
+  "public:assets/random-cover/img-002.avif": "321f242628312d262f",
+  "public:assets/random-cover/img-001.avif": "41617c61758998a1b4",
+  "public:assets/images/sponsor/TRX-TRC20.png": "c6c3c1cac7c5d1d1d2",
+  "public:assets/images/sponsor/solana.png": "c6c3c0c8c6c4d0d0d1",
+  "public:assets/images/sponsor/polygon-ERC20.png": "c9c6c3c8c5c3cfd0d1",
+  "public:assets/images/sponsor/BSC-BEP20.png": "c8c6c4c7c5c3d0d1d2",
+  "public:assets/images/sponsor/1-TRX-TRC20.png": "a3a3a3a8a8a8e3e3e4",
+  "public:assets/images/sponsor/1-solana.png": "a3a3a2a6a6a6e3e3e4",
+  "public:assets/images/sponsor/1-polygon-ERC20.png": "a6a6a5a5a5a4e2e3e4",
+  "public:assets/images/sponsor/1-BSC-BEP20.png": "a7a7a7a6a6a6e2e3e3",
+  "src:content/posts/blog/blog-images/y7blog-welcome1.avif": "38536d4a64776d594d"
 }

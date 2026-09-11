@@ -518,4 +518,20 @@ export const en: Translation = {
 	[Key.exitImmersiveReading]: "Exit Immersive Reading",
 	[Key.tocExpand]: "Expand directory",
 	[Key.tocCollapse]: "Collapse directory",
+
+	// Analytics
+	[Key.statsSiteTitle]: "Site Analytics",
+	[Key.statsSiteSubtitle]: "Track site visits and content reading data",
+	[Key.statsOverview]: "Site Overview",
+	[Key.statsTotalViews]: "Total Views",
+	[Key.statsTotalVisitors]: "Total Visitors",
+	[Key.statsMonthlyViews]: "Monthly Views",
+	[Key.statsMonthlyVisitors]: "Monthly Visitors",
+	[Key.statsDailyViews]: "Today Views",
+	[Key.statsDailyVisitors]: "Today Visitors",
+	[Key.statsViewCountLabel]: "reads",
+	[Key.statsContentOverview]: "Content Data",
+	[Key.statsArticleTotal]: "Total Articles",
+	[Key.statsDynamicTotal]: "Total Dynamics",
+	[Key.statsTrendPlaceholder]: "Trends (Coming Soon)",
 };

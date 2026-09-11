@@ -36,6 +36,8 @@ const pages = resolvePageToggles({
 
 	// 打赏页面开关
 	sponsor: true,
+	// 网站统计页面开关
+	stats: true,
 });
 
 export const siteConfig: SiteConfig = {

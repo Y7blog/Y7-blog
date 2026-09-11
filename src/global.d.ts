@@ -91,6 +91,10 @@ declare global {
 		__floatingTOCAutoCloseInit?: boolean;
 		/** 文章列表页布局监听器守卫,确保只注册一次 */
 		__postPageInit?: boolean;
+		/** 本站统计监听器守卫,确保 Swup 切页重跑脚本时只注册一次 */
+		__y7AnalyticsInit?: boolean;
+		/** 本站统计上一次已上报的视图标识,防止同一次页面进入重复计数 */
+		__y7AnalyticsLastKey?: string;
 	}
 
 	interface MediaQueryList {

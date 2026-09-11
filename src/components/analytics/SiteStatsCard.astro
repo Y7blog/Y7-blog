@@ -1,0 +1,189 @@
+---
+import { Icon } from "astro-icon/components";
+import WidgetLayout from "@/components/common/WidgetLayout.astro";
+import { analyticsConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import type { WidgetComponentConfig } from "@/types/config";
+
+interface Props {
+	/** 侧边栏注入时由 SideBar 透传的配置 */
+	widgetConfig?: WidgetComponentConfig;
+	/** WidgetLayout 的容器 id */
+	id?: string;
+	/** 卡片标题，默认「网站统计」 */
+	title?: string;
+	showTitle?: boolean;
+	/** 桌面端列数；窄屏自动回落到 2 列 */
+	columns?: 2 | 3;
+	showTotalViews?: boolean;
+	showTotalVisitors?: boolean;
+	showMonthlyViews?: boolean;
+	showMonthlyVisitors?: boolean;
+	showDailyViews?: boolean;
+	showDailyVisitors?: boolean;
+	class?: string;
+	style?: string;
+}
+
+const {
+	widgetConfig,
+	id = "analytics-stats",
+	title = i18n(I18nKey.statsSiteTitle),
+	columns = 2,
+	showTotalViews = true,
+	showTotalVisitors = true,
+	showMonthlyViews = true,
+	showMonthlyVisitors = true,
+	showDailyViews = true,
+	showDailyVisitors = true,
+	style,
+} = Astro.props;
+const className = Astro.props.class;
+
+const enabled =
+	analyticsConfig.enabled !== false && analyticsConfig.siteStats !== false;
+
+const showTitle = Astro.props.showTitle ?? widgetConfig?.showTitle !== false;
+
+type StatKey =
+	| "totalViews"
+	| "totalVisitors"
+	| "monthlyViews"
+	| "monthlyVisitors"
+	| "dailyViews"
+	| "dailyVisitors";
+
+interface StatItem {
+	key: StatKey;
+	icon: string;
+	label: string;
+	visible: boolean;
+}
+
+// 顺序即展示顺序：总览 / 本月 / 今日
+const allStats: StatItem[] = [
+	{
+		key: "totalViews",
+		icon: "custom/views",
+		label: i18n(I18nKey.statsTotalViews),
+		visible: showTotalViews,
+	},
+	{
+		key: "totalVisitors",
+		icon: "custom/visitors",
+		label: i18n(I18nKey.statsTotalVisitors),
+		visible: showTotalVisitors,
+	},
+	{
+		key: "monthlyViews",
+		icon: "custom/views",
+		label: i18n(I18nKey.statsMonthlyViews),
+		visible: showMonthlyViews,
+	},
+	{
+		key: "monthlyVisitors",
+		icon: "custom/visitors",
+		label: i18n(I18nKey.statsMonthlyVisitors),
+		visible: showMonthlyVisitors,
+	},
+	{
+		key: "dailyViews",
+		icon: "custom/views",
+		label: i18n(I18nKey.statsDailyViews),
+		visible: showDailyViews,
+	},
+	{
+		key: "dailyVisitors",
+		icon: "custom/visitors",
+		label: i18n(I18nKey.statsDailyVisitors),
+		visible: showDailyVisitors,
+	},
+];
+
+const stats = allStats.filter((stat) => stat.visible);
+---
+
+{
+	enabled && stats.length > 0 && (
+		<WidgetLayout
+			name={title}
+			showTitle={showTitle}
+			id={id}
+			class={className}
+			style={style}
+		>
+			<div class="analytics-stat-grid" data-columns={columns}>
+				{stats.map((stat) => (
+					<div class="analytics-stat-cell">
+						<span class="analytics-stat-label">
+							<Icon name={stat.icon} class="text-base" aria-hidden="true" />
+							{stat.label}
+						</span>
+						<span
+							class="analytics-stat-value text-neutral-900 dark:text-neutral-100"
+							data-site-stat={stat.key}
+						>
+							--
+						</span>
+					</div>
+				))}
+			</div>
+		</WidgetLayout>
+	)
+}
+
+<style is:global>
+	.analytics-stat-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.analytics-stat-grid[data-columns="3"] {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+
+	.analytics-stat-cell {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		min-width: 0;
+		padding: 0.625rem 0.75rem;
+		border-radius: 0.75rem;
+		background-color: var(--btn-regular-bg);
+	}
+
+	.analytics-stat-label {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		font-size: 0.75rem;
+		line-height: 1.25rem;
+		color: var(--content-meta);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.analytics-stat-label svg {
+		color: var(--primary);
+		flex-shrink: 0;
+	}
+
+	.analytics-stat-value {
+		font-size: 1.25rem;
+		font-weight: 700;
+		line-height: 1.5rem;
+		font-variant-numeric: tabular-nums;
+		word-break: break-all;
+	}
+
+	@media (max-width: 380px) {
+		.analytics-stat-value {
+			font-size: 1.125rem;
+		}
+	}
+</style>

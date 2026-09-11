@@ -61,6 +61,9 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			// 动态
 			LinkPresets.Dynamic,
 
+			// 网站统计
+			LinkPresets.Stats,
+
 			// 相册
 			LinkPresets.Gallery,
 
@@ -227,6 +230,12 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		url: "/sponsor/",
 		icon: "material-symbols:favorite",
 		pageKey: "sponsor",
+	},
+	Stats: {
+		name: "统计",
+		url: "/stats/",
+		icon: "custom/analytics",
+		pageKey: "stats",
 	},
 	About: {
 		name: "关于我",

@@ -4,5 +4,11 @@
 	"compatibility_flags": ["nodejs_compat"],
 	"assets": {
 		"directory": "./dist"
-	}
+	},
+	"kv_namespaces": [
+		{
+			"binding": "Y7BLOG_KV",
+			"id": "6200959951c44786a050133b6fe6ab13"
+		}
+	]
 }

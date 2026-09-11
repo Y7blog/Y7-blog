@@ -500,6 +500,22 @@ enum I18nKey {
 	exitImmersiveReading = "exitImmersiveReading",
 	tocExpand = "tocExpand",
 	tocCollapse = "tocCollapse",
+
+	// 网站统计 (Analytics)
+	statsSiteTitle = "statsSiteTitle",
+	statsSiteSubtitle = "statsSiteSubtitle",
+	statsOverview = "statsOverview",
+	statsTotalViews = "statsTotalViews",
+	statsTotalVisitors = "statsTotalVisitors",
+	statsMonthlyViews = "statsMonthlyViews",
+	statsMonthlyVisitors = "statsMonthlyVisitors",
+	statsDailyViews = "statsDailyViews",
+	statsDailyVisitors = "statsDailyVisitors",
+	statsViewCountLabel = "statsViewCountLabel",
+	statsContentOverview = "statsContentOverview",
+	statsArticleTotal = "statsArticleTotal",
+	statsDynamicTotal = "statsDynamicTotal",
+	statsTrendPlaceholder = "statsTrendPlaceholder",
 }
 
 export default I18nKey;

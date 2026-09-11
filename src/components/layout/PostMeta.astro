@@ -1,10 +1,15 @@
 ---
 import { Icon } from "astro-icon/components";
+import ViewCount from "@/components/analytics/ViewCount.astro";
 import { commentConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
-import { getCategoryUrl, getTagUrl } from "@/utils/url-utils";
+import {
+	getCategoryUrl,
+	getTagUrl,
+	removeFileExtension,
+} from "@/utils/url-utils";
 
 export interface Props {
 	published: Date;
@@ -57,6 +62,8 @@ const {
 } = Astro.props;
 
 const path = customPath || (id ? `/posts/${id}` : "");
+// 统计 slug 必须与 URL 一致（去扩展名），否则上报与查询会命中不同的 KV key
+const analyticsSlug = id ? removeFileExtension(id) : "";
 const visibleTags =
 	typeof maxTags === "number" ? tags?.slice(0, maxTags) : tags;
 ---
@@ -176,6 +183,16 @@ const visibleTags =
           )}
         </div>
       </div>
+    )
+  }
+
+  {
+    !isHome && analyticsSlug && (
+      <ViewCount
+        type="article"
+        slug={analyticsSlug}
+        tone={variant === "cover" ? "cover" : "default"}
+      />
     )
   }
 

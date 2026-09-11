@@ -7,6 +7,7 @@ export type WidgetComponentType =
 	| "sidebarToc"
 	| "advertisement"
 	| "stats"
+	| "analyticsStats"
 	| "calendar"
 	| "music"
 	| "siteInfo"

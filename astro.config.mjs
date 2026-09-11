@@ -54,16 +54,36 @@ import { remarkPlantuml } from "./src/plugins/remark-plantuml.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import { remarkWikiLink } from "./src/plugins/remark-wiki-link.js";
 import { collectUsedFontCssVars } from "./src/utils/fontHelper";
+import { analyticsServerEnabled } from "./src/utils/analytics-env";
 
 if (process.env.NODE_ENV === "development") {
 	setMaxListeners(20);
 }
 
-const adapter = process.env.CF_WORKERS
+// Cloudflare adapter 与统计接口共用同一开关（见 src/utils/analytics-env.ts）：
+// 启用时 /api/analytics/* 走 SSR 并可访问 Y7BLOG_KV；
+// 未启用时（CI 静态构建 / GitHub Pages）产物保持纯静态 dist/。
+const adapter = analyticsServerEnabled
 	? cloudflare({
 			prerenderEnvironment: "node",
 		})
 	: undefined;
+
+// Astro 用正则静态匹配源码里的 `export const prerender = true|false`，
+// 写成运行时表达式会被忽略并回落到 output 默认值，所以改用 route:setup 钩子，
+// 让统计接口的 prerender 与上面的 adapter 始终由同一个开关决定。
+const ANALYTICS_ROUTE_PREFIX = "src/pages/api/analytics/";
+
+const analyticsPrerender = {
+	name: "y7blog-analytics-prerender",
+	hooks: {
+		"astro:route:setup": ({ route }) => {
+			if (route.component.startsWith(ANALYTICS_ROUTE_PREFIX)) {
+				route.prerender = !analyticsServerEnabled;
+			}
+		},
+	},
+};
 
 // https://astro.build/config
 export default defineConfig({
@@ -117,6 +137,7 @@ export default defineConfig({
 	},
 
 	integrations: [
+		analyticsPrerender,
 		swup({
 			theme: false,
 			animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
@@ -278,6 +299,9 @@ export default defineConfig({
 				if (pathname === "/sponsor/" && !siteConfig.pages.sponsor) {
 					return false;
 				}
+				if (pathname === "/stats/" && !siteConfig.pages.stats) {
+					return false;
+				}
 				return true;
 			},
 		}),
@@ -352,9 +376,30 @@ export default defineConfig({
 	},
 	vite: {
 		plugins: [tailwindcss()],
+		optimizeDeps: {
+			// Vite 默认 entries 只扫 js/ts，不含 .svelte / .astro；Astro 多环境 dev 下
+			// 预打包集合会在运行期漂移（如 marked 首访 /dynamic/ 才被发现），
+			// 改变 client dep hash 后已加载模块全部失效（动态流卡在"正在加载"）。
+			// 显式指定扫描入口，让启动时一次性得到完整且稳定的预打包集合。
+			entries: ["src/**/*.{astro,svelte,js,ts,mjs,jsx,tsx}"],
+			// 下面这些包只通过动态 import 进入客户端图（SharePoster 的 qrcode、
+			// @swup/astro 的 client 入口），静态扫描发现不了它们，需显式预打包。
+			include: [
+				"qrcode",
+				"@swup/astro/client/Swup",
+				"@swup/astro/client/SwupA11yPlugin",
+				"@swup/astro/client/SwupHeadPlugin",
+				"@swup/astro/client/SwupPreloadPlugin",
+				"@swup/astro/client/SwupScriptsPlugin",
+				"@swup/astro/idle",
+				"@swup/astro/serialise",
+			],
+		},
 		server: {
 			watch: {
-				ignored: ["**/package/**", "**/Firefly-docs/**"],
+				// .wrangler/state 是 Cloudflare 本地 KV/缓存/追踪的持久化目录，
+				// 其 sqlite WAL 会持续写入，被 watch 到就会触发 workerd 无限重启
+				ignored: ["**/package/**", "**/Firefly-docs/**", "**/.wrangler/**"],
 			},
 		},
 		resolve: {

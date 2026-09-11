@@ -516,4 +516,20 @@ export const ja: Translation = {
 	[Key.exitImmersiveReading]: "没入型リーディングを終了する",
 	[Key.tocExpand]: "目錄を開く",
 	[Key.tocCollapse]: "目錄をたたむ",
+
+	// Analytics
+	[Key.statsSiteTitle]: "サイト統計",
+	[Key.statsSiteSubtitle]: "サイトの訪問と閲覧データを記録します",
+	[Key.statsOverview]: "サイトデータ概要",
+	[Key.statsTotalViews]: "総閲覧数",
+	[Key.statsTotalVisitors]: "総訪問者数",
+	[Key.statsMonthlyViews]: "今月の閲覧数",
+	[Key.statsMonthlyVisitors]: "今月の訪問者数",
+	[Key.statsDailyViews]: "今日の閲覧数",
+	[Key.statsDailyVisitors]: "今日の訪問者数",
+	[Key.statsViewCountLabel]: "回の閲覧",
+	[Key.statsContentOverview]: "コンテンツデータ",
+	[Key.statsArticleTotal]: "記事総数",
+	[Key.statsDynamicTotal]: "つぶやき総数",
+	[Key.statsTrendPlaceholder]: "トレンド統計（近日公開）",
 };
