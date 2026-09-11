@@ -92,6 +92,10 @@ export default defineConfig({
 	base: "/",
 	trailingSlash: "always",
 
+	// 博客没有服务端会话需求；不关闭的话 Cloudflare 适配器会注入一个
+	// 无 id 的 SESSION KV 绑定，导致 wrangler deploy 校验失败（Astro >= 7.2）
+	session: false,
+
 	// 字体配置 - 只加载实际使用的字体，跳过未引用的以加快构建
 	fonts: (() => {
 		// 禁用字体功能时直接返回空数组，跳过 Astro Font API 集成
