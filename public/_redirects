@@ -1,0 +1,4 @@
+# Cloudflare Pages 重定向：y7blog.pages.dev 是 Pages 项目的默认域名，
+# 它属于 Cloudflare 官方 zone，无法挂 Worker 路由跑 SSR 统计接口，
+# 统一 301 到正式站点。主域 y7ai.ccwu.cc 由 Worker 路由接管，不会经过这里。
+/*  https://y7ai.ccwu.cc/:splat  301
