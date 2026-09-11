@@ -1,7 +1,6 @@
 <script lang="ts">
 import { onMount, tick } from "svelte";
 import ClientPagination from "@/components/common/ClientPagination.svelte";
-import { refreshViewCounts } from "@/utils/analytics-client";
 import { formatTimezoneOffset } from "@/utils/date-utils";
 import { fetchMemos } from "@/utils/memos-adapter";
 import { registerDynamicGallery } from "./dynamic-gallery";
@@ -132,8 +131,6 @@ function createItem(entry: DynamicData) {
 	root.dataset.year = String(new Date(entry.published).getUTCFullYear());
 	// 锚点 id 经过 sanitize，可能与 KV key 不一致，因此额外保留真实动态 id
 	root.dataset.dynamicId = entry.id;
-	const viewCount = root.querySelector<HTMLElement>("[data-view-count]");
-	if (viewCount) viewCount.dataset.viewId = entry.id;
 
 	const author = root.querySelector<HTMLElement>("[data-dynamic-author]");
 	if (author) {
@@ -250,7 +247,6 @@ async function renderItems(items: DynamicData[]) {
 		const item = createItem(entry);
 		if (item) list.append(item);
 	}
-	refreshViewCounts(list);
 	if (restoreAnchorAfterRender) {
 		restoreAnchorAfterRender = false;
 		const target = document.getElementById(

@@ -3,6 +3,7 @@ import type {
 	AnalyticsViewType,
 	ArticleAnalyticsStats,
 	DynamicAnalyticsStats,
+	PageAnalyticsStats,
 	SiteAnalyticsStats,
 } from "@/types/analytics";
 import { formatNumber } from "./format-number";
@@ -209,6 +210,22 @@ export async function getDynamicViews(
 	}
 }
 
+/** 页面级浏览量（如动态页整体）：GET 查询用 */
+export async function getPageViews(
+	kv: unknown,
+	slug: string,
+): Promise<PageAnalyticsStats> {
+	const safe = normalizeAnalyticsId(slug);
+	if (!safe) return { slug: "", views: 0 };
+	if (!isKv(kv)) return { slug: safe, views: 0 };
+	try {
+		const views = await safeGetNumber(kv, `analytics:page:${safe}:views`);
+		return { slug: safe, views };
+	} catch {
+		return { slug: safe, views: 0 };
+	}
+}
+
 /** 批量查询动态阅读量：动态列表页只发一次请求，避免 N+1 */
 export async function getDynamicViewsBatch(
 	kv: unknown,
@@ -318,6 +335,9 @@ export async function recordView(
 		} else if (type === "dynamic") {
 			const id = normalizeAnalyticsId(params.id);
 			if (id) pvKeys.push(`analytics:dynamic:${id}:views`);
+		} else if (type === "page") {
+			const slug = normalizeAnalyticsId(params.slug);
+			if (slug) pvKeys.push(`analytics:page:${slug}:views`);
 		}
 
 		await Promise.all(pvKeys.map((k) => safeIncr(kv, k, 1)));

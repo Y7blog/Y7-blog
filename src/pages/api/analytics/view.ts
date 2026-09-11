@@ -13,7 +13,7 @@ import {
 // Astro 只用正则识别源码里的 `export const prerender = true|false` 字面量，
 // 写成运行时表达式会被静默忽略。
 
-const VALID_TYPES = new Set(["site", "article", "dynamic"]);
+const VALID_TYPES = new Set(["site", "article", "dynamic", "page"]);
 
 /**
  * 被访问页面的路径取自 Referer（服务端推导，不信任客户端上报），
@@ -51,10 +51,13 @@ export const POST: APIRoute = async ({ request }) => {
 			);
 		}
 
-		const slug = type === "article" ? normalizeAnalyticsId(body?.slug) : "";
+		const slug =
+			type === "article" || type === "page"
+				? normalizeAnalyticsId(body?.slug)
+				: "";
 		const id = type === "dynamic" ? normalizeAnalyticsId(body?.id) : "";
 
-		if (type === "article" && !slug) {
+		if ((type === "article" || type === "page") && !slug) {
 			return analyticsJson(
 				{ success: false, error: "invalid slug" },
 				{ status: 400 },

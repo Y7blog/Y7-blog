@@ -41,6 +41,7 @@ export const en: Translation = {
 	[Key.dynamicNoResults]: "No matching moments found",
 	[Key.dynamicLoading]: "Loading moments",
 	[Key.dynamicAllYears]: "All years",
+	[Key.dynamicViewsLabel]: "Views",
 	[Key.dynamicLoadMore]: "Load more",
 	[Key.dynamicBackToList]: "Back to moments",
 	[Key.dynamicProfile]: "View {name}'s profile",

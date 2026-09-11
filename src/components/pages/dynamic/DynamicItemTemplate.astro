@@ -2,7 +2,6 @@
 import { Icon } from "astro-icon/components";
 import "@/styles/markdown.css";
 import "@/styles/markdown-extend.styl";
-import ViewCount from "@/components/analytics/ViewCount.astro";
 import ImageWrapper from "@/components/common/ImageWrapper.astro";
 import DynamicGallery from "@/components/pages/dynamic/DynamicGallery.astro";
 import DynamicInlineComments from "@/components/pages/dynamic/DynamicInlineComments.astro";
@@ -44,12 +43,6 @@ const profileUrl = url(dynamicConfig.profileUrl || "/about/");
 							<Icon name="material-symbols:location-on-rounded" />
 							<span data-dynamic-location-text></span>
 						</span>
-						<ViewCount
-							type="dynamic"
-							variant="inline"
-							deferredId
-							showLabel={false}
-						/>
 					</div>
 				</div>
 				<span class="dynamic-pinned-badge" data-dynamic-pinned hidden>

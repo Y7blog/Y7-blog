@@ -18,27 +18,24 @@ export interface AnalyticsClientConfig {
 	siteStats: boolean;
 	/** 是否记录文章阅读量 */
 	articleViews: boolean;
-	/** 是否记录动态阅读量 */
+	/** 是否记录动态页浏览量 */
 	dynamicViews: boolean;
 	/** 文章详情页路径前缀，如 "/posts/" */
 	postPathPrefix: string;
 	/** 动态页路径，如 "/dynamic/" */
 	dynamicPath: string;
-	/** 动态锚点前缀，与 dynamicAnchor() 保持一致 */
-	dynamicAnchorPrefix: string;
 }
 
 interface ViewContext {
 	type: AnalyticsViewType;
 	slug?: string;
-	id?: string;
 }
 
 const BASE = import.meta.env.BASE_URL || "/";
 const API_VIEW = `${BASE}api/analytics/view/`;
 const API_STATS = `${BASE}api/analytics/stats/`;
 const API_ARTICLE = `${BASE}api/analytics/article/`;
-const API_DYNAMIC = `${BASE}api/analytics/dynamic/`;
+const API_PAGE = `${BASE}api/analytics/page/`;
 
 const PLACEHOLDER = "--";
 
@@ -55,24 +52,6 @@ function setLastKey(key: string): void {
 // 视图上下文：完全由当前 URL 推导，因此 Swup 换页后不会读到过期状态
 // ---------------------------------------------------------------------------
 
-function dynamicIdFromHash(prefix: string): string {
-	const hash = window.location.hash;
-	if (!hash || hash === "#") return "";
-	let anchor: string;
-	try {
-		anchor = decodeURIComponent(hash.slice(1));
-	} catch {
-		anchor = hash.slice(1);
-	}
-	if (!anchor.startsWith(prefix)) return "";
-	// 优先取 DOM 上的真实动态 id，避免锚点 sanitize 后与 KV key 不一致
-	const entry = document.getElementById(anchor);
-	const fromDom =
-		entry?.dataset.dynamicId ||
-		entry?.querySelector<HTMLElement>("[data-view-id]")?.dataset.viewId;
-	return fromDom || anchor.slice(prefix.length);
-}
-
 function resolveContext(config: AnalyticsClientConfig): ViewContext {
 	const { pathname } = window.location;
 
@@ -83,9 +62,10 @@ function resolveContext(config: AnalyticsClientConfig): ViewContext {
 		if (slug) return { type: "article", slug };
 	}
 
+	// 动态页整体计一次浏览量：进入页面才计数，不按单条动态拆分，
+	// 页内锚点切换（hashchange）时 contextKey 不变，不会重复上报
 	if (config.dynamicViews && pathname === config.dynamicPath) {
-		const id = dynamicIdFromHash(config.dynamicAnchorPrefix);
-		if (id) return { type: "dynamic", id };
+		return { type: "page", slug: "dynamic" };
 	}
 
 	return { type: "site" };
@@ -93,7 +73,7 @@ function resolveContext(config: AnalyticsClientConfig): ViewContext {
 
 function contextKey(context: ViewContext): string {
 	if (context.type === "article") return `article:${context.slug}`;
-	if (context.type === "dynamic") return `dynamic:${context.id}`;
+	if (context.type === "page") return `page:${context.slug}`;
 	return `site:${window.location.pathname}`;
 }
 
@@ -172,33 +152,26 @@ async function fillArticleViews(nodes: HTMLElement[]): Promise<void> {
 	);
 }
 
-/** 动态阅读量：整页合并为一次批量请求，避免 N+1 */
-async function fillDynamicViews(nodes: HTMLElement[]): Promise<void> {
+/** 动态页横幅的页面级浏览量徽章：每个徽章只发一次请求 */
+async function fillPageViews(root: ParentNode = document): Promise<void> {
+	const nodes = root.querySelectorAll<HTMLElement>("[data-page-views]");
 	if (!nodes.length) return;
 
-	const ids = Array.from(
-		new Set(
-			nodes
-				.map((node) => node.dataset.viewId || "")
-				.filter((id): id is string => Boolean(id)),
-		),
+	await Promise.all(
+		Array.from(nodes).map(async (node) => {
+			const slug = node.dataset.pageSlug;
+			if (!slug) return;
+			const data = await fetchJson<{ views?: number }>(
+				`${API_PAGE}?slug=${encodeURIComponent(slug)}`,
+			);
+			if (data && typeof data.views === "number") {
+				const target = node.querySelector<HTMLElement>(
+					"[data-page-views-number]",
+				);
+				if (target) target.textContent = formatNumber(data.views);
+			}
+		}),
 	);
-	if (!ids.length) return;
-
-	const data = await fetchJson<{
-		items?: Array<{ id: string; views: number }>;
-	}>(`${API_DYNAMIC}?ids=${encodeURIComponent(ids.join(","))}`);
-	if (!data?.items) return;
-
-	const viewsById = new Map(data.items.map((item) => [item.id, item.views]));
-	for (const node of nodes) {
-		const id = node.dataset.viewId;
-		if (!id) continue;
-		const views = viewsById.get(id);
-		if (typeof views === "number") {
-			writeNumber(node, views);
-		}
-	}
 }
 
 /** 扫描页面上尚未回填的阅读量节点 */
@@ -214,12 +187,7 @@ async function fillViewCounts(root: ParentNode = document): Promise<void> {
 	if (!nodes.length) return;
 
 	const articles = nodes.filter((node) => node.dataset.viewType === "article");
-	const dynamics = nodes.filter((node) => node.dataset.viewType === "dynamic");
-
-	await Promise.all([
-		articles.length ? fillArticleViews(articles) : Promise.resolve(),
-		dynamics.length ? fillDynamicViews(dynamics) : Promise.resolve(),
-	]);
+	if (articles.length) await fillArticleViews(articles);
 }
 
 /**
@@ -247,6 +215,7 @@ async function runPageView(config: AnalyticsClientConfig): Promise<void> {
 
 	if (config.siteStats) await fillSiteStats();
 	await fillViewCounts();
+	await fillPageViews();
 }
 
 /**

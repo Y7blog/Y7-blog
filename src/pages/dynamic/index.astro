@@ -2,7 +2,12 @@
 import { Icon } from "astro-icon/components";
 import DynamicFeed from "@/components/pages/dynamic/DynamicFeed.svelte";
 import DynamicItemTemplate from "@/components/pages/dynamic/DynamicItemTemplate.astro";
-import { commentConfig, dynamicConfig, siteConfig } from "@/config";
+import {
+	commentConfig,
+	dynamicConfig,
+	profileConfig,
+	siteConfig,
+} from "@/config";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
@@ -26,45 +31,86 @@ const dataUrl = dynamicConfig.apiUrl?.startsWith("http")
 	? dynamicConfig.apiUrl
 	: url(dynamicConfig.apiUrl || "/api/dynamic.json");
 const memos = dynamicConfig.memos;
+const profileLabel = i18n(I18nKey.dynamicProfile).replace(
+	"{name}",
+	profileConfig.name,
+);
+const profileUrl = url(dynamicConfig.profileUrl || "/about/");
+const bannerImage = dynamicConfig.bannerImage?.trim()
+	? dynamicConfig.bannerImage.startsWith("http")
+		? dynamicConfig.bannerImage
+		: url(dynamicConfig.bannerImage)
+	: "";
 ---
 
 <MainGridLayout title={title} description={description}>
 	<section class="dynamic-page" aria-labelledby="dynamic-page-title">
 		<div>
-			<header class="dynamic-page-header card-base">
-				<div class="dynamic-page-heading">
-					<div class="dynamic-page-icon" aria-hidden="true">
-						<Icon name="material-symbols:forum-rounded" />
-					</div>
-					<div>
+			<header
+				class="dynamic-banner card-base"
+			>
+				{bannerImage && (
+					<img
+						src={bannerImage}
+						alt=""
+						class="dynamic-banner-bg"
+						loading="eager"
+						fetchpriority="high"
+					/>
+				)}
+				<div class="dynamic-banner-shade" aria-hidden="true"></div>
+
+				<div class="dynamic-banner-top">
+					<div class="dynamic-banner-heading">
 						<h2 id="dynamic-page-title">{title}</h2>
 						{description && <p>{description}</p>}
 					</div>
+					<div class="dynamic-banner-badges">
+						<span
+							class="dynamic-banner-badge"
+							data-page-views
+							data-page-slug="dynamic"
+						>
+							<Icon name="custom/views" aria-hidden="true" />
+							<span>{i18n(I18nKey.dynamicViewsLabel)}</span>
+							<strong data-page-views-number>--</strong>
+						</span>
+						<span class="dynamic-banner-badge">
+							<Icon name="material-symbols:edit-note-rounded" aria-hidden="true" />
+							<strong data-dynamic-page-count>0</strong>
+							<span>{i18n(I18nKey.dynamic)}</span>
+						</span>
+					</div>
 				</div>
-				<div
-					class="dynamic-count"
-					aria-label={i18n(I18nKey.dynamic)}
-				>
-					<Icon name="material-symbols:dynamic-feed-rounded" />
-					<strong data-dynamic-page-count>0</strong>
-					<span>{i18n(I18nKey.dynamic)}</span>
-				</div>
-				<div class="dynamic-filter">
-					<label class="dynamic-search">
-						<Icon name="material-symbols:search-rounded" />
-						<input
-							type="search"
-							data-dynamic-search
-							placeholder={i18n(I18nKey.dynamicSearch)}
+
+				<div class="dynamic-banner-bottom">
+					<div class="dynamic-filter">
+						<label class="dynamic-search">
+							<Icon name="material-symbols:search-rounded" />
+							<input
+								type="search"
+								data-dynamic-search
+								placeholder={i18n(I18nKey.dynamicSearch)}
+							/>
+						</label>
+						<label class="dynamic-year-select">
+							<Icon name="material-symbols:calendar-month-rounded" />
+							<select data-year-select aria-label={i18n(I18nKey.year)}>
+								<option value="all">{i18n(I18nKey.dynamicAllYears)}</option>
+							</select>
+							<Icon name="material-symbols:arrow-drop-down-rounded" />
+						</label>
+					</div>
+					<a href={profileUrl} class="dynamic-banner-profile" aria-label={profileLabel}>
+						<span class="dynamic-banner-name">{profileConfig.name}</span>
+						<img
+							src={profileConfig.avatar}
+							alt={profileConfig.name}
+							width="72"
+							height="72"
+							loading="lazy"
 						/>
-					</label>
-					<label class="dynamic-year-select">
-						<Icon name="material-symbols:calendar-month-rounded" />
-						<select data-year-select aria-label={i18n(I18nKey.year)}>
-							<option value="all">{i18n(I18nKey.dynamicAllYears)}</option>
-						</select>
-						<Icon name="material-symbols:arrow-drop-down-rounded" />
-					</label>
+					</a>
 				</div>
 			</header>
 

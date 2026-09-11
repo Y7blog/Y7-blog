@@ -7,7 +7,6 @@
  */
 import { analyticsConfig, siteConfig } from "@/config";
 import type { AnalyticsClientConfig } from "@/utils/analytics-client";
-import { dynamicAnchor } from "@/utils/dynamic-utils";
 import { url } from "@/utils/url-utils";
 
 const enabled = analyticsConfig.enabled !== false;
@@ -20,7 +19,6 @@ const clientConfig: AnalyticsClientConfig = {
 	dynamicViews: analyticsConfig.dynamicViews !== false && dynamicPageEnabled,
 	postPathPrefix: url("/posts/"),
 	dynamicPath: url("/dynamic/"),
-	dynamicAnchorPrefix: dynamicAnchor(""),
 };
 
 // "<" 转义后写入 <script type="application/json">，避免任何字符串提前闭合标签

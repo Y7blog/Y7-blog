@@ -61,8 +61,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			// 动态
 			LinkPresets.Dynamic,
 
-			// 网站统计
-			LinkPresets.Stats,
+			// 网站统计（按需隐藏菜单项；如需连页面一起下线，改用 siteConfig 里 pages.stats = false）
+			// LinkPresets.Stats,
 
 			// 相册
 			LinkPresets.Gallery,

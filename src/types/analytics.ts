@@ -17,7 +17,12 @@ export interface DynamicAnalyticsStats {
 	views: number;
 }
 
-export type AnalyticsViewType = "site" | "article" | "dynamic";
+export interface PageAnalyticsStats {
+	slug: string;
+	views: number;
+}
+
+export type AnalyticsViewType = "site" | "article" | "dynamic" | "page";
 
 export interface AnalyticsViewRequest {
 	type: AnalyticsViewType;

@@ -10,6 +10,11 @@ export const dynamicConfig: DynamicConfig = {
 	// 动态头像和名称的跳转地址，支持站内路径或完整 URL
 	profileUrl: "/about/",
 
+	// 动态页横幅背景图，留空则使用主题色渐变
+	// 支持 public 目录路径（以 "/" 开头，如 "/assets/dynamic-banner/banner.avif"）或远程 URL
+	// 更换图片：把图片放到 public 对应目录后修改此路径即可
+	bannerImage: "",
+
 	// 是否为每条动态启用评论，需要先在 commentConfig.ts 启用评论系统
 	showComment: true,
 

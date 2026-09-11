@@ -3,6 +3,12 @@ export type DynamicConfig = {
 	description?: string;
 	/** 动态头像和名称的跳转地址，支持站内路径或完整 URL */
 	profileUrl?: string;
+	/**
+	 * 动态页横幅背景图，留空则使用主题色渐变。
+	 * 支持 public 目录路径（以 "/" 开头，如 "/assets/dynamic-banner/banner.avif"）或远程 URL；
+	 * 更换图片时直接替换 public 下对应文件即可
+	 */
+	bannerImage?: string;
 	showComment?: boolean;
 	itemsPerPage?: number;
 	// 动态数据 json 地址，本地默认 "/api/dynamic.json"
