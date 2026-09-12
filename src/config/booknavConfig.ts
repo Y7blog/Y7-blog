@@ -82,7 +82,7 @@ export const booknavConfig: BooknavGroup[] = [
 			{
 				title: "Twitter",
 				url: "https://ronvip.pages.dev/?ref=RP6G2I5B6E1A1J611I",
-				desc: "3个月Twitter会员低至4U",
+				desc: "3个月X Premium会员低至4U",
 				icon: "https://www.y7img.ccwu.cc/file/1788886627451_logo-Twitter400.jpg",
 				weight: 10,
 			},
