@@ -58,7 +58,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 是否在文章详情页显示
 			showOnPostPage: true,
 		},
-	{
+		{
 			// 组件类型：最新动态组件
 			type: "dynamic",
 			// 是否启用该组件
@@ -118,6 +118,16 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			position: "top",
 			// 是否在文章详情页显示
 			showOnPostPage: true,
+		},
+		{
+			// 组件类型：节日倒计时 + 当前节气组件（位于日历上方；数据见 src/data/，逻辑见 src/utils/calendar.ts）
+			type: "holidayCountdown",
+			// 是否启用该组件
+			enable: true,
+			// 组件位置
+			position: "top",
+			// 是否在文章详情页显示
+			showOnPostPage: false,
 		},
 		{
 			// 组件类型：日历组件

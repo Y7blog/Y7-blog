@@ -55,7 +55,6 @@ const heatmapWeekTemplate = i18n(I18nKey.calendarHeatmapWeek);
 const currentLang = siteConfig.lang || "en";
 
 const calendarDataUrl = url("/api/allPostMeta.json");
-const postUrlPrefix = url("/posts/");
 ---
 
 <WidgetLayout name={i18n(I18nKey.calendar)} showTitle={showTitle} id="calendar-widget" class={className} style={style}>
@@ -110,18 +109,10 @@ const postUrlPrefix = url("/posts/");
     <div id="year-view-container" class="grid grid-cols-3 gap-2" style="display: none;">
       <!-- 将由 JavaScript 填充 -->
     </div>
-    
-    <!-- 文章列表 -->
-    <div id="calendar-posts" class="mt-3">
-      <div class="border-t border-neutral-200 dark:border-neutral-700 mb-2" id="calendar-posts-divider" style="display: none;"></div>
-      <div class="flex flex-col gap-1 max-h-48 overflow-y-auto custom-scrollbar" id="calendar-posts-list">
-        <!-- 将由 JavaScript 填充 -->
-      </div>
-    </div>
   </div>
 </WidgetLayout>
 
-<script is:inline data-swup-ignore-script define:vars={{ monthNames, weekDays, yearText, currentLang, calendarDataUrl, postUrlPrefix, heatmapWeekTemplate }}>
+<script is:inline data-swup-ignore-script define:vars={{ monthNames, weekDays, yearText, currentLang, calendarDataUrl, heatmapWeekTemplate }}>
   // State variables
   let displayYear = new Date().getFullYear();
   let displayMonth = new Date().getMonth();
@@ -261,13 +252,11 @@ const postUrlPrefix = url("/posts/");
     const container = document.getElementById('calendar-view-container');
     const monthContainer = document.getElementById('month-view-container');
     const yearContainer = document.getElementById('year-view-container');
-    const postsContainer = document.getElementById('calendar-posts');
-    
+
     // Update visibility
     if (container) container.style.display = currentView === 'day' ? 'block' : 'none';
     if (monthContainer) monthContainer.style.display = currentView === 'month' ? 'grid' : 'none';
     if (yearContainer) yearContainer.style.display = currentView === 'year' ? 'grid' : 'none';
-    if (postsContainer) postsContainer.style.display = currentView === 'day' ? 'block' : 'none';
 
     updateHeader();
 
@@ -356,7 +345,7 @@ const postUrlPrefix = url("/posts/");
       const classes = [
         "calendar-day aspect-square flex items-center justify-center rounded-sm text-sm relative cursor-pointer"
       ];
-      
+
       if (!day) {
         classes.push("text-neutral-400 dark:text-neutral-600");
       } else if (!hasPost) {
@@ -364,11 +353,11 @@ const postUrlPrefix = url("/posts/");
       } else {
         classes.push("text-neutral-900 dark:text-neutral-100 font-bold");
       }
-      
+
       if (isToday) {
         classes.push("ring-2 ring-(--primary)");
       }
-      
+
       return `
         <div
           class="${classes.join(' ')}"
@@ -381,18 +370,6 @@ const postUrlPrefix = url("/posts/");
         </div>
       `;
     }).join('');
-    
-    // 获取当月所有文章
-    const currentMonthPosts = allPostsData.filter(post => {
-      const date = new Date(post.published);
-      return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
-    });
-    
-    // 显示当月文章列表
-    showMonthlyPosts(currentMonthPosts);
-    
-    // 添加点击事件监听
-    setupClickHandlers(currentMonthPosts);
   }
 
   function renderMonthView() {
@@ -460,96 +437,6 @@ const postUrlPrefix = url("/posts/");
     });
   }
   
-  // 显示当月所有文章
-  function showMonthlyPosts(currentMonthPosts) {
-    const postsWrapper = document.getElementById('calendar-posts');
-    const postsList = document.getElementById('calendar-posts-list');
-    const divider = document.getElementById('calendar-posts-divider');
-
-    if (postsWrapper) {
-      postsWrapper.style.display = currentMonthPosts.length > 0 ? 'block' : 'none';
-    }
-    
-    if (postsList) {
-      postsList.innerHTML = currentMonthPosts.map(post => {
-        const date = new Date(post.published);
-        const dateStr = `${date.getMonth() + 1}-${date.getDate()}`;
-        return `
-        <a href="${postUrlPrefix}${post.id}/" class="flex justify-between items-center text-sm text-neutral-700 dark:text-neutral-300 hover:text-(--primary) dark:hover:text-(--primary) transition-colors px-2 py-1 rounded-sm hover:bg-(--btn-plain-bg-hover)">
-          <span class="truncate">${post.title}</span>
-          <span class="text-xs text-neutral-500 dark:text-neutral-400 ml-2 whitespace-nowrap">${dateStr}</span>
-        </a>
-      `}).join('');
-      
-      // 显示/隐藏分割线
-      if (divider) {
-        divider.style.display = currentMonthPosts.length > 0 ? 'block' : 'none';
-      }
-    }
-  }
-  
-  // 设置日历格子点击事件
-  function setupClickHandlers(currentMonthPosts) {
-    const postsWrapper = document.getElementById('calendar-posts');
-    const calendarDays = document.querySelectorAll('.calendar-day[data-date]');
-    const postsList = document.getElementById('calendar-posts-list');
-    const divider = document.getElementById('calendar-posts-divider');
-    
-    let currentSelectedDay = null;
-    
-    calendarDays.forEach(dayElement => {
-      dayElement.addEventListener('click', () => {
-        const dateKey = dayElement.getAttribute('data-date');
-        const hasPost = dayElement.getAttribute('data-has-post') === 'true';
-        
-        if (!hasPost || !dateKey) return;
-        
-        // 切换选中状态
-        if (currentSelectedDay === dayElement) {
-          // 取消选中，恢复显示当月所有文章
-          dayElement.classList.remove('calendar-day-selected');
-          currentSelectedDay = null;
-          showMonthlyPosts(currentMonthPosts);
-          return;
-        }
-        
-        // 移除之前选中的样式
-        if (currentSelectedDay) {
-          currentSelectedDay.classList.remove('calendar-day-selected');
-        }
-        
-        // 添加选中样式
-        dayElement.classList.add('calendar-day-selected');
-        currentSelectedDay = dayElement;
-        
-        // 获取该日期的文章
-        const posts = postDateMap[dateKey] || [];
-        
-        if (posts.length > 0 && postsList) {
-          if (postsWrapper) {
-            postsWrapper.style.display = 'block';
-          }
-
-          // 渲染文章列表
-          postsList.innerHTML = posts.map(post => {
-            const date = new Date(post.published);
-            const dateStr = `${date.getMonth() + 1}-${date.getDate()}`;
-            return `
-            <a href="${postUrlPrefix}${post.id}/" class="flex justify-between items-center text-sm text-neutral-700 dark:text-neutral-300 hover:text-(--primary) dark:hover:text-(--primary) transition-colors px-2 py-1 rounded-sm hover:bg-(--btn-plain-bg-hover)">
-              <span class="truncate">${post.title}</span>
-              <span class="text-xs text-neutral-500 dark:text-neutral-400 ml-2 whitespace-nowrap">${dateStr}</span>
-            </a>
-          `}).join('');
-          
-          // 显示分割线
-          if (divider) {
-            divider.style.display = 'block';
-          }
-        }
-      });
-    });
-  }
-
   function changeMonth(delta) {
     if (currentView === 'day') {
       displayMonth += delta;
@@ -625,12 +512,6 @@ const postUrlPrefix = url("/posts/");
 
   :global(.calendar-day[data-has-post="true"]:hover) {
     transform: translateY(-2px);
-  }
-
-  /* 自定义选中日期样式 */
-  :global(.calendar-day-selected) {
-    background-color: var(--btn-regular-bg);
-    border-radius: 0.25rem;
   }
 
   /* 热力图单元格 */

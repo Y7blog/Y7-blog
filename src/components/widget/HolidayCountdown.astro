@@ -1,0 +1,190 @@
+---
+/**
+ * 节日倒计时 + 当前节气卡片（挂载于日历卡下方）。
+ *
+ * 数据与业务逻辑分离：
+ *   HolidayCountdown.astro → src/utils/calendar.ts → src/data/{holidays,solarTerms}.ts
+ *
+ * 渲染策略：站点为静态预渲染，"今天"在构建期与访问期不同，因此
+ * 1. 构建期用构建时刻渲染一次初始内容（无 JS / 爬虫可见）；
+ * 2. 客户端脚本按访问时刻用同一套逻辑重算并覆盖文本；
+ * 3. Swup 切页会替换侧栏 DOM，监听 swup:contentReplaced 后重渲染。
+ * 全部计算基于 Asia/Shanghai 业务时区（见 src/utils/calendar.ts），
+ * 与访问者本地时区无关。
+ */
+import { Icon } from "astro-icon/components";
+import WidgetLayout from "@/components/common/WidgetLayout.astro";
+import { siteConfig } from "@/config";
+import { SOLAR_TERMS } from "@/data/solarTerms";
+import type { WidgetComponentConfig } from "@/types/config";
+import { getCalendarCardData } from "@/utils/calendar";
+
+interface Props {
+	class?: string;
+	style?: string;
+	widgetConfig?: WidgetComponentConfig;
+}
+
+const { class: className, style, widgetConfig } = Astro.props;
+const showTitle = widgetConfig?.showTitle !== false;
+
+const timeZone = siteConfig.timezone || "Asia/Shanghai";
+// 构建时刻的初始内容；客户端加载后按真实访问时刻覆盖
+const initial = getCalendarCardData({
+	now: new Date(),
+	timeZone,
+	solarTerms: SOLAR_TERMS,
+});
+
+const initialHolidayText =
+	initial.holiday?.kind === "today"
+		? `今天是${initial.holiday.name}`
+		: initial.holiday
+			? `距${initial.holiday.name}还有 ${initial.holiday.days} 天`
+			: "";
+const initialBlessing =
+	initial.holiday?.kind === "today" ? initial.holiday.blessing : "";
+---
+
+<WidgetLayout
+	name="节日 · 节气"
+	showTitle={showTitle}
+	id="holiday-countdown-widget"
+	class={className}
+	style={style}
+>
+	<div class="flex flex-col gap-2" data-holiday-card>
+		<div class="flex items-baseline justify-between gap-2">
+			<span
+				class="text-lg font-bold text-neutral-900 dark:text-neutral-100"
+				data-hc-date
+			>
+				{initial.dateText}
+			</span>
+			<span
+				class="shrink-0 text-sm text-neutral-500 dark:text-neutral-400"
+				data-hc-weekday
+			>
+				{initial.weekdayText}
+			</span>
+		</div>
+
+		<div class="rounded-xl bg-(--btn-regular-bg) px-3 py-2.5">
+			<div
+				class="flex items-center gap-1.5 text-sm font-bold text-(--primary)"
+			>
+				<Icon
+					name="material-symbols:celebration"
+					class="shrink-0 text-base"
+					aria-hidden="true"
+				/>
+				<span data-hc-holiday>{initialHolidayText}</span>
+			</div>
+			<p
+				class:list={[
+					"mt-1 pl-[1.625rem] text-xs text-(--content-meta)",
+					{ hidden: !initialBlessing },
+				]}
+				data-hc-blessing
+			>
+				{initialBlessing}
+			</p>
+		</div>
+
+		<div
+			class="rounded-xl bg-(--btn-regular-bg) px-3 py-2.5"
+			data-hc-term
+		>
+			<div
+				class="flex items-center gap-1.5 text-xs font-medium text-(--content-meta)"
+			>
+				<Icon
+					name="material-symbols:eco"
+					class="shrink-0 text-base text-(--primary)"
+					aria-hidden="true"
+				/>
+				<span>
+					当前节气：<span
+						class="font-bold text-neutral-900 dark:text-neutral-100"
+						data-hc-term-name>{initial.solarTerm?.name}</span
+					>
+				</span>
+			</div>
+			<p
+				class="mt-1 pl-[1.625rem] text-xs text-neutral-600 dark:text-neutral-300"
+				data-hc-term-desc
+			>
+				{initial.solarTerm?.description}
+			</p>
+		</div>
+	</div>
+</WidgetLayout>
+
+<script>
+	import { siteConfig } from "@/config";
+	import { SOLAR_TERMS } from "@/data/solarTerms";
+	import { getCalendarCardData } from "@/utils/calendar";
+
+	const timeZone = siteConfig.timezone || "Asia/Shanghai";
+
+	function renderHolidayCards(): void {
+		const data = getCalendarCardData({
+			now: new Date(),
+			timeZone,
+			solarTerms: SOLAR_TERMS,
+		});
+		for (const root of document.querySelectorAll<HTMLElement>(
+			"[data-holiday-card]",
+		)) {
+			const set = (key: string, text: string): void => {
+				const el = root.querySelector<HTMLElement>(`[data-hc-${key}]`);
+				if (el) el.textContent = text;
+			};
+			set("date", data.dateText);
+			set("weekday", data.weekdayText);
+
+			const holidayEl = root.querySelector<HTMLElement>("[data-hc-holiday]");
+			const blessingEl = root.querySelector<HTMLElement>("[data-hc-blessing]");
+			if (holidayEl) {
+				const line = data.holiday;
+				if (!line) {
+					holidayEl.textContent = "";
+					blessingEl?.classList.add("hidden");
+				} else if (line.kind === "today") {
+					holidayEl.textContent = `今天是${line.name}`;
+					if (blessingEl) {
+						blessingEl.textContent = line.blessing;
+						blessingEl.classList.remove("hidden");
+					}
+				} else {
+					holidayEl.textContent = `距${line.name}还有 ${line.days} 天`;
+					blessingEl?.classList.add("hidden");
+				}
+			}
+
+			const termBlock = root.querySelector<HTMLElement>("[data-hc-term]");
+			if (termBlock) {
+				if (data.solarTerm) {
+					termBlock.classList.remove("hidden");
+					set("term-name", data.solarTerm.name);
+					set("term-desc", data.solarTerm.description);
+				} else {
+					// 节气数据未覆盖当前日期时隐藏节气块，卡片优雅降级
+					termBlock.classList.add("hidden");
+				}
+			}
+		}
+	}
+
+	renderHolidayCards();
+
+	// 侧栏在 Swup 容器内，切页后 DOM 被替换，需要按访问时刻重新填充；
+	// 守卫防止脚本被重复执行时多次注册监听器
+	const win = window as { __holidayCountdownInit?: boolean };
+	if (!win.__holidayCountdownInit) {
+		win.__holidayCountdownInit = true;
+		document.addEventListener("swup:contentReplaced", () => {
+			setTimeout(renderHolidayCards, 100);
+		});
+	}
+</script>

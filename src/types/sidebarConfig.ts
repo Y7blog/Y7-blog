@@ -9,6 +9,7 @@ export type WidgetComponentType =
 	| "stats"
 	| "analyticsStats"
 	| "calendar"
+	| "holidayCountdown"
 	| "music"
 	| "siteInfo"
 	| "dynamic";
