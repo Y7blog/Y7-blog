@@ -54,8 +54,10 @@ const profileUrl = url(dynamicConfig.profileUrl || "/about/");
 				</span>
 			</header>
 
-			<div class="dynamic-content custom-md" data-dynamic-content></div>
-			<DynamicGallery sourceId="dynamic-template-content" />
+			<div class="dynamic-body" data-dynamic-body>
+				<div class="dynamic-content custom-md" data-dynamic-content></div>
+				<DynamicGallery sourceId="dynamic-template-content" />
+			</div>
 			<DynamicInlineComments src="" />
 		</article>
 	</dynamic-entry>

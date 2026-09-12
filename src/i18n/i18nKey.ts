@@ -40,6 +40,7 @@ enum I18nKey {
 	dynamicLoading = "dynamicLoading",
 	dynamicAllYears = "dynamicAllYears",
 	dynamicViewsLabel = "dynamicViewsLabel",
+	dynamicExpandMore = "dynamicExpandMore",
 	dynamicLoadMore = "dynamicLoadMore",
 	dynamicBackToList = "dynamicBackToList",
 	dynamicProfile = "dynamicProfile",

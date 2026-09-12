@@ -42,6 +42,7 @@ export const ru: Translation = {
 	[Key.dynamicLoading]: "Загрузка публикаций",
 	[Key.dynamicAllYears]: "Все годы",
 	[Key.dynamicViewsLabel]: "Просмотры",
+	[Key.dynamicExpandMore]: "Ещё",
 	[Key.dynamicLoadMore]: "Загрузить ещё",
 	[Key.dynamicBackToList]: "Назад к публикациям",
 	[Key.dynamicProfile]: "Открыть профиль {name}",

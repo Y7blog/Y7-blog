@@ -42,6 +42,7 @@ export const zh_TW: Translation = {
 	[Key.dynamicLoading]: "正在載入動態",
 	[Key.dynamicAllYears]: "全部年份",
 	[Key.dynamicViewsLabel]: "瀏覽量",
+	[Key.dynamicExpandMore]: "更多",
 	[Key.dynamicLoadMore]: "載入更多",
 	[Key.dynamicBackToList]: "返回動態列表",
 	[Key.dynamicProfile]: "查看 {name} 的資料",

@@ -36,6 +36,8 @@ interface Props {
 	noResultsText: string;
 	loadingText: string;
 	allYearsText: string;
+	expandText: string;
+	collapseText: string;
 	timezone: string;
 	memos?: MemosConfig;
 }
@@ -48,9 +50,14 @@ const {
 	noResultsText,
 	loadingText,
 	allYearsText,
+	expandText,
+	collapseText,
 	timezone,
 	memos,
 }: Props = $props();
+
+/** 非置顶动态折叠后仅展示两行文字；置顶动态始终全文 */
+const COLLAPSE_LINES = 2;
 
 let entries = $state<DynamicData[]>([]);
 let filtered = $state<DynamicData[]>([]);
@@ -214,6 +221,37 @@ function createItem(entry: DynamicData) {
 		}
 		const gallery = root.querySelector<HTMLElement>("dynamic-gallery");
 		if (gallery) gallery.dataset.sourceId = content.id;
+	}
+
+	// 非置顶动态折叠为两行文字（图片一并折叠），右下角「更多/收起」切换；
+	// 置顶动态始终全文展示。测量必须等节点插入 DOM 后进行（分离节点无布局），
+	// 因此放到 requestAnimationFrame 里，此时 renderItems 已完成 append。
+	const body = root.querySelector<HTMLElement>("[data-dynamic-body]");
+	const contentEl = root.querySelector<HTMLElement>("[data-dynamic-content]");
+	if (body && contentEl) {
+		requestAnimationFrame(() => {
+			const lineHeight =
+				Number.parseFloat(getComputedStyle(contentEl).lineHeight) || 28;
+			const twoLineHeight = lineHeight * COLLAPSE_LINES + 2;
+			if (
+				entry.pinned ||
+				body.dataset.collapseDone === "true" ||
+				(contentEl.scrollHeight <= twoLineHeight && entry.images.length === 0)
+			) {
+				return;
+			}
+			body.dataset.collapseDone = "true";
+			body.classList.add("dynamic-collapsed");
+			const btn = document.createElement("button");
+			btn.type = "button";
+			btn.className = "dynamic-more-btn";
+			btn.textContent = expandText;
+			btn.addEventListener("click", () => {
+				const collapsed = body.classList.toggle("dynamic-collapsed");
+				btn.textContent = collapsed ? expandText : collapseText;
+			});
+			body.after(btn);
+		});
 	}
 
 	// 置顶标识

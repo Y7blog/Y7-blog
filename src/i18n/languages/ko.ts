@@ -42,6 +42,7 @@ export const ko: Translation = {
 	[Key.dynamicLoading]: "일상을 불러오는 중",
 	[Key.dynamicAllYears]: "모든 연도",
 	[Key.dynamicViewsLabel]: "조회수",
+	[Key.dynamicExpandMore]: "더 보기",
 	[Key.dynamicLoadMore]: "더 보기",
 	[Key.dynamicBackToList]: "일상 목록으로",
 	[Key.dynamicProfile]: "{name}님의 프로필 보기",

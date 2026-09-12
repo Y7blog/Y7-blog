@@ -42,6 +42,7 @@ export const ja: Translation = {
 	[Key.dynamicLoading]: "投稿を読み込んでいます",
 	[Key.dynamicAllYears]: "すべての年",
 	[Key.dynamicViewsLabel]: "閲覧数",
+	[Key.dynamicExpandMore]: "もっと見る",
 	[Key.dynamicLoadMore]: "さらに読み込む",
 	[Key.dynamicBackToList]: "投稿一覧へ戻る",
 	[Key.dynamicProfile]: "{name}のプロフィールを見る",

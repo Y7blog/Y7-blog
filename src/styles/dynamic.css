@@ -446,7 +446,7 @@ dynamic-feed {
 	min-width: 0;
 	max-width: 100%;
 	overflow-wrap: anywhere;
-	margin: 0.875rem 0 0 3.75rem;
+	margin: 0.875rem 3.75rem 0;
 	color: rgb(0 0 0 / 90%);
 	font-size: 0.98rem;
 	line-height: 1.75;
@@ -482,13 +482,83 @@ dynamic-feed {
 	margin-block: 0.75rem;
 }
 
+/* 动态内容排版细化 */
+.dynamic-content img {
+	height: auto;
+	border-radius: 0.75rem;
+}
+
+.dynamic-content a {
+	color: var(--primary);
+	text-decoration: underline;
+	text-decoration-color: rgb(0 0 0 / 25%);
+	text-underline-offset: 3px;
+}
+
+:root.dark .dynamic-content a {
+	text-decoration-color: rgb(255 255 255 / 30%);
+}
+
+.dynamic-content a:hover {
+	text-decoration-color: currentColor;
+}
+
+.dynamic-content blockquote {
+	border-left: 3px solid var(--primary);
+	padding: 0.25rem 0 0.25rem 0.875rem;
+	color: var(--content-meta);
+}
+
+.dynamic-content code {
+	background: var(--btn-regular-bg);
+	border-radius: 0.35rem;
+	padding: 0.1rem 0.4rem;
+	font-size: 0.88em;
+}
+
+/* 长动态自动折叠：置顶动态与两行内的短动态不折叠 */
+.dynamic-body {
+	position: relative;
+}
+
+.dynamic-body.dynamic-collapsed .dynamic-content {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
+.dynamic-body.dynamic-collapsed .dynamic-gallery {
+	display: none;
+}
+
+.dynamic-more-btn {
+	display: flex;
+	width: fit-content;
+	margin: 0.6rem 0 0 auto;
+	padding: 0.3rem 1rem;
+	border: 1px solid var(--line-divider);
+	border-radius: 999px;
+	background: var(--btn-regular-bg);
+	color: var(--primary);
+	font-size: 0.85rem;
+	font-weight: 600;
+	line-height: 1.4;
+	cursor: pointer;
+	transition: filter 0.15s ease;
+}
+
+.dynamic-more-btn:hover {
+	filter: brightness(1.1);
+}
+
 .dynamic-gallery {
 	display: block;
 	box-sizing: border-box;
 	min-width: 0;
-	width: min(calc(100% - 3.75rem), 56rem);
+	width: min(calc(100% - 7.5rem), 56rem);
 	max-width: 100%;
-	margin: 0.875rem 0 0 3.75rem;
+	margin: 0.875rem 3.75rem 0;
 }
 
 .dynamic-gallery[hidden],
@@ -714,7 +784,7 @@ dynamic-feed {
 
 .dynamic-inline-comments {
 	display: block;
-	margin: 0.75rem 0 0 3.75rem;
+	margin: 0.75rem 3.75rem 0;
 	border-top: 1px solid color-mix(in srgb, var(--content-meta) 16%, transparent);
 	padding-top: 0.35rem;
 }

@@ -48,5 +48,10 @@
   "public:assets/images/sponsor/1-solana.png": "a3a3a2a6a6a6e3e3e4",
   "public:assets/images/sponsor/1-polygon-ERC20.png": "a6a6a5a5a5a4e2e3e4",
   "public:assets/images/sponsor/1-BSC-BEP20.png": "a7a7a7a6a6a6e2e3e3",
-  "src:content/posts/blog/blog-images/y7blog-welcome1.avif": "38536d4a64776d594d"
+  "src:content/posts/blog/blog-images/y7blog-welcome1.avif": "38536d4a64776d594d",
+  "src:content/dynamic/002F5A9E.png": "91686aa35558ac7f52",
+  "src:content/dynamic/002F1F89.png": "d76057d66157d6260e",
+  "src:content/dynamic/002EAD09.png": "d5c9bdd7ccbfd2c2b1",
+  "public:assets/dynamic-banner/动态图片1.avif": "819ab5aaa8acb2a9a1",
+  "public:assets/dynamic-banner/动态图片.avif": "7490b0a9a3a3afa093"
 }

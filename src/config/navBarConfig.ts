@@ -16,38 +16,23 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 	// 主页
 	links.push(LinkPresets.Home);
 
-	// 文章及其子菜单
+	// 金库（直达归档页；分类/系列/标签入口移至归档页顶部的横条中）
 	links.push({
-		name: "文章",
-		url: "#",
+		name: "金库",
+		url: "/archive/",
 		icon: "material-symbols:article",
-		children: [
-			// 归档
-			LinkPresets.Archive,
-
-			// 分类
-			LinkPresets.Categories,
-
-			// 标签
-			LinkPresets.Tags,
-
-			// 系列
-			LinkPresets.Series,
-		],
 	});
 
-// 关于及其子菜单
+	// 关于及其子菜单
 	links.push({
 		name: "宝藏",
 		url: "#",
 		icon: "material-symbols:info",
 		children: [
-			
 			// 书签导航
 			LinkPresets.Booknav,
 		],
 	});
-
 
 	// 我的及其子菜单
 	links.push({
@@ -55,7 +40,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		url: "#",
 		icon: "material-symbols:person",
 		children: [
-			
 			// 动态
 			LinkPresets.Dynamic,
 
@@ -115,8 +99,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			LinkPresets.Friends,
 			// 打赏
 			LinkPresets.Sponsor,
-			
-
 		],
 	});
 

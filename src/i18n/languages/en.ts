@@ -42,6 +42,7 @@ export const en: Translation = {
 	[Key.dynamicLoading]: "Loading moments",
 	[Key.dynamicAllYears]: "All years",
 	[Key.dynamicViewsLabel]: "Views",
+	[Key.dynamicExpandMore]: "More",
 	[Key.dynamicLoadMore]: "Load more",
 	[Key.dynamicBackToList]: "Back to moments",
 	[Key.dynamicProfile]: "View {name}'s profile",
