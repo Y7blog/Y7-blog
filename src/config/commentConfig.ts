@@ -6,7 +6,8 @@ export const commentConfig: CommentConfig = {
 
 	//twikoo评论系统配置
 	twikoo: {
-		envId: "https://twikoo.vercel.app",
+		// Twikoo 后端地址（Cloudflare Workers 部署，仓库 twikoojs/twikoo-cloudflare）
+		envId: "https://twikoo.y7ai.ccwu.cc",
 		// 设置 Twikoo 评论系统语言
 		lang: "zh-CN",
 		// 是否启用文章访问量统计功能
@@ -17,7 +18,8 @@ export const commentConfig: CommentConfig = {
 		// 国际推荐: https://cdn.jsdelivr.net/npm/twikoo@1.7.14/dist/twikoo.min.js
 		jsUrl: "https://cdn.jsdelivr.net/npm/twikoo@1.7.14/dist/twikoo.min.js",
 		// Twikoo 自定义 CSS 文件地址，为空则不加载
-		cssUrl: "/assets/css/twikoo-custom.css",
+		// 带版本号参数：样式更新时递增 v 值，避免 CDN/浏览器缓存旧样式
+		cssUrl: "/assets/css/twikoo-custom.css?v=3",
 	},
 
 	//waline评论系统配置

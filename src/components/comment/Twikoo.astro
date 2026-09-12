@@ -41,6 +41,24 @@ const config = {
     };
   }
 
+  // 聊天式时间正序：评论渲染完成后自动切换到「最早」排序（从上到下按时间排列）
+  function applyChatSortOrder() {
+    var attempts = 0;
+    var timer = setInterval(function () {
+      attempts += 1;
+      var sortBar = document.querySelector(".tk-comments-sort");
+      if (sortBar) {
+        clearInterval(timer);
+        var oldestBtn = sortBar.querySelector(".tk-sort-item:nth-child(2)");
+        if (oldestBtn && !oldestBtn.classList.contains("__active")) {
+          oldestBtn.click();
+        }
+        return;
+      }
+      if (attempts >= 20) clearInterval(timer);
+    }, 300);
+  }
+
   // 初始化 Twikoo
   function initTwikoo() {
     if (typeof twikoo !== "undefined") {
@@ -55,6 +73,7 @@ const config = {
           .init(dynamicConfig)
           .then(() => {
             console.log("[Twikoo] Init complete");
+            applyChatSortOrder();
           })
           .catch((error) => {
             console.error("[Twikoo] Init failed:", error);

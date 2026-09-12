@@ -277,3 +277,361 @@ body.wallpaper-transparent .twikoo .OwO .OwO-body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+
+/* ============================================================
+ * 对话框（聊天）样式：仿微信/QQ 群聊风格改造评论区
+ * 参考站：https://www.fqzlr.com/guestbook/
+ *  - 评论输入框移到底部
+ *  - 每条评论渲染为「头像 + 昵称/时间 + 深色圆角气泡 + 小尾巴」
+ *  - 气泡下方显示系统/浏览器等元信息
+ *  - 游客评论在左侧，博主评论（带博主徽章）在右侧
+ * ============================================================ */
+
+.twikoo {
+  --tk-bubble-bg: #27272b;
+  --tk-bubble-text: #f5f5f6;
+  --tk-bubble-muted: rgb(255 255 255 / 60%);
+  --tk-bubble-link: hsl(var(--hue) 70% 72%);
+  --tk-chat-height: 31rem;
+}
+
+/* 暗色模式：气泡略提亮，与卡片底色区分 */
+:root.dark .twikoo {
+  --tk-bubble-bg: #333338;
+  --tk-bubble-text: #f4f4f5;
+}
+
+/* 评论区改为纵向 flex：标题和列表在上，输入框沉底 */
+.twikoo .tk-comments {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 评论列表：固定高度（约 5 条消息），超出部分用垂直滚动条查看 */
+.twikoo .tk-comments-container {
+  order: 1;
+  max-height: min(var(--tk-chat-height), 80vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklch, var(--tk-text) 22%, transparent) transparent;
+}
+
+.twikoo .tk-comments-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.twikoo .tk-comments-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.twikoo .tk-comments-container::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--tk-text) 18%, transparent);
+  border-radius: 3px;
+}
+
+.twikoo .tk-comments-container::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklch, var(--tk-text) 30%, transparent);
+}
+
+/* 标题行（条数/排序）在滚动窗口内吸顶 */
+.twikoo .tk-comments-title {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--tk-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ── 取消展开/收起：长评论与全部回复始终完整显示 ─────── */
+/* 对应按钮（展开/收起回复、展开/收起长评论）一并隐藏；
+   列表底部的「查看更多评论」分页按钮不受影响 */
+
+.twikoo .tk-comment .tk-content {
+  max-height: none;
+  overflow: visible;
+}
+
+.twikoo .tk-comment .tk-replies {
+  max-height: none;
+  overflow: visible;
+}
+
+.twikoo .tk-comment .tk-expand-wrap {
+  display: none;
+}
+
+.twikoo .tk-comments > .tk-submit {
+  order: 2;
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--tk-border);
+  border-radius: 14px;
+}
+
+/* 评论项：头像居左，主体居右 */
+.twikoo .tk-comments-container .tk-comment {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.85rem 0;
+}
+
+.twikoo .tk-comment .tk-avatar {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+/* 头像正圆形 */
+.twikoo .tk-avatar .tk-avatar-img {
+  border-radius: 50%;
+}
+
+/* 主体列撑满剩余宽度，纵向排列 */
+.twikoo .tk-comment .tk-main {
+	flex: 1;
+	min-width: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+/* 头部行透明化：昵称与操作按钮作为主体列的直接子项参与排序 */
+.twikoo .tk-comment .tk-main > .tk-row {
+	display: contents;
+}
+
+/* 纵向顺序：昵称/时间 → 气泡 → 浏览器信息 → 操作按钮 → 回复列表 */
+.twikoo .tk-comment .tk-main > .tk-row > .tk-meta {
+	order: 1;
+}
+
+.twikoo .tk-comment .tk-content {
+	order: 2;
+}
+
+.twikoo .tk-comment .tk-extras {
+	order: 3;
+}
+
+.twikoo .tk-comment .tk-main > .tk-row > .tk-action {
+	order: 4;
+}
+
+.twikoo .tk-comment .tk-replies {
+	order: 5;
+}
+
+/* 操作按钮行：位于气泡与浏览器信息之后 */
+.twikoo .tk-comment .tk-main > .tk-row > .tk-action {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	margin: 0.3rem 0 0 0.35rem;
+}
+
+/* 昵称与时间 */
+.twikoo .tk-comment .tk-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+  margin: 0;
+}
+
+.twikoo .tk-comment .tk-nick {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.twikoo .tk-comment .tk-time {
+  font-size: 0.75rem;
+  color: var(--tk-muted);
+}
+
+/* ── 消息气泡 ─────────────────────────────────────────── */
+
+.twikoo .tk-comment .tk-content {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0.45rem 0 0.3rem;
+  padding: 0.65rem 1rem;
+  background: var(--tk-bubble-bg);
+  color: var(--tk-bubble-text);
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+  text-align: left;
+  overflow: visible;
+}
+
+/* 气泡小尾巴（左上角，指向头像） */
+.twikoo .tk-comment > .tk-main > .tk-content::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: -5px;
+  width: 12px;
+  height: 12px;
+  background: var(--tk-bubble-bg);
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+/* 气泡内排版 */
+.twikoo .tk-content span {
+  display: block;
+}
+
+.twikoo .tk-content p {
+  margin: 0 0 0.4rem;
+}
+
+.twikoo .tk-content p:last-child {
+  margin-bottom: 0;
+}
+
+.twikoo .tk-content a {
+  color: var(--tk-bubble-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.twikoo .tk-content img {
+  max-width: min(100%, 280px);
+  border-radius: 8px;
+  vertical-align: middle;
+}
+
+.twikoo .tk-content code {
+  padding: 0.1rem 0.4rem;
+  background: rgb(255 255 255 / 14%);
+  border-radius: 4px;
+  color: var(--tk-bubble-text);
+  font-size: 0.85em;
+}
+
+.twikoo .tk-content pre {
+  margin: 0.35rem 0;
+  padding: 0.65rem 0.85rem;
+  background: rgb(0 0 0 / 35%);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.twikoo .tk-content pre code {
+  padding: 0;
+  background: transparent;
+}
+
+.twikoo .tk-content blockquote {
+  margin: 0 0 0.4rem;
+  padding: 0.1rem 0 0.1rem 0.65rem;
+  border-left: 3px solid rgb(255 255 255 / 30%);
+  color: var(--tk-bubble-muted);
+}
+
+/* ── 气泡下方元信息（系统/浏览器等） ─────────────────── */
+
+.twikoo .tk-comment .tk-extras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  margin: 0.1rem 0 0 0.4rem;
+  font-size: 0.75rem;
+}
+
+.twikoo .tk-comment .tk-extra {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+/* ── 回复列表：缩进展示（对齐方向改由博主标识决定） ─────── */
+
+.twikoo .tk-replies {
+  width: 100%;
+  margin: 0.25rem 0 0;
+}
+
+.twikoo .tk-replies .tk-comment {
+  padding: 0.6rem 0 0;
+}
+
+/* 回复气泡文字与「@昵称：」同行，不另起一行（聊天样式） */
+.twikoo .tk-replies .tk-content > span {
+  display: inline;
+}
+
+.twikoo .tk-replies .tk-content > span p {
+  display: inline;
+  margin: 0;
+}
+
+.twikoo .tk-replies .tk-content > span p + p {
+  margin-left: 0.4em;
+}
+
+/* ── 博主评论：镜像右对齐（头像居右，气泡带右尾巴） ─────── */
+/* 判定依据：评论昵称旁的绿色「博主」徽章（.tk-tag-green，后端按博主邮箱标记） */
+
+.twikoo .tk-comment:has(> .tk-main > .tk-row .tk-tag-green) {
+  flex-direction: row-reverse;
+}
+
+.twikoo .tk-comment:has(> .tk-main > .tk-row .tk-tag-green) > .tk-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* 博主头部行：时间在左、昵称+徽章在右（同参考站样式） */
+.twikoo .tk-comment:has(> .tk-main > .tk-row .tk-tag-green) > .tk-main > .tk-row > .tk-meta {
+  flex-direction: row-reverse;
+}
+
+/* 博主操作按钮：跟随后侧对齐 */
+.twikoo .tk-comment:has(> .tk-main > .tk-row .tk-tag-green) > .tk-main > .tk-row > .tk-action {
+  justify-content: flex-end;
+  margin: 0.3rem 0.4rem 0 0;
+}
+
+/* 博主气泡尾巴移到右上角 */
+.twikoo .tk-comment:has(> .tk-main > .tk-row .tk-tag-green) > .tk-main > .tk-content::before {
+  left: auto;
+  right: -5px;
+}
+
+.twikoo .tk-comment:has(> .tk-main > .tk-row .tk-tag-green) > .tk-main > .tk-extras {
+  justify-content: flex-end;
+  margin: 0.1rem 0.4rem 0 0;
+}
+
+/* 博主评论下的回复列表保持全宽，游客回复仍在左侧 */
+.twikoo .tk-comment:has(> .tk-main > .tk-row .tk-tag-green) > .tk-main > .tk-replies {
+  width: 100%;
+}
+
+/* ── 移动端适配：收窄气泡内边距与间距 ───────────────── */
+
+@media (max-width: 640px) {
+  .twikoo .tk-comments-container .tk-comment {
+    gap: 0.6rem;
+    padding: 0.7rem 0;
+  }
+
+  .twikoo .tk-comment .tk-content {
+    padding: 0.55rem 0.85rem;
+  }
+
+  .twikoo .tk-comments > .tk-submit {
+    padding: 0.85rem 0.85rem;
+  }
+
+  .twikoo .tk-comments-container {
+    max-height: min(var(--tk-chat-height), 70vh);
+  }
+}
