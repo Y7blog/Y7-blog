@@ -1,0 +1,108 @@
+---
+import { url } from "@/utils/url-utils";
+
+interface Props {
+	title: string;
+	description?: string;
+	/** 横幅背景图：public 路径（以 "/" 开头）或远程 URL，留空则保持默认纯色卡片样式 */
+	image?: string;
+}
+
+const { title, description = "", image = "" } = Astro.props;
+const trimmed = image.trim();
+const bannerImage = trimmed
+	? trimmed.startsWith("http")
+		? trimmed
+		: url(trimmed)
+	: "";
+---
+
+<div class:list={["card-base taxonomy-banner", { "has-image": bannerImage }]}>
+	{
+		bannerImage && (
+			<>
+				<img
+					src={bannerImage}
+					alt=""
+					class="taxonomy-banner-bg"
+					loading="eager"
+					fetchpriority="high"
+				/>
+				<div class="taxonomy-banner-shade" aria-hidden="true" />
+			</>
+		)
+	}
+	<div class="taxonomy-banner-content">
+		<div class="taxonomy-banner-title">{title}</div>
+		{description && <p class="taxonomy-banner-desc">{description}</p>}
+	</div>
+</div>
+
+<style>
+	.taxonomy-banner {
+		position: relative;
+		overflow: hidden;
+		margin-bottom: 1rem;
+	}
+	/* 无图时保持与原页面标题卡片一致的内边距与配色 */
+	.taxonomy-banner:not(.has-image) {
+		padding: 1.5rem 2rem;
+	}
+	/* 有图时呈横幅形态：文字沉底、白色带投影 */
+	.taxonomy-banner.has-image {
+		display: flex;
+		align-items: flex-end;
+		min-height: 10rem;
+		padding: 1.5rem 2rem;
+	}
+	.taxonomy-banner-bg {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.taxonomy-banner-shade {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background: linear-gradient(
+			180deg,
+			rgb(0 0 0 / 25%) 0%,
+			rgb(0 0 0 / 10%) 45%,
+			rgb(0 0 0 / 45%) 100%
+		);
+	}
+	.taxonomy-banner-content {
+		position: relative;
+		z-index: 2;
+		min-width: 0;
+	}
+	.taxonomy-banner-title {
+		margin-bottom: 0.5rem;
+		font-size: 1.5rem;
+		line-height: 2rem;
+		font-weight: 700;
+		color: var(--primary);
+	}
+	.taxonomy-banner-desc {
+		margin: 0;
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+	}
+	.taxonomy-banner:not(.has-image) .taxonomy-banner-desc {
+		color: rgb(0 0 0 / 30%);
+	}
+	:global(:root.dark) .taxonomy-banner:not(.has-image) .taxonomy-banner-desc {
+		color: rgb(255 255 255 / 30%);
+	}
+	.taxonomy-banner.has-image .taxonomy-banner-title {
+		color: #fff;
+		text-shadow: 0 1px 8px rgb(0 0 0 / 35%);
+	}
+	.taxonomy-banner.has-image .taxonomy-banner-desc {
+		color: rgb(255 255 255 / 88%);
+		text-shadow: 0 1px 6px rgb(0 0 0 / 35%);
+	}
+</style>

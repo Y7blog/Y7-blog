@@ -1,5 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
+import TaxonomyBanner from "@/components/common/TaxonomyBanner.astro";
+import { taxonomyBannerConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
@@ -11,15 +13,12 @@ const totalPosts = seriesList.reduce((sum, series) => sum + series.count, 0);
 ---
 
 <MainGridLayout title={i18n(I18nKey.series)} description={i18n(I18nKey.allSeries)}>
-    <!-- 页面标题 -->
-    <div class="card-base px-8 py-6 mb-4">
-        <div class="text-2xl font-bold text-(--primary) mb-2">
-            {i18n(I18nKey.series)}
-        </div>
-        <p class="text-30 text-sm">
-            {i18n(I18nKey.allSeries)} · {totalPosts} {i18n(I18nKey.postsCount)}
-        </p>
-    </div>
+    <!-- 页面标题（可在 taxonomyBannerConfig 中配置横幅图） -->
+    <TaxonomyBanner
+        title={i18n(I18nKey.series)}
+        description={`${i18n(I18nKey.allSeries)} · ${totalPosts} ${i18n(I18nKey.postsCount)}`}
+        image={taxonomyBannerConfig.series}
+    />
 
     <!-- 系列列表：手风琴卡片（默认收起） -->
     {

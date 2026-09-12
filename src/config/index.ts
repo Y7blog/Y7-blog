@@ -46,6 +46,7 @@ export type {
 	SponsorConfig,
 	SponsorItem,
 	SponsorMethod,
+	TaxonomyBannerConfig,
 	WidgetComponentConfig,
 	WidgetComponentType,
 	WidgetSpecificConfig,
@@ -85,3 +86,4 @@ export { sidebarLayoutConfig } from "./sidebarConfig"; // 侧边栏布局配置
 // 核心配置
 export { siteConfig } from "./siteConfig"; // 站点基础配置
 export { sponsorConfig } from "./sponsorConfig"; // 打赏配置
+export { taxonomyBannerConfig } from "./taxonomyBannerConfig"; // 分类/系列/标签页横幅图配置
