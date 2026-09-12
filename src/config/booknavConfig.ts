@@ -123,7 +123,7 @@ export const booknavConfig: BooknavGroup[] = [
 				title: "鱼七图床",
 				url: "https://www.y7img.ccwu.cc/",
 				desc: "无需注册，快速生成图片链接，打赏终身免费",
-				icon: "logo-img-currentcolor16",
+				icon: "https://www.y7img.ccwu.cc/file/1788947795658_logo-Y7img500.png",
 				weight: 10,
 			},
 			
