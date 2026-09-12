@@ -22,8 +22,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		url: "#",
 		icon: "material-symbols:article",
 		children: [
-			// 归档
-			LinkPresets.Archive,
 
 			// 分类
 			LinkPresets.Categories,
@@ -60,6 +58,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			LinkPresets.About,
 			// 动态
 			LinkPresets.Dynamic,
+			// 归档
+			LinkPresets.Archive,
 
 			// 网站统计（按需隐藏菜单项；如需连页面一起下线，改用 siteConfig 里 pages.stats = false）
 			// LinkPresets.Stats,
@@ -152,7 +152,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		icon: "material-symbols:home",
 	},
 	Archive: {
-		name: "归档",
+		name: "小作文",
 		url: "/archive/",
 		icon: "material-symbols:archive",
 	},
