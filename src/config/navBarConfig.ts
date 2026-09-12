@@ -22,6 +22,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		url: "#",
 		icon: "material-symbols:article",
 		children: [
+			// 归档
+			LinkPresets.Archive,
 
 			// 分类
 			LinkPresets.Categories,
@@ -34,38 +36,34 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		],
 	});
 
-	//社交及其子菜单
+// 关于及其子菜单
 	links.push({
-		name: "社交",
+		name: "宝藏",
 		url: "#",
-		icon: "material-symbols:group",
+		icon: "material-symbols:info",
 		children: [
-			// 友链
-			LinkPresets.Friends,
-
-			// 留言
-			LinkPresets.Guestbook,
+			
+			// 书签导航
+			LinkPresets.Booknav,
 		],
 	});
 
+
 	// 我的及其子菜单
 	links.push({
-		name: "我的",
+		name: "随笔",
 		url: "#",
 		icon: "material-symbols:person",
 		children: [
-			// 关于页面
-			LinkPresets.About,
+			
 			// 动态
 			LinkPresets.Dynamic,
-			// 归档
-			LinkPresets.Archive,
-
-			// 网站统计（按需隐藏菜单项；如需连页面一起下线，改用 siteConfig 里 pages.stats = false）
-			// LinkPresets.Stats,
 
 			// 相册
 			LinkPresets.Gallery,
+
+			// 网站统计（按需隐藏菜单项；如需连页面一起下线，改用 siteConfig 里 pages.stats = false）
+			// LinkPresets.Stats,
 
 			// 哔哩哔哩追番
 			LinkPresets.Bilibili,
@@ -81,24 +79,11 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		],
 	});
 
-	// 关于及其子菜单
+	//社交及其子菜单
 	links.push({
-		name: "宝藏",
+		name: "交流",
 		url: "#",
-		icon: "material-symbols:info",
-		children: [
-			
-			// 书签导航
-			LinkPresets.Booknav,
-		],
-	});
-
-	// 自定义导航栏链接
-	links.push({
-		name: "链接",
-		url: "#",
-		icon: "material-symbols:link",
-		// 子菜单
+		icon: "material-symbols:group",
 		children: [
 			{
 				name: "推特",
@@ -112,12 +97,22 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				external: true,
 				icon: "logo-telegramr-currentcolor16",
 			},
-			{
-				name: "图床",
-				url: "https://www.y7img.ccwu.cc/",
-				external: true,
-				icon: "logo-img-currentcolor16",
-			},
+			// 留言
+			LinkPresets.Guestbook,
+		],
+	});
+
+	// 自定义导航栏链接
+	links.push({
+		name: "Y7",
+		url: "#",
+		icon: "material-symbols:link",
+		// 子菜单
+		children: [
+			// 关于页面
+			LinkPresets.About,
+			// 友链
+			LinkPresets.Friends,
 			// 打赏
 			LinkPresets.Sponsor,
 			
@@ -152,7 +147,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		icon: "material-symbols:home",
 	},
 	Archive: {
-		name: "小作文",
+		name: "归档",
 		url: "/archive/",
 		icon: "material-symbols:archive",
 	},
@@ -196,7 +191,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		pageKey: "gallery",
 	},
 	Booknav: {
-		name: "工具导航",
+		name: "工具",
 		url: "/booknav/",
 		icon: "material-symbols:bookmarks",
 		pageKey: "booknav",
