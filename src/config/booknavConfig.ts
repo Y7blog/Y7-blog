@@ -116,13 +116,13 @@ export const booknavConfig: BooknavGroup[] = [
 		id: "img",
 		name: "图文工具",
 		icon: "material-symbols:auto-stories-outline-rounded",
-		desc: "安全稳定，自由连接全球",
+		desc: "无需注册，快速生成图片链接",
 		weight: 80,
 		items: [
 			{
 				title: "鱼七图床",
 				url: "https://www.y7img.ccwu.cc/",
-				desc: "无需注册，快速生成图片链接，打赏终身免费",
+				desc: "关注推特免费使用",
 				icon: "https://www.y7img.ccwu.cc/file/1788947795658_logo-Y7img500.png",
 				weight: 10,
 			},
