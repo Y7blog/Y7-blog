@@ -509,4 +509,4 @@ AI 的发展速度可能已经不是最值得讨论的问题。
 
 本文观点受到 Dario Amodei《We Must Pace the Frontier》的启发。原文发表于 2026 年 9 月，文章提出通过第三方嵌入式评估、民主国家间协调以及全球协调等方式，让 AI 能力发展的速度与安全能力保持更好的平衡。
 
-原文：[[https://darioamodei.com/post/we-must-pace-the-frontier|Dario Amodei — **We Must Pace the Frontier**]]
+原文： Dario Amodei — [We Must Pace the Frontier](https://darioamodei.com/post/we-must-pace-the-frontier)
