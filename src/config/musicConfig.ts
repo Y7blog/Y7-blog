@@ -64,7 +64,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 			{
 				name: "Celestial Breath",
 				artist: "kaazoom",
-				url: "/assets/music/Celestial Breath -kaazoom",
+				url: "/assets/music/Celestial Breath -kaazoom.mp3",
 				cover: "/assets/music/cover/img-Celestial Breath.jpg",
 				lrc: "",
 			},
