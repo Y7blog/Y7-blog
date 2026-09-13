@@ -9,7 +9,7 @@ image: ./blog-images/y7blog-welcome1.avif
 tags: [Web3, AI,Web3工具,负债300万,重新开始,个人成长]
 category: Blog导读
 slug: blog/y7blog-welcome
-series: "鱼七的金库"
+series: "导读"
 seriesOrder: 1
 ---
 
