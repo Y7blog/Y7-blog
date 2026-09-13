@@ -20,7 +20,7 @@ export const commentConfig: CommentConfig = {
 		jsUrl: "https://cdn.jsdelivr.net/npm/twikoo@1.7.14/dist/twikoo.min.js",
 		// Twikoo 自定义 CSS 文件地址，为空则不加载
 		// 带版本号参数：样式更新时递增 v 值，避免 CDN/浏览器缓存旧样式
-		cssUrl: "/assets/css/twikoo-custom.css?v=8",
+		cssUrl: "/assets/css/twikoo-custom.css?v=10",
 	},
 
 	//waline评论系统配置

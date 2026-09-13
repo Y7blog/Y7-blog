@@ -110,6 +110,40 @@ const config = {
       });
       act.appendChild(btn);
     });
+
+    // 4) 刷新/设置代理按钮：放到信息填写框右上角（原按钮行整体隐藏，点击代理到最新原节点）
+    document.querySelectorAll(".tk-submit").forEach(function (submit) {
+      var icons = document.querySelectorAll(".tk-comments-title .tk-comments-actions .tk-icon.__comments");
+      if (!icons.length) return;
+      var tools = submit.querySelector(".gb-form-tools");
+      if (!tools) {
+        var col = submit.querySelector(".tk-col");
+        if (!col) return;
+        tools = document.createElement("div");
+        tools.className = "gb-form-tools";
+        col.insertBefore(tools, col.firstChild);
+      }
+      [0, 1].forEach(function (idx) {
+        var orig = icons[idx];
+        if (!orig) return;
+        var proxy = tools.children[idx];
+        if (!proxy) {
+          proxy = document.createElement("button");
+          proxy.type = "button";
+          proxy.className = "gb-form-tool";
+          var label = idx === 0 ? "刷新评论" : "评论设置";
+          proxy.title = label;
+          proxy.setAttribute("aria-label", label);
+          proxy.addEventListener("click", function () {
+            var now = document.querySelectorAll(".tk-comments-title .tk-comments-actions .tk-icon.__comments");
+            if (now[idx]) now[idx].dispatchEvent(new MouseEvent("click", { bubbles: true }));
+          });
+          tools.appendChild(proxy);
+        }
+        if (proxy.innerHTML !== orig.innerHTML) proxy.innerHTML = orig.innerHTML;
+        proxy.style.display = orig.style.display === "none" ? "none" : "";
+      });
+    });
   }
 
   // 监听评论列表变化（排序切换/加载更多/新评论），自动重跑增强

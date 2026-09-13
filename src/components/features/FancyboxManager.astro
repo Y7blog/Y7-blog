@@ -6,6 +6,7 @@
   let Fancybox: any;
   const IMG_SELECTOR = ".custom-md img:not(.card-wiki-link img), #post-cover img, .moment-images img";
   const LINK_SELECTOR = ".moment-images a[data-fancybox], [data-fancybox]:not(.moment-images a)";
+  const SPONSOR_QR_SELECTOR = "button[data-sponsor-qr]";
   const svgBlobUrlCache = new Map<string, string>();
 
   function isSvgSrc(src: string): boolean {
@@ -165,7 +166,12 @@
   }
 
   async function setup() {
-    if (!document.querySelector(IMG_SELECTOR) && !document.querySelector(LINK_SELECTOR)) return;
+    if (
+      !document.querySelector(IMG_SELECTOR) &&
+      !document.querySelector(LINK_SELECTOR) &&
+      !document.querySelector(SPONSOR_QR_SELECTOR)
+    )
+      return;
 
     await injectFancyboxCss();
 
@@ -182,6 +188,7 @@
     // previous bindings before re-binding after client-rendered content appears.
     Fancybox.unbind(IMG_SELECTOR);
     Fancybox.unbind(LINK_SELECTOR);
+    Fancybox.unbind(SPONSOR_QR_SELECTOR);
 
     Fancybox.bind(IMG_SELECTOR, {
       ...commonOptions,
@@ -197,6 +204,42 @@
       source: (el: any) => el.getAttribute("data-src") || el.getAttribute("href"),
     });
 
+    // 打赏页二维码：单图打开，无缩略图栏，点击图片切换缩放
+    Fancybox.bind(SPONSOR_QR_SELECTOR, {
+      Thumbs: { autoStart: false, showOnStart: "hide" },
+      Toolbar: {
+        display: {
+          left: [],
+          middle: [
+            "zoomIn",
+            "zoomOut",
+            "toggle1to1",
+            "rotateCCW",
+            "rotateCW",
+            "flipX",
+            "flipY",
+          ],
+          right: ["fullscreen", "close"],
+        },
+      },
+      animated: true,
+      dragToClose: true,
+      keyboard: {
+        Escape: "close",
+        Delete: "close",
+        Backspace: "close",
+      },
+      fitToView: true,
+      Panzoom: { maxScale: 3, minScale: 1 },
+      caption: false,
+      Carousel: { finite: true },
+      trapFocus: true,
+      closeButton: true,
+      contentClick: "toggleCover",
+      backdropClick: "close",
+      src: (el: any) => el.getAttribute("data-src") || "",
+      type: "image",
+    });
   }
 
   function cleanupFancybox() {

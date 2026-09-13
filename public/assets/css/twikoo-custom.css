@@ -857,15 +857,16 @@ body.wallpaper-transparent .twikoo .OwO .OwO-body {
   margin-bottom: 0.25rem;
 }
 
-/* ── 文章/动态评论区：评论数紧跟「评论区」标题，隐藏原计数与元信息行 ── */
-/* 留言板（compact）不受影响，保留自己的统计与属地/系统/浏览器识别 */
+/* ── 文章/动态评论区：评论数紧跟「评论区」标题 ── */
 
 #post-comments:not([data-compact="true"]) .tk-comments-count {
   display: none;
 }
 
-#post-comments:not([data-compact="true"]) .tk-extras {
-  display: none;
+/* ── 隐藏评论元信息行（属地 / 系统 / 浏览器识别）——全站评论区 ── */
+
+.twikoo .tk-comment .tk-extras {
+  display: none !important;
 }
 
 .tk-inline-count {
@@ -873,4 +874,41 @@ body.wallpaper-transparent .twikoo .OwO .OwO-body {
   font-size: 0.8rem;
   font-weight: 400;
   color: var(--content-meta);
+}
+
+/* ── 隐藏排序行与标题行：计数在标题旁/横幅，刷新与设置移至填写框右上角 ── */
+/* 排序功能保留（默认时间正序由脚本自动切换），仅不显示按钮 */
+
+.twikoo .tk-comments-title {
+  display: none;
+}
+
+.twikoo .gb-form-tools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.3rem;
+}
+
+.twikoo .gb-form-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: var(--tk-muted);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.twikoo .gb-form-tool:hover {
+  color: var(--tk-accent);
+}
+
+.twikoo .gb-form-tool svg {
+  width: 16px;
+  height: 16px;
 }
