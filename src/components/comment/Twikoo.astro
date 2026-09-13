@@ -73,6 +73,47 @@ const config = {
   // 输入框头像实时预览：按当前输入的邮箱计算 DiceBear 头像
   // （sha256(邮箱) 与 Twikoo 的哈希一致 → 预览即发布后效果；QQ 邮箱预览 QQ 头像）
   var gbAvatarTimer = 0;
+  var gbFormAvatarObs = null;
+  var gbFormAvatarLock = false;
+  function gbSetFormPreview(img, url, title) {
+    if (title) img.title = title;
+    if (img.dataset.gbPreview === url && img.getAttribute("src") === url) return;
+    img.dataset.gbPreview = url;
+    gbFormAvatarLock = true;
+    img.setAttribute("src", url);
+    gbFormAvatarLock = false;
+    if (gbFormAvatarObs && gbFormAvatarObs._img !== img) {
+      gbFormAvatarObs.disconnect(); gbFormAvatarObs = null;
+    }
+    if (!gbFormAvatarObs) {
+      var obs = new MutationObserver(function () {
+        if (gbFormAvatarLock) return;
+        var want = img.dataset.gbPreview;
+        if (want && img.getAttribute("src") !== want) {
+          gbFormAvatarLock = true;
+          img.setAttribute("src", want);
+          gbFormAvatarLock = false;
+        }
+      });
+      obs._img = img;
+      obs.observe(img, { attributes: true, attributeFilter: ["src"] });
+      gbFormAvatarObs = obs;
+    }
+  }
+  function gbSimpleHash(str) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
+    }
+    return Math.abs(hash).toString(16).padStart(8, "0");
+  }
+  function gbExtractHash(src) {
+    var m = src.match(/\/(?:avatar|seed)[\/=]?([0-9a-f]{8,64})/i);
+    return m ? m[1] : null;
+  }
+  function gbDiceBearUrl(seed) {
+    return "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + seed;
+  }
   function gbRewriteFormAvatar() {
     var img = document.querySelector(".tk-submit .tk-avatar-img");
     var mailInput = document.querySelector(".tk-submit input[name='mail']");
@@ -82,23 +123,92 @@ const config = {
     if (!mail) return;
     var qq = mail.match(/^(\d{5,12})@qq\.com$/i);
     if (qq) {
-      // QQ 邮箱：预览 QQ 头像
-      var qqUrl = "https://q1.qlogo.cn/g?b=qq&nk=" + qq[1] + "&s=100";
-      if (img.dataset.gbPreview !== qqUrl) { img.dataset.gbPreview = qqUrl; img.src = qqUrl; }
+      gbSetFormPreview(img, "https://q1.qlogo.cn/g?b=qq&nk=" + qq[1] + "&s=100");
       return;
     }
-    crypto.subtle
-      .digest("SHA-256", new TextEncoder().encode(mail))
-      .then(function (buf) {
-        var hash = Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
-        var url = "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + hash;
-        if (img.dataset.gbPreview !== url) { img.dataset.gbPreview = url; img.src = url; }
-      })
-      .catch(function () {});
+    var adminEmail = (config.adminEmail || "").trim().toLowerCase();
+    var adminAvatar = (config.adminAvatar || "").trim();
+    if (adminEmail && mail === adminEmail && adminAvatar) {
+      gbSetFormPreview(img, adminAvatar);
+      return;
+    }
+    var backendUrl = gbGetBackendAvatar(mail);
+    if (backendUrl) {
+      var hash = gbExtractHash(backendUrl);
+      gbSetFormPreview(img, hash ? gbDiceBearUrl(hash) : backendUrl, "点击头像随机更换");
+      return;
+    }
+    var storedUrl = "";
+    try { storedUrl = localStorage.getItem("gb-avatar-url") || ""; } catch (e) {}
+    if (storedUrl) {
+      gbSetFormPreview(img, storedUrl, "点击头像随机更换");
+      return;
+    }
+    var setDiceBear = function (hash) {
+      gbSetFormPreview(img, gbDiceBearUrl(hash), "点击头像随机更换");
+    };
+    if (window.crypto && window.crypto.subtle) {
+      crypto.subtle
+        .digest("SHA-256", new TextEncoder().encode(mail))
+        .then(function (buf) {
+          var hash = Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+          setDiceBear(hash);
+        })
+        .catch(function () { setDiceBear(gbSimpleHash(mail)); });
+    } else {
+      setDiceBear(gbSimpleHash(mail));
+    }
   }
   function gbScheduleFormAvatar() {
     clearTimeout(gbAvatarTimer);
     gbAvatarTimer = setTimeout(gbRewriteFormAvatar, 250);
+  }
+
+  // 获取某邮箱在后端绑定的头像（发送评论后自动缓存）
+  function gbGetBackendAvatar(mail) {
+    try { return localStorage.getItem("gb-avatar-email:" + mail) || ""; } catch (e) { return ""; }
+  }
+
+  // 发送评论后捕获后端返回的头像，按邮箱存入 localStorage
+  function gbCapturePostSubmitAvatar() {
+    var sendBtn = document.querySelector(".tk-submit .tk-send");
+    if (!sendBtn || sendBtn.dataset.gbCapture) return;
+    sendBtn.dataset.gbCapture = "1";
+    sendBtn.addEventListener("click", function () {
+      var mailInput = document.querySelector(".tk-submit input[name='mail']");
+      if (!mailInput) return;
+      var mail = String(mailInput.value || "").trim().toLowerCase();
+      if (!mail) return;
+      var container = document.querySelector(".tk-comments-container");
+      if (!container) return;
+      var existing = container.querySelectorAll(".tk-comment");
+      var existingSet = new Set();
+      existing.forEach(function (c) { existingSet.add(c); });
+      var tries = 0;
+      var observer = new MutationObserver(function () {
+        tries++;
+        var all = container.querySelectorAll(".tk-comment");
+        var found = null;
+        all.forEach(function (c) { if (!existingSet.has(c)) found = c; });
+        if (!found && tries > 30) { observer.disconnect(); return; }
+        if (!found) return;
+        observer.disconnect();
+        var newImg = found.querySelector(".tk-avatar-img");
+        if (!newImg) return;
+        var src = newImg.getAttribute("src") || "";
+        if (src) {
+          var storedSrc = src;
+          var wm = src.match(/\/avatar\/([0-9a-f]{16,64})/i);
+          if (wm && src.indexOf("dicebear") === -1) {
+            storedSrc = "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + wm[1];
+          }
+          try { localStorage.setItem("gb-avatar-email:" + mail, storedSrc); } catch (e) {}
+          gbRewriteFormAvatar();
+        }
+      });
+      observer.observe(container, { childList: true, subtree: true });
+      setTimeout(function () { observer.disconnect(); }, 10000);
+    });
   }
 
   // 评论增强：绝对时间、复制消息按钮、输入框头像预览（幂等，可重复执行）
@@ -108,6 +218,7 @@ const config = {
 
     // 输入框头像实时预览
     gbRewriteFormAvatar();
+    gbCapturePostSubmitAvatar();
 
     // 0) 内联评论数：同步到「评论区」标题旁（文章/动态页）
     var inline = document.querySelector("[data-inline-count]");
@@ -236,8 +347,26 @@ const config = {
       var t = e.target;
       if (t && t.name === "mail" && t.closest && t.closest(".tk-submit")) {
         // 失焦时 Twikoo 会重设头像地址，之后再改写为预览头像
+        try { localStorage.removeItem("gb-avatar-url"); } catch (e) {}
         setTimeout(gbRewriteFormAvatar, 120);
       }
+    });
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      if (!t || !t.closest || !t.closest(".tk-submit .tk-avatar-img")) return;
+      var img = t.closest(".tk-submit .tk-avatar-img");
+      var mailInput = document.querySelector(".tk-submit input[name='mail']");
+      if (!mailInput) return;
+      var mail = String(mailInput.value || "").trim().toLowerCase();
+      if (!mail) return;
+      if (/^\d{5,12}@qq\.com$/i.test(mail)) return;
+      var adminEmail = (config.adminEmail || "").trim().toLowerCase();
+      if (adminEmail && mail === adminEmail) return;
+      if (gbGetBackendAvatar(mail)) return;
+      var randomSeed = "r_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+      var randomUrl = "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + randomSeed;
+      try { localStorage.setItem("gb-avatar-url", randomUrl); } catch (e) {}
+      gbSetFormPreview(img, randomUrl, "点击头像随机更换");
     });
   }
 

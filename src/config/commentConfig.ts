@@ -26,6 +26,8 @@ export const commentConfig: CommentConfig = {
 		dicebearStyle: "adventurer",
 		// 管理员（博主）评论专属头像，跟随站点头像设置（profileConfig.avatar）
 		adminAvatar: profileConfig.avatar,
+		// 管理员（博主）邮箱：填入后输入框预览与评论头像均自动切换为博主专属头像
+		adminEmail: "y7ai-blog@gmail.com",
 		// 兜底头像库：无 QQ / 注册头像的访客按邮箱哈希分配库内头像（同一邮箱恒定）
 		// 图片放在 public/assets/avatars/avatar-1.svg … avatar-8.svg，换图后同步改 count
 		fallbackAvatar: {

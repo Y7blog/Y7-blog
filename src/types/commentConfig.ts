@@ -30,6 +30,19 @@ export type CommentConfig = {
 		 * 管理员（博主）评论专属头像地址；为空则跟随游客头像逻辑
 		 */
 		adminAvatar?: string;
+		/**
+		 * 管理员（博主）邮箱地址；填入后输入框预览与评论头像均自动切换为博主专属头像
+		 */
+		adminEmail?: string;
+		/**
+		 * 兜底头像库：无 QQ / 注册头像的访客按邮箱哈希分配库内头像（同一邮箱恒定）
+		 * 图片放在 public/assets/avatars/ 下，换图后同步改 count
+		 */
+		fallbackAvatar?: {
+			dir: string;
+			count: number;
+			ext: string;
+		};
 	};
 	waline?: {
 		serverURL: string;

@@ -151,6 +151,10 @@
   color: color-mix(in oklch, var(--tk-accent) 58%, var(--tk-muted) 42%);
 }
 
+.twikoo .tk-submit .tk-avatar .tk-avatar-img {
+  cursor: pointer;
+}
+
 .twikoo .tk-avatar .tk-avatar-img svg,
 .twikoo .tk-avatar .tk-avatar-img svg path {
   fill: currentColor;
