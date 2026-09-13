@@ -19,6 +19,17 @@ export type CommentConfig = {
 		 * Twikoo 自定义 CSS 文件地址，为空则不加载
 		 */
 		cssUrl?: string;
+		/**
+		 * DiceBear 头像风格（游客兜底头像，按邮箱哈希生成，同邮箱恒定、不同邮箱各不相同）
+		 * 常用风格：adventurer / big-smile / bottts / fun-emoji / lorelei / micah / mini /
+		 * notionists / pixel-art / thumbs / dylan / glass
+		 * 完整列表与预览：https://www.dicebear.com/styles/
+		 */
+		dicebearStyle?: string;
+		/**
+		 * 管理员（博主）评论专属头像地址；为空则跟随游客头像逻辑
+		 */
+		adminAvatar?: string;
 	};
 	waline?: {
 		serverURL: string;

@@ -111,6 +111,31 @@ const config = {
       act.appendChild(btn);
     });
 
+    // 5) 头像：管理员（带博主徽章）用专属头像；游客用 DiceBear 按邮箱哈希生成
+    // （同一邮箱哈希恒定同一头像，不同邮箱各不相同；QQ 原生头像保留）
+    var diceStyle = (config.dicebearStyle || "adventurer").replace(/[^a-z-]/gi, "");
+    var adminAvatar = (config.adminAvatar || "").trim();
+    container.querySelectorAll(".tk-comment").forEach(function (c) {
+      var img = c.querySelector(".tk-avatar-img");
+      if (!img) return;
+      var isMaster = !!c.querySelector(".tk-tag-green");
+      if (isMaster && adminAvatar) {
+        if (img.dataset.gbAvatar !== "admin") {
+          img.dataset.gbAvatar = "admin";
+          img.setAttribute("src", adminAvatar);
+        }
+        return;
+      }
+      if (img.dataset.gbAvatar) return; // 已处理（含 QQ 原生头像保留）
+      var src = img.getAttribute("src") || "";
+      if (!src || src.indexOf("qlogo.cn") !== -1) return;
+      if (src.indexOf("dicebear") !== -1) { img.dataset.gbAvatar = "dice"; return; }
+      var m = src.match(/\/avatar\/([0-9a-f]{16,64})/i);
+      if (!m) return; // 哈希结构不匹配则不处理
+      img.dataset.gbAvatar = "dice";
+      img.setAttribute("src", "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + m[1]);
+    });
+
     // 4) 刷新/设置代理按钮：放到信息填写框右上角（原按钮行整体隐藏，点击代理到最新原节点）
     document.querySelectorAll(".tk-submit").forEach(function (submit) {
       var icons = document.querySelectorAll(".tk-comments-title .tk-comments-actions .tk-icon.__comments");

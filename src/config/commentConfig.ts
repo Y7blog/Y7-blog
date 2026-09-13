@@ -1,4 +1,5 @@
 import type { CommentConfig } from "../types/commentConfig";
+import { profileConfig } from "./profileConfig";
 
 export const commentConfig: CommentConfig = {
 	// 评论系统类型: none, twikoo, waline, giscus, disqus, artalk，默认为none，即不启用评论系统
@@ -21,6 +22,17 @@ export const commentConfig: CommentConfig = {
 		// Twikoo 自定义 CSS 文件地址，为空则不加载
 		// 带版本号参数：样式更新时递增 v 值，避免 CDN/浏览器缓存旧样式
 		cssUrl: "/assets/css/twikoo-custom.css?v=10",
+		// 游客兜底头像：DiceBear 按邮箱哈希生成（同邮箱恒定同一头像，不同邮箱各不相同）
+		dicebearStyle: "adventurer",
+		// 管理员（博主）评论专属头像，跟随站点头像设置（profileConfig.avatar）
+		adminAvatar: profileConfig.avatar,
+		// 兜底头像库：无 QQ / 注册头像的访客按邮箱哈希分配库内头像（同一邮箱恒定）
+		// 图片放在 public/assets/avatars/avatar-1.svg … avatar-8.svg，换图后同步改 count
+		fallbackAvatar: {
+			dir: "/assets/avatars/",
+			count: 8,
+			ext: "svg",
+		},
 	},
 
 	//waline评论系统配置
