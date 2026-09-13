@@ -67,10 +67,47 @@ const config = {
     return d.getFullYear() + "/" + p(d.getMonth() + 1) + "/" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes());
   }
 
-  // 评论增强：绝对时间、复制消息按钮（幂等，可重复执行）
+  // DiceBear 头像风格（commentConfig.dicebearStyle）
+  var diceStyle = (config.dicebearStyle || "adventurer").replace(/[^a-z-]/gi, "");
+
+  // 输入框头像实时预览：按当前输入的邮箱计算 DiceBear 头像
+  // （sha256(邮箱) 与 Twikoo 的哈希一致 → 预览即发布后效果；QQ 邮箱预览 QQ 头像）
+  var gbAvatarTimer = 0;
+  function gbRewriteFormAvatar() {
+    var img = document.querySelector(".tk-submit .tk-avatar-img");
+    var mailInput = document.querySelector(".tk-submit input[name='mail']");
+    if (!img || !mailInput) return;
+    img.title = "头像随邮箱自动生成";
+    var mail = String(mailInput.value || "").trim().toLowerCase();
+    if (!mail) return;
+    var qq = mail.match(/^(\d{5,12})@qq\.com$/i);
+    if (qq) {
+      // QQ 邮箱：预览 QQ 头像
+      var qqUrl = "https://q1.qlogo.cn/g?b=qq&nk=" + qq[1] + "&s=100";
+      if (img.dataset.gbPreview !== qqUrl) { img.dataset.gbPreview = qqUrl; img.src = qqUrl; }
+      return;
+    }
+    crypto.subtle
+      .digest("SHA-256", new TextEncoder().encode(mail))
+      .then(function (buf) {
+        var hash = Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+        var url = "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + hash;
+        if (img.dataset.gbPreview !== url) { img.dataset.gbPreview = url; img.src = url; }
+      })
+      .catch(function () {});
+  }
+  function gbScheduleFormAvatar() {
+    clearTimeout(gbAvatarTimer);
+    gbAvatarTimer = setTimeout(gbRewriteFormAvatar, 250);
+  }
+
+  // 评论增强：绝对时间、复制消息按钮、输入框头像预览（幂等，可重复执行）
   function applyChatEnhancements() {
     var container = document.querySelector(".tk-comments-container");
     if (!container) return;
+
+    // 输入框头像实时预览
+    gbRewriteFormAvatar();
 
     // 0) 内联评论数：同步到「评论区」标题旁（文章/动态页）
     var inline = document.querySelector("[data-inline-count]");
@@ -113,7 +150,6 @@ const config = {
 
     // 5) 头像：管理员（带博主徽章）用专属头像；游客用 DiceBear 按邮箱哈希生成
     // （同一邮箱哈希恒定同一头像，不同邮箱各不相同；QQ 原生头像保留）
-    var diceStyle = (config.dicebearStyle || "adventurer").replace(/[^a-z-]/gi, "");
     var adminAvatar = (config.adminAvatar || "").trim();
     container.querySelectorAll(".tk-comment").forEach(function (c) {
       var img = c.querySelector(".tk-avatar-img");
@@ -185,6 +221,24 @@ const config = {
       }, 200);
     });
     observer.observe(container, { childList: true, subtree: true });
+  }
+
+  // 输入框头像实时预览：监听邮箱输入与失焦（window 守卫防止重复注册）
+  if (!window.__gbFormAvatarLive) {
+    window.__gbFormAvatarLive = true;
+    document.addEventListener("input", function (e) {
+      var t = e.target;
+      if (t && t.name === "mail" && t.closest && t.closest(".tk-submit")) {
+        gbScheduleFormAvatar();
+      }
+    });
+    document.addEventListener("change", function (e) {
+      var t = e.target;
+      if (t && t.name === "mail" && t.closest && t.closest(".tk-submit")) {
+        // 失焦时 Twikoo 会重设头像地址，之后再改写为预览头像
+        setTimeout(gbRewriteFormAvatar, 120);
+      }
+    });
   }
 
   // 初始化 Twikoo
