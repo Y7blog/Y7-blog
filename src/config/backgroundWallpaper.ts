@@ -39,20 +39,20 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 桌面背景图片（支持单张或多张随机）
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
 		desktop: [
-					"/assets/random-cover/img-001.avif",
-       				 "/assets/random-cover/img-002.avif",
-    				  "/assets/random-cover/img-003.avif",
-       				 "/assets/random-cover/img-004.avif",
-      				  "/assets/random-cover/img-005.avif",			
+					"/assets/random-cover/y7img-封面背景1920-001.avif",
+       				 "/assets/random-cover/y7img-封面图片1920-002.avif",
+    				  "/assets/random-cover/y7img-封面背景1920-003.avif",
+       				 "/assets/random-cover/y7img-封面背景1920-004.avif",
+      				  "/assets/random-cover/y7img-封面背景1920-005.avif",			
 		],
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
 		mobile: [
-					"/assets/random-cover/img-001.avif",
-      			  "/assets/random-cover/img-002.avif",
-      			  "/assets/random-cover/img-003.avif",
-      			  "/assets/random-cover/img-004.avif",
-      			  "/assets/random-cover/img-005.avif",
+					"/assets/random-cover/y7img-封面背景1920-001.avif",
+      			  "/assets/random-cover/y7img-封面图片1920-002.avif",
+      			  "/assets/random-cover/y7img-封面背景1920-003.avif",
+      			  "/assets/random-cover/y7img-封面背景1920-004.avif",
+      			  "/assets/random-cover/y7img-封面背景1920-005.avif",
 		],
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）
