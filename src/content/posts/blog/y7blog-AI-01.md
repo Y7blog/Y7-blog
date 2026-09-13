@@ -1,6 +1,8 @@
 ---
-title: <h1>AI需要踩刹车吗？<br />
-       从Dario Amodei的「Pace the Frontier」想到的几件事<h1>
+title: <h1>
+       AI需要踩刹车吗？<br />
+       从Dario Amodei的「Pace the Frontier」想到的几件事
+       <h1>
 published: 2026-09-13
 pinned: false
 draft: false
