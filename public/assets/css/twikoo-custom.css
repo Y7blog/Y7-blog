@@ -635,3 +635,242 @@ body.wallpaper-transparent .twikoo .OwO .OwO-body {
     max-height: min(var(--tk-chat-height), 70vh);
   }
 }
+
+/* ============================================================
+ * 第一期增强：日期胶囊 / 复制按钮 / 留言板公告栏 / 统计行 / 规则弹窗
+ * ============================================================ */
+
+/* ── 复制消息按钮 ─────────────────────────────────────── */
+
+.twikoo .gb-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--tk-muted);
+  transition: color 0.2s ease;
+}
+
+.twikoo .gb-copy-btn:hover,
+.twikoo .gb-copy-btn.gb-copied {
+  color: var(--tk-accent);
+}
+
+/* ── 留言统计行 ───────────────────────────────────────── */
+
+.gb-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.3rem 0 0 0.25rem;
+  font-size: 0.85rem;
+  color: var(--content-meta);
+}
+
+.gb-stats-dot {
+  opacity: 0.6;
+}
+
+.gb-stats-refresh {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.4s ease;
+}
+
+.gb-stats-refresh:hover {
+  color: var(--primary);
+  transform: rotate(180deg);
+}
+
+/* ── 公告栏 ───────────────────────────────────────────── */
+
+.gb-announcement-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.9rem;
+  background: color-mix(in srgb, var(--btn-content) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--btn-content) 8%, transparent);
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.gb-announcement-bar[hidden] {
+  display: none;
+}
+
+.gb-announcement-icon {
+  display: inline-flex;
+  color: var(--primary);
+}
+
+.gb-announcement-label {
+  font-weight: 700;
+  color: var(--btn-content);
+}
+
+.gb-announcement-link {
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.gb-announcement-text {
+  color: var(--content-meta);
+}
+
+.gb-announcement-close {
+  display: inline-flex;
+  margin-left: auto;
+  padding: 0.2rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: inherit;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.gb-announcement-close:hover {
+  opacity: 1;
+}
+
+/* ── 评论及留言规则弹窗 ───────────────────────────────── */
+/* 只能点「我知道了」关闭，无右上角 × */
+
+.gb-rules-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(0 0 0 / 45%);
+}
+
+.gb-rules-overlay[hidden] {
+  display: none;
+}
+
+.gb-rules-dialog {
+  width: min(620px, 100%);
+  max-height: 84vh;
+  overflow-y: auto;
+  background: #fff;
+  color: #17171a;
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgb(0 0 0 / 25%);
+}
+
+.gb-rules-title {
+  margin: 0;
+  padding: 1.1rem 1.4rem 0.9rem;
+  border-bottom: 1px solid rgb(0 0 0 / 8%);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.gb-rules-body {
+  padding: 1rem 1.4rem 1.2rem;
+  font-size: 0.88rem;
+  line-height: 1.8;
+}
+
+.gb-rules-body p {
+  margin: 0 0 0.55rem;
+}
+
+.gb-rules-body ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.gb-rules-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.9rem 1.4rem 1.2rem;
+  border-top: 1px solid rgb(0 0 0 / 8%);
+}
+
+.gb-rules-ok {
+  padding: 0.55rem 1.35rem;
+  background: #17171a;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.gb-rules-ok:hover {
+  opacity: 0.82;
+}
+
+/* 暗色模式：弹窗与公告栏适配 */
+:root.dark .gb-rules-dialog {
+  background: #212124;
+  color: #ececee;
+}
+
+:root.dark .gb-rules-title {
+  border-bottom-color: rgb(255 255 255 / 10%);
+}
+
+:root.dark .gb-rules-footer {
+  border-top-color: rgb(255 255 255 / 10%);
+}
+
+:root.dark .gb-rules-ok {
+  background: #f5f5f6;
+  color: #17171a;
+}
+
+/* ── 紧凑模式（留言板）：隐藏评论计数，评论内容整体上移 ── */
+
+#post-comments[data-compact="true"] .tk-comments-count {
+  display: none;
+}
+
+#post-comments[data-compact="true"] .tk-comments-title {
+  margin-bottom: 0.25rem;
+}
+
+/* ── 文章/动态评论区：评论数紧跟「评论区」标题，隐藏原计数与元信息行 ── */
+/* 留言板（compact）不受影响，保留自己的统计与属地/系统/浏览器识别 */
+
+#post-comments:not([data-compact="true"]) .tk-comments-count {
+  display: none;
+}
+
+#post-comments:not([data-compact="true"]) .tk-extras {
+  display: none;
+}
+
+.tk-inline-count {
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--content-meta);
+}

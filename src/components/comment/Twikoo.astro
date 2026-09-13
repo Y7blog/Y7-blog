@@ -59,6 +59,75 @@ const config = {
     }, 300);
   }
 
+  // 绝对时间格式：YYYY/MM/DD HH:mm（同参考留言板，含年份）
+  function gbFormatTime(dt) {
+    var d = new Date(dt);
+    if (isNaN(d.getTime())) return null;
+    var p = function (n) { return String(n).padStart(2, "0"); };
+    return d.getFullYear() + "/" + p(d.getMonth() + 1) + "/" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  // 评论增强：绝对时间、复制消息按钮（幂等，可重复执行）
+  function applyChatEnhancements() {
+    var container = document.querySelector(".tk-comments-container");
+    if (!container) return;
+
+    // 0) 内联评论数：同步到「评论区」标题旁（文章/动态页）
+    var inline = document.querySelector("[data-inline-count]");
+    var countEl = document.querySelector(".tk-comments-count");
+    if (inline && countEl) {
+      var cm = countEl.textContent.replace(/\s+/g, "").match(/(\d+)/);
+      if (cm) inline.textContent = cm[1] + " 条评论";
+    }
+
+    // 1) 相对时间 → 绝对时间（MM/DD HH:mm）
+    container.querySelectorAll(".tk-time time").forEach(function (t) {
+      if (t.dataset.gbTime) return;
+      t.dataset.gbTime = "1";
+      var dt = t.getAttribute("datetime");
+      var text = dt ? gbFormatTime(dt) : null;
+      if (text) t.textContent = text;
+    });
+
+    // 2) 复制消息按钮：追加到操作按钮行
+    container.querySelectorAll(".tk-comment > .tk-main > .tk-row .tk-action").forEach(function (act) {
+      if (act.dataset.gbCopy) return;
+      act.dataset.gbCopy = "1";
+      var comment = act.closest(".tk-comment");
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tk-action-link gb-copy-btn";
+      btn.title = "复制消息";
+      btn.setAttribute("aria-label", "复制消息");
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+      btn.addEventListener("click", function () {
+        var text = comment ? (comment.querySelector(".tk-content") || {}).textContent || "" : "";
+        if (navigator.clipboard && text.trim()) {
+          navigator.clipboard.writeText(text.trim());
+          btn.classList.add("gb-copied");
+          setTimeout(function () { btn.classList.remove("gb-copied"); }, 800);
+        }
+      });
+      act.appendChild(btn);
+    });
+  }
+
+  // 监听评论列表变化（排序切换/加载更多/新评论），自动重跑增强
+  function watchChatEnhancements() {
+    var container = document.querySelector(".tk-comments-container");
+    if (!container || container.dataset.gbWatch) return;
+    container.dataset.gbWatch = "1";
+    var scheduled = 0;
+    var observer = new MutationObserver(function () {
+      if (scheduled) return;
+      scheduled = setTimeout(function () {
+        scheduled = 0;
+        applyChatEnhancements();
+      }, 200);
+    });
+    observer.observe(container, { childList: true, subtree: true });
+  }
+
   // 初始化 Twikoo
   function initTwikoo() {
     if (typeof twikoo !== "undefined") {
@@ -74,6 +143,8 @@ const config = {
           .then(() => {
             console.log("[Twikoo] Init complete");
             applyChatSortOrder();
+            applyChatEnhancements();
+            watchChatEnhancements();
           })
           .catch((error) => {
             console.error("[Twikoo] Init failed:", error);

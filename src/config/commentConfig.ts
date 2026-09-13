@@ -11,7 +11,8 @@ export const commentConfig: CommentConfig = {
 		// 设置 Twikoo 评论系统语言
 		lang: "zh-CN",
 		// 是否启用文章访问量统计功能
-		visitorCount: true,
+		// 已关闭：文章元信息的阅读量由站点自建统计（ViewCount）提供，避免重复显示
+		visitorCount: false,
 		// Twikoo JS 文件地址，支持 CDN 链接
 		// 中国推荐1: https://registry.npmmirror.com/twikoo/1.7.14/files/dist/twikoo.min.js
 		// 中国推荐2: https://s4.zstatic.net/npm/twikoo@1.7.14/dist/twikoo.min.js
@@ -19,7 +20,7 @@ export const commentConfig: CommentConfig = {
 		jsUrl: "https://cdn.jsdelivr.net/npm/twikoo@1.7.14/dist/twikoo.min.js",
 		// Twikoo 自定义 CSS 文件地址，为空则不加载
 		// 带版本号参数：样式更新时递增 v 值，避免 CDN/浏览器缓存旧样式
-		cssUrl: "/assets/css/twikoo-custom.css?v=3",
+		cssUrl: "/assets/css/twikoo-custom.css?v=8",
 	},
 
 	//waline评论系统配置

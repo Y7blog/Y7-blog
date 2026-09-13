@@ -14,9 +14,11 @@ interface Props {
 	post?: CollectionEntry<"posts"> | CollectionEntry<"spec">;
 	customPath?: string;
 	title?: string;
+	/** 紧凑模式：隐藏「评论区」标题与副标题（聊天式页面使用） */
+	compact?: boolean;
 }
 
-const { post, customPath, title: customTitle } = Astro.props as Props;
+const { post, customPath, title: customTitle, compact = false } = Astro.props as Props;
 
 // 根据页面类型确定路径
 const slugFromPath = (customPath || "/").replace(/^\/+|\/+$/g, "") || "index";
@@ -37,15 +39,20 @@ let commentService: string = commentConfig?.type || "none";
 
 {
   commentService !== "none" && (
-    <div id="post-comments" class="card-base p-8 mb-6 relative overflow-hidden">
-      <!-- 评论区标题 -->
-      <div class="relative z-10 mb-6">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-1 h-6 bg-linear-to-b from-(--primary) to-transparent rounded-full"></div>
-          <h3 class="text-xl font-bold text-(--btn-content)">{i18n(Key.commentSection)}</h3>
+    <div id="post-comments" class="card-base p-8 mb-6 relative overflow-hidden" data-compact={compact ? "true" : undefined}>
+      <!-- 评论区标题（紧凑模式下隐藏） -->
+      {!compact && (
+        <div class="relative z-10 mb-6">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-6 bg-linear-to-b from-(--primary) to-transparent rounded-full"></div>
+            <h3 class="text-xl font-bold text-(--btn-content)">
+              {i18n(Key.commentSection)}
+              <span class="tk-inline-count" data-inline-count></span>
+            </h3>
+          </div>
+          <p class="text-sm text-(--content-meta) ml-4">{i18n(Key.commentSubtitle)}</p>
         </div>
-        <p class="text-sm text-(--content-meta) ml-4">{i18n(Key.commentSubtitle)}</p>
-      </div>
+      )}
       <!-- 评论内容区域 -->
       <div class="relative z-10 pl-2 pr-2">
         {commentService === "twikoo" && <Twikoo path={path} />}

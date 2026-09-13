@@ -1,7 +1,6 @@
 ---
-import { getEntry, render } from "astro:content";
+import { getEntry } from "astro:content";
 import Comment from "@components/comment/index.astro";
-import Markdown from "@components/common/Markdown.astro";
 import { Icon } from "astro-icon/components";
 import { commentConfig, siteConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
@@ -10,16 +9,14 @@ import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
 // 检查页面是否启用
 if (!siteConfig.pages.guestbook) {
-	return Astro.redirect("/404/");
+  return Astro.redirect("/404/");
 }
 
 const guestbookPost = await getEntry("spec", "guestbook");
 
 if (!guestbookPost) {
-	throw new Error("guestbook page content not found");
+  throw new Error("guestbook page content not found");
 }
-
-const { Content } = await render(guestbookPost);
 
 // 检查评论系统是否启用
 const isCommentEnabled = commentConfig?.type && commentConfig.type !== "none";
@@ -30,37 +27,49 @@ const description = i18n(I18nKey.guestbookDescription);
 ---
 
 <MainGridLayout title={title} description={description}>
+  <!-- 留言横幅：紧凑卡片，上下留白对称 -->
   <div
-    class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32"
+    class="flex w-full rounded-(--radius-large) overflow-hidden relative"
   >
-    <div class="card-base z-10 px-9 py-6 relative w-full">
-      <!-- 页面标题和描述 -->
-      <div class="mb-8">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70">
-            <Icon name="material-symbols:chat" class="text-[1.5rem]"></Icon>
-          </div>
-          <div class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-            {title}
-          </div>
+    <div class="card-base z-10 px-7 py-5 relative w-full">
+      <div class="flex items-center gap-3 flex-wrap">
+        <div class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70">
+          <Icon name="material-symbols:chat" class="text-[1.5rem]"></Icon>
         </div>
-        {description && (
-          <p class="text-base text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4">
-            {description}
-          </p>
-        )}
+        <div class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+          {title}
+        </div>
+        <!-- 留言统计：紧靠标题右侧 -->
+        <div class="gb-stats" data-gb-stats>
+          <span class="gb-stats-dot">·</span>
+          <span data-gb-count>— 条留言</span>
+          <span class="gb-stats-dot">·</span>
+          <span>同步于 <span data-gb-sync>—:—</span></span>
+          <button type="button" class="gb-stats-refresh" data-gb-refresh aria-label="刷新留言">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M3 21v-5h5"></path></svg>
+          </button>
+        </div>
       </div>
-      
-      <Markdown class="mt-2">
-        <Content />
-      </Markdown>
     </div>
+  </div>
+
+  <!-- 公告栏 -->
+  <div class="gb-announcement-bar" data-gb-announcement hidden>
+    <span class="gb-announcement-icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+    </span>
+    <span class="gb-announcement-label">公告</span>
+    <button type="button" class="gb-announcement-link" data-gb-rules-open>评论及留言规则</button>
+    <span class="gb-announcement-text">管理员已开启评论及留言审核</span>
+    <button type="button" class="gb-announcement-close" data-gb-announcement-close aria-label="关闭公告">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </button>
   </div>
 
   <!-- 评论区 -->
   <div class="mt-4">
     {isCommentEnabled ? (
-      <Comment post={guestbookPost} customPath="/guestbook/" />
+      <Comment post={guestbookPost} customPath="/guestbook/" compact />
     ) : (
       <div class="card-base p-8 mb-6 relative overflow-hidden">
         <div class="text-center py-8 text-(--content-meta)">
@@ -87,4 +96,122 @@ const description = i18n(I18nKey.guestbookDescription);
       </div>
     )}
   </div>
+
+  <!-- 评论及留言规则弹窗：只能点「我知道了」关闭 -->
+  <div class="gb-rules-overlay" data-gb-rules hidden>
+    <div class="gb-rules-dialog" role="dialog" aria-modal="true" aria-label="评论及留言规则">
+      <h3 class="gb-rules-title">评论及留言规则</h3>
+      <div class="gb-rules-body">
+        <p>请在交流中保持友善、理性和尊重。</p>
+        <p>你不得利用本站发布、传播或实施以下行为：</p>
+        <ul>
+          <li>发布任何违反中华人民共和国法律法规的内容。</li>
+          <li>发布任何侵犯他人合法权益的内容，包括但不限于隐私、名誉、肖像、著作权、商标权和其他知识产权。</li>
+          <li>恶意攻击、辱骂、骚扰、威胁、歧视其他用户或任何第三方。</li>
+          <li>发布垃圾广告、恶意推广、刷屏、灌水，或与讨论主题明显无关的重复内容。</li>
+          <li>利用本站进行网络诈骗、钓鱼、传播恶意软件，或发布可能危害网络和信息安全的内容。</li>
+          <li>绕越或试图绕越本站的审核、限流、封禁等管理措施。</li>
+          <li>冒充他人、伪造身份，或收集、公开他人的个人信息。</li>
+        </ul>
+      </div>
+      <div class="gb-rules-footer">
+        <button type="button" class="gb-rules-ok" data-gb-rules-ok>我知道了</button>
+      </div>
+    </div>
+  </div>
 </MainGridLayout>
+
+<script is:inline>
+  (function () {
+    var ackKey = "gb-rules-ack";
+    var annKey = "gb-ann-dismissed";
+
+    function openRules() {
+      var overlay = document.querySelector("[data-gb-rules]");
+      if (overlay) overlay.hidden = false;
+    }
+
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      if (t.closest("[data-gb-rules-ok]")) {
+        try { localStorage.setItem(ackKey, String(Date.now())); } catch (err) {}
+        var overlay = document.querySelector("[data-gb-rules]");
+        if (overlay) overlay.hidden = true;
+      } else if (t.closest("[data-gb-rules-open]")) {
+        openRules();
+      } else if (t.closest("[data-gb-announcement-close]")) {
+        try { localStorage.setItem(annKey, String(Date.now())); } catch (err) {}
+        var bar = document.querySelector("[data-gb-announcement]");
+        if (bar) bar.hidden = true;
+      } else if (t.closest("[data-gb-refresh]")) {
+        // 触发 Twikoo 原生刷新，并更新同步时间
+        var icons = document.querySelectorAll(".tk-comments-title .tk-icon.__comments");
+        if (icons.length) {
+          icons[0].dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        }
+        var sync = document.querySelector("[data-gb-sync]");
+        if (sync) sync.textContent = gbNow();
+      }
+    });
+
+    function gbNow() {
+      var d = new Date();
+      var p = function (n) { return String(n).padStart(2, "0"); };
+      return p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+    }
+
+    function initGuestbookChrome() {
+      try {
+        if (!localStorage.getItem(ackKey)) openRules();
+        if (!localStorage.getItem(annKey)) {
+          var bar = document.querySelector("[data-gb-announcement]");
+          if (bar) bar.hidden = false;
+        }
+      } catch (err) {}
+
+      // 统计行：持续监听评论数变化（评论数为异步渲染，且排序切换会重建节点）
+      function syncCount() {
+        var countEl = document.querySelector(".tk-comments-count");
+        var stats = document.querySelector("[data-gb-count]");
+        if (!countEl || !stats) return;
+        var m = countEl.textContent.replace(/\s+/g, "").match(/(\d+)/);
+        if (m) stats.textContent = m[1] + " 条留言";
+      }
+
+      function watchCount() {
+        var root = document.querySelector(".tk-comments");
+        if (!root || root.dataset.gbCountWatch) return;
+        root.dataset.gbCountWatch = "1";
+        var scheduled = 0;
+        new MutationObserver(function () {
+          if (scheduled) return;
+          scheduled = setTimeout(function () {
+            scheduled = 0;
+            syncCount();
+          }, 150);
+        }).observe(root, { childList: true, subtree: true, characterData: true });
+      }
+
+      var attempts = 0;
+      var timer = setInterval(function () {
+        attempts += 1;
+        syncCount();
+        watchCount();
+        var stats = document.querySelector("[data-gb-count]");
+        if (stats && /\d/.test(stats.textContent)) {
+          clearInterval(timer);
+          var sync = document.querySelector("[data-gb-sync]");
+          if (sync) sync.textContent = gbNow();
+        }
+        if (attempts >= 100) clearInterval(timer);
+      }, 300);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initGuestbookChrome);
+    } else {
+      initGuestbookChrome();
+    }
+  })();
+</script>
