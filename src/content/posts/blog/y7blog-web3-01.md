@@ -9,7 +9,7 @@ image: https://www.y7img.ccwu.cc/file/1789212987921_y7bolg-web3-1600.png
 tags: [Web3,RWA,DeFi,DePIN,区块链]
 category: Web3
 slug: blog/y7blog-web3-01
-series: "区块链"
+series: "区块链浅谈"
 seriesOrder: 1
 ---
 
