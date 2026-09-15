@@ -41,8 +41,8 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		desktop: [
 					"/assets/random-cover/y7img-封面背景1920-001.avif",
        				 "/assets/random-cover/y7img-封面图片1920-002.avif",
-    				  "/assets/random-cover/y7img-封面背景1920-003.avif",
-       				 "/assets/random-cover/y7img-封面背景1920-004.avif",
+    				  "/assets/random-cover/y7img-封面背景1920-007.avif",
+       				 "/assets/random-cover/y7img-封面背景1920-006.avif",
       				  "/assets/random-cover/y7img-封面背景1920-005.avif",			
 		],
 		// 移动背景图片（支持单张或多张随机）
@@ -50,8 +50,8 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		mobile: [
 					"/assets/random-cover/y7img-封面背景1920-001.avif",
       			  "/assets/random-cover/y7img-封面图片1920-002.avif",
-      			  "/assets/random-cover/y7img-封面背景1920-003.avif",
-      			  "/assets/random-cover/y7img-封面背景1920-004.avif",
+      			  "/assets/random-cover/y7img-封面背景1920-007.avif",
+      			  "/assets/random-cover/y7img-封面背景1920-006.avif",
       			  "/assets/random-cover/y7img-封面背景1920-005.avif",
 		],
 		// 背景视频播放地址
