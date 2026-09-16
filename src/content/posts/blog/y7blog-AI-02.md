@@ -10,7 +10,7 @@ tags: [AI,人工智能,AI科学研究,AI趋势,药物研发]
 category: AI
 slug: blog/y7blog-AI-02
 series: "AI浅谈"
-seriesOrder: 1
+seriesOrder: 2
 ---
 
 
