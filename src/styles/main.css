@@ -52,6 +52,26 @@
   }
 }
 
+/* 手机端首页：文章列表严格显示「置顶 + 最新的非置顶文章」（其余文章经横栏框「文章」
+   入口进归档查看），分页在手机端首页隐藏；768px 以上不受影响。
+   PostCard 渲染时自带 .pinned（置顶）和 .post-card-newest（最新一篇非置顶）标记类 */
+@media (max-width: 767px) {
+  .home-list-page
+    #post-list-container
+    > .post-card-wrapper:not(.pinned):not(.post-card-newest) {
+    display: none;
+  }
+  .home-list-page .home-pagination {
+    display: none;
+  }
+}
+
+/* 手机端首页横栏框下方的组件排布容器（公告/个人资料/节日节气 + 分类/最新动态/网站统计/站点统计） */
+#home-mobile-top-widgets,
+#home-mobile-bottom-widgets {
+  margin-bottom: 1rem;
+}
+
 /* 确保平滑滚动 */
 html {
     scroll-behavior: smooth;

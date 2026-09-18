@@ -27,16 +27,18 @@ const heading =
 ---
 
 <MainGridLayout heading={heading}>
-  <PostPage page={page} />
-  {
-    page.total > page.size && (
-      <Pagination
-        class="mx-auto onload-animation"
-        page={page}
-        style={`animation-delay: calc(var(--content-delay) + ${len * 50}ms)`}
-      />
-    )
-  }
+  <div class={page.currentPage === 1 ? "home-list-page" : undefined}>
+    <PostPage page={page} />
+    {
+      page.total > page.size && (
+        <Pagination
+          class={`mx-auto onload-animation${page.currentPage === 1 ? " home-pagination" : ""}`}
+          page={page}
+          style={`animation-delay: calc(var(--content-delay) + ${len * 50}ms)`}
+        />
+      )
+    }
+  </div>
 </MainGridLayout>
 
 <script>

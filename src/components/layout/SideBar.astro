@@ -4,9 +4,9 @@ import SiteStatsCard from "@/components/analytics/SiteStatsCard.astro";
 import Advertisement from "@/components/widget/Advertisement.astro";
 import Announcement from "@/components/widget/Announcement.astro";
 import Calendar from "@/components/widget/Calendar.astro";
-import HolidayCountdown from "@/components/widget/HolidayCountdown.astro";
 import Categories from "@/components/widget/Categories.astro";
 import Dynamic from "@/components/widget/Dynamic.astro";
+import HolidayCountdown from "@/components/widget/HolidayCountdown.astro";
 import Music from "@/components/widget/Music.astro";
 import Profile from "@/components/widget/Profile.astro";
 import SidebarTOC from "@/components/widget/SidebarTOC.astro";
@@ -24,6 +24,9 @@ interface Props {
 	headings?: MarkdownHeading[];
 	encrypted?: boolean;
 	side?: "left" | "right" | "bottom";
+	// 自定义组件列表：传入时覆盖按 side 读取的默认配置，
+	// 用于在指定位置按指定顺序渲染组件子集（如手机端首页横栏框下方的组件排布）
+	components?: (WidgetComponentConfig | MobileBottomComponentConfig)[];
 }
 
 // 侧边栏位置常量
@@ -63,12 +66,16 @@ const componentMap = {
 const side = (Astro.props.side ||
 	SIDEBAR_SIDE.LEFT) as (typeof SIDEBAR_SIDE)[keyof typeof SIDEBAR_SIDE];
 const className = Astro.props.class;
+const customComponents = Astro.props.components;
 
-// 根据 side 属性获取对应的组件列表
+// 根据 side 属性获取对应的组件列表（传入 components 时以其为准）
 const getComponents = (): (
 	| WidgetComponentConfig
 	| MobileBottomComponentConfig
 )[] => {
+	if (customComponents) {
+		return customComponents;
+	}
 	if (side === SIDEBAR_SIDE.LEFT) {
 		return sidebarLayoutConfig.leftComponents;
 	}

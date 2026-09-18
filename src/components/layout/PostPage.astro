@@ -27,6 +27,11 @@ const initialLayoutClass =
 // 列表模式封面位置，只有 left 需要额外样式，right 是默认布局
 const coverPositionClass =
 	siteConfig.postListLayout.coverPosition === "left" ? " cover-left" : "";
+
+// 最新的一篇非置顶文章（手机端首页「置顶 + 最新非置顶」精选展示用，CSS 按此标记显隐）
+const firstNonPinnedIndex = page.data.findIndex(
+	(entry: PostEntry) => !entry.data.pinned,
+);
 ---
 
 <div
@@ -54,7 +59,7 @@ const coverPositionClass =
         pinned={entry.data.pinned}
         password={!!entry.data.password}
         loading={index < 2 ? "eager" : "lazy"}
-        class:list="onload-animation post-card-item"
+        class:list={`onload-animation post-card-item${index === firstNonPinnedIndex ? " post-card-newest" : ""}`}
         style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
       />
     ))

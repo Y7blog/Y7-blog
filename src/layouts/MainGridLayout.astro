@@ -7,6 +7,10 @@ import HeaderTopRow from "@components/layout/HeaderTopRow.astro";
 import NavMenuPanel from "@components/layout/NavMenuPanel.astro";
 import SideBar from "@components/layout/SideBar.astro";
 import type { MarkdownHeading } from "astro";
+import type {
+	MobileBottomComponentConfig,
+	WidgetComponentConfig,
+} from "@/types/config";
 import FloatingControls from "@/components/controls/FloatingControls.astro";
 import CategoryBar from "@/components/layout/CategoryBar.astro";
 import SidebarColumn from "@/components/layout/SidebarColumn.astro";
@@ -82,6 +86,27 @@ const banner = getBannerVisibilityState({
 const sidebar = getEffectiveSidebarState({ isPostPage });
 
 const { hasWallpaper } = banner;
+
+// 手机端首页横栏框（CategoryBar）下方的组件排布（按用户指定顺序）：
+// 横栏框上方一组：公告 → 个人资料 → 节日节气卡（文章列表之前）
+// 文章列表（手机端仅置顶+最新两篇）之后一组：分类栏 → 最新动态 → 网站统计 → 站点统计
+// 组件实例复用现有侧边栏配置，仅在手机端首页渲染（<768px，见下方 md:hidden 容器）
+type WidgetConfig = WidgetComponentConfig | MobileBottomComponentConfig;
+const pickWidget = (
+	list: WidgetConfig[],
+	type: string,
+): WidgetConfig | undefined => list.find((c) => c.type === type && c.enable);
+const homeMobileTopWidgets: WidgetConfig[] = [
+	pickWidget(sidebarLayoutConfig.leftComponents, "announcement"),
+	pickWidget(sidebarLayoutConfig.leftComponents, "profile"),
+	pickWidget(sidebarLayoutConfig.rightComponents, "holidayCountdown"),
+].filter((c): c is WidgetConfig => Boolean(c));
+const homeMobileBottomWidgets: WidgetConfig[] = [
+	pickWidget(sidebarLayoutConfig.mobileBottomComponents, "categories"),
+	pickWidget(sidebarLayoutConfig.mobileBottomComponents, "dynamic"),
+	pickWidget(sidebarLayoutConfig.mobileBottomComponents, "analyticsStats"),
+	pickWidget(sidebarLayoutConfig.mobileBottomComponents, "stats"),
+].filter((c): c is WidgetConfig => Boolean(c));
 const {
 	hideSidebarOnPostPage,
 	effectiveIsBothSidebars,
@@ -142,9 +167,31 @@ const {
                 >
                 {/* 为每个页面提供一个隐藏的h1标题，用于SEO和可访问性 */}
                 <h1 class="sr-only">{heading || title}</h1>
+                {/* 手机端首页：横栏框下方的组件组（公告/个人资料/节日节气卡），桌面端隐藏 */}
+                {isHomePageCheck && homeMobileTopWidgets.length > 0 && (
+                    <div id="home-mobile-top-widgets" class="md:hidden">
+                        <SideBar
+                            side="bottom"
+                            components={homeMobileTopWidgets}
+                            headings={headings}
+                            encrypted={encrypted}
+                        />
+                    </div>
+                )}
                 <div id="content-wrapper" class="onload-animation transition-leaving">
                     <slot></slot>
                 </div>
+                {/* 手机端首页：文章列表之后的组件组（分类/最新动态/网站统计/站点统计），桌面端隐藏 */}
+                {isHomePageCheck && homeMobileBottomWidgets.length > 0 && (
+                    <div id="home-mobile-bottom-widgets" class="md:hidden">
+                        <SideBar
+                            side="bottom"
+                            components={homeMobileBottomWidgets}
+                            headings={headings}
+                            encrypted={encrypted}
+                        />
+                    </div>
+                )}
             </main>
             </div>
 
@@ -162,8 +209,9 @@ const {
                 encrypted={encrypted}
             />
 
-            {/* 移动端底部组件 - 768px及以下显示 */}
-            {sidebarLayoutConfig.mobileBottomComponents && sidebarLayoutConfig.mobileBottomComponents.length > 0 && (
+            {/* 移动端底部组件 - 768px及以下显示在页面底部；手机端首页已改在横栏框下方
+                按指定顺序排布（见 home-mobile-top/bottom-widgets），首页不再渲染此区 */}
+            {sidebarLayoutConfig.mobileBottomComponents && sidebarLayoutConfig.mobileBottomComponents.length > 0 && !isHomePageCheck && (
                 <div id="mobile-bottom-sidebar" class="col-span-1 block md:hidden mt-4">
 					<SideBar side="bottom" headings={headings} encrypted={encrypted}></SideBar>
                 </div>
