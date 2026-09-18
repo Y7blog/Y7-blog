@@ -1,5 +1,4 @@
 {
-  "src:assets/images/avatar.avif": "dcd8d5d1cecabea9a9",
   "public:gallery/firefly-2026/cover.avif": "7588a28a8f989e8d88",
   "public:gallery/firefly-2026/1.avif": "c8bca9dde6d2babfb5",
   "src:content/posts/guide/cover.avif": "c8bca9dde6d2babfb5",
@@ -35,11 +34,6 @@
   "public:assets/images/ad/ad1.webp": "a1b8b68a8e918c8f93",
   "src:assets/images/Y7avatar.avif": "6c4b9a405a70353b59",
   "public:gallery/encrypted-test/y7blog-welcome1.png": "38536d4a64776d594d",
-  "public:assets/random-cover/img-005.avif": "3d58a68292c3674e69",
-  "public:assets/random-cover/img-004.avif": "4e54778c72884e5371",
-  "public:assets/random-cover/img-003.avif": "4a3c3d847265766055",
-  "public:assets/random-cover/img-002.avif": "321f242628312d262f",
-  "public:assets/random-cover/img-001.avif": "41617c61758998a1b4",
   "public:assets/images/sponsor/TRX-TRC20.png": "c6c3c1cac7c5d1d1d2",
   "public:assets/images/sponsor/solana.png": "c6c3c0c8c6c4d0d0d1",
   "public:assets/images/sponsor/polygon-ERC20.png": "c9c6c3c8c5c3cfd0d1",
@@ -56,5 +50,10 @@
   "public:assets/dynamic-banner/动态图片.avif": "7490b0a9a3a3afa093",
   "public:assets/dynamic-banner/y7img-series1600.avif": "7872708da1bb97817e",
   "public:assets/dynamic-banner/y7img-Label1600.avif": "7e716ab2a0a59d8373",
-  "public:assets/dynamic-banner/y7img-Classification1600.avif": "6a6e7fa4bde39f8782"
+  "public:assets/dynamic-banner/y7img-Classification1600.avif": "6a6e7fa4bde39f8782",
+  "public:assets/random-cover/y7img-封面背景1920-007.avif": "a69d927f8c9e757d88",
+  "public:assets/random-cover/y7img-封面背景1920-006.avif": "506280837c8b78676f",
+  "public:assets/random-cover/y7img-封面背景1920-005.avif": "3e59a68391c4654d68",
+  "public:assets/random-cover/y7img-封面背景1920-001.avif": "42617c60748998a1b3",
+  "public:assets/random-cover/y7img-封面图片1920-002.avif": "3922272c2e392f262f"
 }

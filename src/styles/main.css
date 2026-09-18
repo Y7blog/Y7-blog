@@ -22,6 +22,8 @@
   --font-sans:
     'Roboto', 'sans-serif', ui-sans-serif, system-ui, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  /* 导航栏菜单折叠断点：≥600px 显示桌面菜单，<600px 显示汉堡按钮 */
+  --breakpoint-nav: 600px;
 }
 
 /* 自定义工具类 - Tailwind v4 使用 @utility 定义 */
@@ -523,8 +525,8 @@ html {
         @apply rotate-180;
     }
 
-    /* 响应式隐藏 */
-    @media (max-width: 768px) {
+    /* 响应式隐藏：与导航栏折叠断点 --breakpoint-nav 保持一致（断点定义见本文件 @theme） */
+    @media (max-width: 599px) {
         .dropdown-container {
             @apply hidden;
         }

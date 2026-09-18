@@ -91,8 +91,9 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 		@apply rotate-180;
 	}
 
-	/* 移动端隐藏下拉菜单 */
-	@media (max-width: 768px) {
+	/* 窄屏下隐藏下拉菜单（与导航栏折叠断点 --breakpoint-nav 保持一致，
+	   断点定义见 main.css @theme，父容器 hidden nav:flex 已控制整体显隐，此处为双保险） */
+	@media (max-width: 599px) {
 		.dropdown-container {
 			@apply hidden;
 		}
