@@ -118,41 +118,47 @@ const description = i18n(I18nKey.guestbookDescription);
       </div>
     </div>
   </div>
-</MainGridLayout>
 
-<script is:inline>
-  (function () {
-    var ackKey = "gb-rules-ack";
-    var annKey = "gb-ann-dismissed";
+  <!-- 必须位于 </MainGridLayout> 之前：脚本随页面内容进入 #swup-container，
+       Swup 切页时 @swup/scripts-plugin 才会重跑它（放在布局外会被渲染到 </html>
+       之后，切页后永不执行，留言统计就一直是占位符） -->
+  <script is:inline>
+    (function () {
+      var ackKey = "gb-rules-ack";
+      var annKey = "gb-ann-dismissed";
 
     function openRules() {
       var overlay = document.querySelector("[data-gb-rules]");
       if (overlay) overlay.hidden = false;
     }
 
-    document.addEventListener("click", function (e) {
-      var t = e.target;
-      if (!t || !t.closest) return;
-      if (t.closest("[data-gb-rules-ok]")) {
-        try { localStorage.setItem(ackKey, String(Date.now())); } catch (err) {}
-        var overlay = document.querySelector("[data-gb-rules]");
-        if (overlay) overlay.hidden = true;
-      } else if (t.closest("[data-gb-rules-open]")) {
-        openRules();
-      } else if (t.closest("[data-gb-announcement-close]")) {
-        try { localStorage.setItem(annKey, String(Date.now())); } catch (err) {}
-        var bar = document.querySelector("[data-gb-announcement]");
-        if (bar) bar.hidden = true;
-      } else if (t.closest("[data-gb-refresh]")) {
-        // 触发 Twikoo 原生刷新，并更新同步时间
-        var icons = document.querySelectorAll(".tk-comments-title .tk-icon.__comments");
-        if (icons.length) {
-          icons[0].dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    // 文档级委托只注册一次：Swup 切页会重跑本脚本，重复注册会造成监听器堆积
+    if (!window.__gbClickDelegation) {
+      window.__gbClickDelegation = true;
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (t.closest("[data-gb-rules-ok]")) {
+          try { localStorage.setItem(ackKey, String(Date.now())); } catch (err) {}
+          var overlay = document.querySelector("[data-gb-rules]");
+          if (overlay) overlay.hidden = true;
+        } else if (t.closest("[data-gb-rules-open]")) {
+          openRules();
+        } else if (t.closest("[data-gb-announcement-close]")) {
+          try { localStorage.setItem(annKey, String(Date.now())); } catch (err) {}
+          var bar = document.querySelector("[data-gb-announcement]");
+          if (bar) bar.hidden = true;
+        } else if (t.closest("[data-gb-refresh]")) {
+          // 触发 Twikoo 原生刷新，并更新同步时间
+          var icons = document.querySelectorAll(".tk-comments-title .tk-icon.__comments");
+          if (icons.length) {
+            icons[0].dispatchEvent(new MouseEvent("click", { bubbles: true }));
+          }
+          var sync = document.querySelector("[data-gb-sync]");
+          if (sync) sync.textContent = gbNow();
         }
-        var sync = document.querySelector("[data-gb-sync]");
-        if (sync) sync.textContent = gbNow();
-      }
-    });
+      });
+    }
 
     function gbNow() {
       var d = new Date();
@@ -213,4 +219,5 @@ const description = i18n(I18nKey.guestbookDescription);
       initGuestbookChrome();
     }
   })();
-</script>
+  </script>
+</MainGridLayout>

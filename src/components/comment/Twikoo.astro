@@ -42,6 +42,39 @@ const config = {
   }
 
   // 聊天式时间正序：评论渲染完成后自动切换到「最早」排序（从上到下按时间排列）
+  // 隐藏时机必须在首次渲染之前（initTwikoo 里调用 hideCommentList）：
+  // 若等默认排序渲染完再隐藏，用户会先看到一遍默认排序的列表、随即被清空重排——
+  // 表现为"评论区刷新两次"。隐藏的是 #tcomment/#twikoo 的父容器（twikoo 渲染时会
+  // 把 #tcomment 元素本身替换成 #twikoo，父容器稳定存在）。
+  function commentHost() {
+    var el = document.querySelector("#twikoo") || document.getElementById("tcomment");
+    return el ? el.parentElement : null;
+  }
+  function commentList() {
+    return document.querySelector(".tk-comments-container");
+  }
+  function hideCommentList(commentEl) {
+    var host = commentEl.parentElement;
+    if (!host) return;
+    host.style.opacity = "0";
+  }
+  // 恢复显示分两步：宿主（含输入框等表单 UI）在 init 完成后立即显示，
+  // 仅评论列表保持隐藏等「最早」排序的重渲染完成后再淡入——
+  // 输入框不用陪着评论列表一起等排序，体感出现更快
+  function revealCommentHost() {
+    var host = commentHost();
+    if (!host) return;
+    host.style.transition = "opacity 0.2s ease";
+    host.style.opacity = "1";
+  }
+  function fadeInCommentList() {
+    var list = commentList();
+    if (list) {
+      list.style.transition = "opacity 0.25s ease";
+      list.style.opacity = "1";
+    }
+    revealCommentHost();
+  }
   function applyChatSortOrder() {
     var attempts = 0;
     var timer = setInterval(function () {
@@ -52,11 +85,37 @@ const config = {
         var oldestBtn = sortBar.querySelector(".tk-sort-item:nth-child(2)");
         if (oldestBtn && !oldestBtn.classList.contains("__active")) {
           oldestBtn.click();
+          restoreAfterSortRender();
+        } else {
+          // 排序已就位（或无第二项可点），直接显示
+          fadeInCommentList();
         }
         return;
       }
-      if (attempts >= 20) clearInterval(timer);
+      if (attempts >= 20) {
+        // 排序栏始终未出现（极端情况），兜底显示，避免评论区一直隐藏
+        clearInterval(timer);
+        fadeInCommentList();
+      }
     }, 300);
+  }
+
+  // 等排序切换的重渲染真正出内容（出现评论节点，或空态提示文字）后恢复显示；
+  // 轮询而不是等"静默"，避免拉取间隙提前淡入露出加载中状态
+  function restoreAfterSortRender() {
+    var host = commentHost();
+    if (!host) return;
+    var poll = setInterval(function () {
+      var comments = document.querySelectorAll(".tk-comment").length;
+      var container = document.querySelector(".tk-comments-container");
+      var emptyHint = !comments && container && container.textContent.replace(/\s+/g, "").length > 2;
+      if (comments > 0 || emptyHint) {
+        clearInterval(poll);
+        fadeInCommentList();
+      }
+    }, 100);
+    // 兜底：最多等 4 秒，防止极端情况下列表一直不恢复
+    setTimeout(function () { clearInterval(poll); fadeInCommentList(); }, 4000);
   }
 
   // 绝对时间格式：YYYY/MM/DD HH:mm（同参考留言板，含年份）
@@ -370,58 +429,101 @@ const config = {
     });
   }
 
-  // 初始化 Twikoo
+  // 初始化 Twikoo（按元素节点去重：同一次导航内的重复触发只执行一次；
+  // Swup 切页插入的是全新 #tcomment 节点，此时才会真正重新初始化，
+  // 后端拉取评论与转场动画并行进行，减少评论框出现前的等待）
+  var lastInitEl = null;
   function initTwikoo() {
+    const commentEl = document.getElementById("tcomment");
+    if (!commentEl) return;
+    if (commentEl === lastInitEl) return;
     if (typeof twikoo !== "undefined") {
+      lastInitEl = commentEl;
+      commentEl.innerHTML = "";
+
+      const dynamicConfig = createTwikooConfig();
+      console.log("[Twikoo] Init config:", dynamicConfig);
+
+      // 首帧前隐藏评论列表：等「最早」排序就位后一次成型地淡入，
+      // 避免先看到默认排序再被清空重排的"刷新两次"观感
+      hideCommentList(commentEl);
+
+      twikoo
+        .init(dynamicConfig)
+        .then(() => {
+          console.log("[Twikoo] Init complete");
+          // 表单 UI 先行显示；仅评论列表保持隐藏，等「最早」排序重渲染完成后再淡入
+          var list = commentList();
+          if (list) list.style.opacity = "0";
+          revealCommentHost();
+          applyChatSortOrder();
+          applyChatEnhancements();
+          watchChatEnhancements();
+        })
+        .catch((error) => {
+          console.error("[Twikoo] Init failed:", error);
+          // 初始化失败允许重试（后端偶发失败时 firefly 事件还能补救）
+          lastInitEl = null;
+          revealCommentHost();
+        });
+    } else {
+      // Twikoo 库尚未加载完成：监听库脚本 load 事件立即唤醒。注意必须挂在 document
+      // 捕获阶段——SwupScriptsPlugin 重跑脚本时会把原节点替换成新节点再执行，
+      // 挂在原节点上的监听永远等不到 load；未找到脚本节点时退回定时重试
+      var libScript = document.querySelector('script[src*="twikoo"]');
+      var woken = false;
+      var wake = function () {
+        if (woken) return;
+        woken = true;
+        document.removeEventListener("load", onLibLoad, true);
+        initTwikoo();
+      };
+      var onLibLoad = function (e) {
+        var t = e.target;
+        if (t && t.tagName === "SCRIPT" && t.src && t.src.indexOf("twikoo") !== -1) {
+          wake();
+        }
+      };
+      if (libScript) {
+        document.addEventListener("load", onLibLoad, true);
+        setTimeout(wake, 500);
+      } else {
+        setTimeout(wake, 500);
+      }
+    }
+  }
+
+  // 注册触发链：脚本会随 Swup 切页重跑，必须只注册一次，否则监听器随访问次数堆积，
+  // 同一导航会触发成倍次数的 initTwikoo（评论区反复清空重渲染）。
+  // content:replace（切页瞬间触发，后端拉取与转场动画并行）为主；
+  // firefly:page:loaded（转场结束后派发）为兜底，元素节点未变时会被去重跳过。
+  if (!window.__twikooInitBound) {
+    window.__twikooInitBound = true;
+
+    // 页面加载时初始化
+    document.addEventListener("DOMContentLoaded", initTwikoo);
+
+    // Swup 页面切换后重新初始化（切页瞬间，尽早开始拉取评论）
+    if (window.swup && window.swup.hooks) {
+      window.swup.hooks.on("content:replace", function () {
+        setTimeout(initTwikoo, 0);
+      });
+    } else {
+      document.addEventListener("swup:enable", function () {
+        if (window.swup && window.swup.hooks) {
+          window.swup.hooks.on("content:replace", function () {
+            setTimeout(initTwikoo, 0);
+          });
+        }
+      });
+    }
+
+    // 兜底事件（转场完成后派发；同节点重复触发会被元素去重跳过）
+    document.addEventListener("firefly:page:loaded", function () {
       const commentEl = document.getElementById("tcomment");
       if (commentEl) {
-        commentEl.innerHTML = "";
-
-        const dynamicConfig = createTwikooConfig();
-        console.log("[Twikoo] Init config:", dynamicConfig);
-
-        twikoo
-          .init(dynamicConfig)
-          .then(() => {
-            console.log("[Twikoo] Init complete");
-            applyChatSortOrder();
-            applyChatEnhancements();
-            watchChatEnhancements();
-          })
-          .catch((error) => {
-            console.error("[Twikoo] Init failed:", error);
-          });
-      }
-    } else {
-      // 如果 Twikoo 未加载，稍后重试
-      setTimeout(initTwikoo, 500);
-    }
-  }
-
-  // 页面加载时初始化
-  document.addEventListener("DOMContentLoaded", initTwikoo);
-
-  // Swup 页面切换后重新初始化
-  if (window.swup && window.swup.hooks) {
-    window.swup.hooks.on("content:replace", function () {
-      setTimeout(initTwikoo, 200);
-    });
-  } else {
-    document.addEventListener("swup:enable", function () {
-      if (window.swup && window.swup.hooks) {
-        window.swup.hooks.on("content:replace", function () {
-          setTimeout(initTwikoo, 200);
-        });
+        initTwikoo();
       }
     });
   }
-
-  // 自定义事件监听
-  document.addEventListener("firefly:page:loaded", function () {
-    const commentEl = document.getElementById("tcomment");
-    if (commentEl) {
-      console.log("[Twikoo] Re-initializing via custom event");
-      initTwikoo();
-    }
-  });
 </script>
