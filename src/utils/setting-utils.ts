@@ -30,6 +30,44 @@ declare global {
 	}
 }
 
+/* ===== 安全存储访问 =====
+ * 部分手机浏览器（隐私模式/无痕浏览/禁用站点数据）访问 localStorage 会直接抛
+ * SecurityError——原来的守卫本身也会跟着抛错，导致主题切换、亮暗模式、显示设置
+ * 全部静默失效（表现为：切换后图标变了但页面配色不变）。统一走以下安全函数：
+ * 存储不可用时读写静默降级，主题照常应用到文档，只是不持久化。 */
+export function safeStorageGet(key: string): string | null {
+	if (typeof window === "undefined") {
+		return null;
+	}
+	try {
+		return window.localStorage.getItem(key);
+	} catch {
+		return null;
+	}
+}
+
+export function safeStorageSet(key: string, value: string): void {
+	if (typeof window === "undefined") {
+		return;
+	}
+	try {
+		window.localStorage.setItem(key, value);
+	} catch {
+		/* 存储不可用时静默跳过持久化 */
+	}
+}
+
+export function safeStorageRemove(key: string): void {
+	if (typeof window === "undefined") {
+		return;
+	}
+	try {
+		window.localStorage.removeItem(key);
+	} catch {
+		/* 同上 */
+	}
+}
+
 export function getDefaultHue(): number {
 	const fallback = "250";
 	// 检查是否在浏览器环境中
@@ -66,23 +104,19 @@ export function resolveTheme(theme: LIGHT_DARK_MODE): LIGHT_DARK_MODE {
 
 export function getHue(): number {
 	// 先检查全局对象
-	if (typeof window === "undefined" || !window.localStorage) {
+	if (typeof window === "undefined") {
 		return getDefaultHue();
 	}
-	const stored = localStorage.getItem("hue");
+	const stored = safeStorageGet("hue");
 	return stored ? Number.parseInt(stored, 10) : getDefaultHue();
 }
 
 export function setHue(hue: number): void {
 	// 先检查是否在浏览器环境
-	if (
-		typeof window === "undefined" ||
-		!window.localStorage ||
-		typeof document === "undefined"
-	) {
+	if (typeof window === "undefined" || typeof document === "undefined") {
 		return;
 	}
-	localStorage.setItem("hue", String(hue));
+	safeStorageSet("hue", String(hue));
 	const r = document.querySelector(":root") as HTMLElement;
 	if (!r) {
 		return;
@@ -158,18 +192,12 @@ let systemThemeListener:
 
 export function setTheme(theme: LIGHT_DARK_MODE): void {
 	// 检查是否在浏览器环境中
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
 
 	// 先应用主题
 	applyThemeToDocument(theme);
 
 	// 保存到localStorage
-	localStorage.setItem("theme", theme);
+	safeStorageSet("theme", theme);
 
 	// 如果切换到 system 模式，需要监听系统主题变化
 	if (theme === SYSTEM_MODE) {
@@ -252,26 +280,12 @@ function cleanupSystemThemeListener() {
 
 export function getStoredTheme(): LIGHT_DARK_MODE {
 	// 检查是否在浏览器环境中
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
-		return getDefaultTheme();
-	}
-	return (
-		(localStorage.getItem("theme") as LIGHT_DARK_MODE) || getDefaultTheme()
-	);
+
+	return (safeStorageGet("theme") as LIGHT_DARK_MODE) || getDefaultTheme();
 }
 
 // 初始化主题监听器（用于页面加载后）
 export function initThemeListener(): void {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
-		return;
-	}
-
 	const theme = getStoredTheme();
 
 	// 如果主题是 system 模式，需要监听系统主题变化
@@ -306,13 +320,10 @@ export function getDefaultFullscreenLayout(): FullscreenWallpaperLayout {
 
 export function getStoredFullscreenLayout(): FullscreenWallpaperLayout {
 	const defaultLayout = getDefaultFullscreenLayout();
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return defaultLayout;
 	}
-	const stored = localStorage.getItem("fullscreenLayout");
+	const stored = safeStorageGet("fullscreenLayout");
 	return stored === "hero" || stored === "classic" ? stored : defaultLayout;
 }
 
@@ -348,12 +359,7 @@ export function applyFullscreenLayoutToDocument(
 export function setFullscreenLayout(layout: FullscreenWallpaperLayout): void {
 	const safeLayout: FullscreenWallpaperLayout =
 		layout === "hero" ? "hero" : "classic";
-	if (
-		typeof localStorage !== "undefined" &&
-		typeof localStorage.setItem === "function"
-	) {
-		localStorage.setItem("fullscreenLayout", safeLayout);
-	}
+	safeStorageSet("fullscreenLayout", safeLayout);
 	applyFullscreenLayoutToDocument(safeLayout);
 }
 
@@ -455,13 +461,8 @@ export function updateNavbarTransparency(mode: WALLPAPER_MODE): void {
 
 export function setWallpaperMode(mode: WALLPAPER_MODE): void {
 	// 检查是否在浏览器环境中
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
-	localStorage.setItem("wallpaperMode", mode);
+
+	safeStorageSet("wallpaperMode", mode);
 	applyWallpaperModeToDocument(mode);
 }
 
@@ -474,21 +475,18 @@ export function initWallpaperMode(): void {
 
 export function getStoredWallpaperMode(): WALLPAPER_MODE {
 	// 检查是否在浏览器环境中
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return backgroundWallpaper.mode;
 	}
 
 	const isSwitchable = displaySettingsConfig.wallpaperModeSwitchable;
 	if (!isSwitchable) {
-		localStorage.removeItem("wallpaperMode");
+		safeStorageRemove("wallpaperMode");
 		return backgroundWallpaper.mode;
 	}
 
 	return (
-		(localStorage.getItem("wallpaperMode") as WALLPAPER_MODE) ||
+		(safeStorageGet("wallpaperMode") as WALLPAPER_MODE) ||
 		backgroundWallpaper.mode
 	);
 }
@@ -511,13 +509,10 @@ export function getDefaultOverlayCardOpacity(): number {
 }
 
 export function getStoredOverlayOpacity(): number {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return getDefaultOverlayOpacity();
 	}
-	const stored = localStorage.getItem("overlayOpacity");
+	const stored = safeStorageGet("overlayOpacity");
 	if (stored === null) {
 		return getDefaultOverlayOpacity();
 	}
@@ -529,13 +524,10 @@ export function getStoredOverlayOpacity(): number {
 }
 
 export function getStoredOverlayBlur(): number {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return getDefaultOverlayBlur();
 	}
-	const stored = localStorage.getItem("overlayBlur");
+	const stored = safeStorageGet("overlayBlur");
 	if (stored === null) {
 		return getDefaultOverlayBlur();
 	}
@@ -547,13 +539,10 @@ export function getStoredOverlayBlur(): number {
 }
 
 export function getStoredOverlayCardOpacity(): number {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return getDefaultOverlayCardOpacity();
 	}
-	const stored = localStorage.getItem("overlayCardOpacity");
+	const stored = safeStorageGet("overlayCardOpacity");
 	if (stored === null) {
 		return getDefaultOverlayCardOpacity();
 	}
@@ -602,34 +591,19 @@ export function applyOverlayCardOpacityToDocument(cardOpacity: number): void {
 
 export function setOverlayOpacity(opacity: number): void {
 	const safeOpacity = clampNumber(opacity, 0, 1);
-	if (
-		typeof localStorage !== "undefined" &&
-		typeof localStorage.setItem === "function"
-	) {
-		localStorage.setItem("overlayOpacity", String(safeOpacity));
-	}
+	safeStorageSet("overlayOpacity", String(safeOpacity));
 	applyOverlayOpacityToDocument(safeOpacity);
 }
 
 export function setOverlayBlur(blur: number): void {
 	const safeBlur = clampNumber(blur, 0, 20);
-	if (
-		typeof localStorage !== "undefined" &&
-		typeof localStorage.setItem === "function"
-	) {
-		localStorage.setItem("overlayBlur", String(safeBlur));
-	}
+	safeStorageSet("overlayBlur", String(safeBlur));
 	applyOverlayBlurToDocument(safeBlur);
 }
 
 export function setOverlayCardOpacity(cardOpacity: number): void {
 	const safeCardOpacity = clampNumber(cardOpacity, 0, 1);
-	if (
-		typeof localStorage !== "undefined" &&
-		typeof localStorage.setItem === "function"
-	) {
-		localStorage.setItem("overlayCardOpacity", String(safeCardOpacity));
-	}
+	safeStorageSet("overlayCardOpacity", String(safeCardOpacity));
 	applyOverlayCardOpacityToDocument(safeCardOpacity);
 }
 
@@ -654,13 +628,10 @@ export function getDefaultWavesEnabled(): boolean {
 }
 
 export function getStoredWavesEnabled(): boolean {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return getDefaultWavesEnabled();
 	}
-	const stored = localStorage.getItem("wavesEnabled");
+	const stored = safeStorageGet("wavesEnabled");
 	if (stored === null) {
 		return getDefaultWavesEnabled();
 	}
@@ -668,13 +639,7 @@ export function getStoredWavesEnabled(): boolean {
 }
 
 export function setWavesEnabled(enabled: boolean): void {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
-	localStorage.setItem("wavesEnabled", String(enabled));
+	safeStorageSet("wavesEnabled", String(enabled));
 	applyWavesEnabledToDocument(enabled);
 }
 
@@ -711,13 +676,10 @@ export function getDefaultGradientEnabled(): boolean {
 }
 
 export function getStoredGradientEnabled(): boolean {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return getDefaultGradientEnabled();
 	}
-	const stored = localStorage.getItem("gradientEnabled");
+	const stored = safeStorageGet("gradientEnabled");
 	if (stored === null) {
 		return getDefaultGradientEnabled();
 	}
@@ -725,13 +687,7 @@ export function getStoredGradientEnabled(): boolean {
 }
 
 export function setGradientEnabled(enabled: boolean): void {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
-	localStorage.setItem("gradientEnabled", String(enabled));
+	safeStorageSet("gradientEnabled", String(enabled));
 	applyGradientEnabledToDocument(enabled);
 }
 
@@ -761,10 +717,10 @@ export function getDefaultSakuraEnabled(): boolean {
 }
 
 export function getStoredSakuraEnabled(): boolean {
-	if (typeof localStorage === "undefined") {
+	if (false) {
 		return getDefaultSakuraEnabled();
 	}
-	const stored = localStorage.getItem("sakuraEnabled");
+	const stored = safeStorageGet("sakuraEnabled");
 	if (stored === null) {
 		return getDefaultSakuraEnabled();
 	}
@@ -772,13 +728,7 @@ export function getStoredSakuraEnabled(): boolean {
 }
 
 export function setSakuraEnabled(enabled: boolean): void {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
-	localStorage.setItem("sakuraEnabled", String(enabled));
+	safeStorageSet("sakuraEnabled", String(enabled));
 	document.documentElement.setAttribute("data-sakura-enabled", String(enabled));
 	// 实时切换樱花特效
 	window.dispatchEvent(
@@ -796,13 +746,10 @@ export function getDefaultBannerCarouselEnabled(): boolean {
 }
 
 export function getStoredBannerTitleEnabled(): boolean {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return getDefaultBannerTitleEnabled();
 	}
-	const stored = localStorage.getItem("bannerTitleEnabled");
+	const stored = safeStorageGet("bannerTitleEnabled");
 	if (stored === null) {
 		return getDefaultBannerTitleEnabled();
 	}
@@ -814,13 +761,10 @@ export function getStoredBannerCarouselEnabled(): boolean {
 	if (!isSwitchable) {
 		return getDefaultBannerCarouselEnabled();
 	}
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
+	if (false || false) {
 		return getDefaultBannerCarouselEnabled();
 	}
-	const stored = localStorage.getItem("bannerCarouselEnabled");
+	const stored = safeStorageGet("bannerCarouselEnabled");
 	if (stored === null) {
 		return getDefaultBannerCarouselEnabled();
 	}
@@ -828,25 +772,15 @@ export function getStoredBannerCarouselEnabled(): boolean {
 }
 
 export function setBannerTitleEnabled(enabled: boolean): void {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
-	localStorage.setItem("bannerTitleEnabled", String(enabled));
+	safeStorageSet("bannerTitleEnabled", String(enabled));
 	applyBannerTitleEnabledToDocument(enabled);
 }
 
 export function setBannerCarouselEnabled(enabled: boolean): void {
 	const safeEnabled = !!enabled;
 	const isSwitchable = displaySettingsConfig.bannerCarouselSwitchable;
-	if (
-		isSwitchable &&
-		typeof localStorage !== "undefined" &&
-		typeof localStorage.setItem === "function"
-	) {
-		localStorage.setItem("bannerCarouselEnabled", String(safeEnabled));
+	if (isSwitchable && true && true) {
+		safeStorageSet("bannerCarouselEnabled", String(safeEnabled));
 	}
 	applyBannerCarouselEnabledToDocument(safeEnabled);
 	if (typeof window !== "undefined") {
@@ -896,10 +830,10 @@ export function getDefaultCardBorderEnabled(): boolean {
 }
 
 export function getStoredCardBorderEnabled(): boolean {
-	if (typeof localStorage === "undefined") {
+	if (false) {
 		return getDefaultCardBorderEnabled();
 	}
-	const stored = localStorage.getItem("cardBorderEnabled");
+	const stored = safeStorageGet("cardBorderEnabled");
 	if (stored === null) {
 		return getDefaultCardBorderEnabled();
 	}
@@ -907,13 +841,7 @@ export function getStoredCardBorderEnabled(): boolean {
 }
 
 export function setCardBorderEnabled(enabled: boolean): void {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
-	localStorage.setItem("cardBorderEnabled", String(enabled));
+	safeStorageSet("cardBorderEnabled", String(enabled));
 	if (enabled) {
 		document.documentElement.classList.add("enable-card-border");
 	} else {
@@ -927,10 +855,10 @@ export function getDefaultCardFollowThemeEnabled(): boolean {
 }
 
 export function getStoredCardFollowThemeEnabled(): boolean {
-	if (typeof localStorage === "undefined") {
+	if (false) {
 		return getDefaultCardFollowThemeEnabled();
 	}
-	const stored = localStorage.getItem("cardFollowThemeEnabled");
+	const stored = safeStorageGet("cardFollowThemeEnabled");
 	if (stored === null) {
 		return getDefaultCardFollowThemeEnabled();
 	}
@@ -938,13 +866,7 @@ export function getStoredCardFollowThemeEnabled(): boolean {
 }
 
 export function setCardFollowThemeEnabled(enabled: boolean): void {
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
-	localStorage.setItem("cardFollowThemeEnabled", String(enabled));
+	safeStorageSet("cardFollowThemeEnabled", String(enabled));
 	if (enabled) {
 		document.body.classList.add("card-follow-theme-hue");
 	} else {
