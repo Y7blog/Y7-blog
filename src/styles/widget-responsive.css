@@ -356,36 +356,34 @@
   font-size: 0.875rem;
 }
 
-/* 暗色主题适配 */
-@media (prefers-color-scheme: dark) {
-  .widget-container:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  .widget-container.widget-hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  }
-  
-  .widget-error {
-    border-color: #f87171;
-    background-color: #450a0a;
-    color: #fca5a5;
-  }
-  
-  .widget-empty {
-    border-color: #4b5563;
-    background-color: #111827;
-    color: #9ca3af;
-  }
-  
-  .widget-loading::before {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.1),
-      transparent
-    );
-  }
+/* 暗色主题适配（跟随站点 .dark 开关，不跟系统偏好） */
+:root.dark .widget-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:root.dark .widget-container.widget-hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+:root.dark .widget-error {
+  border-color: #f87171;
+  background-color: #450a0a;
+  color: #fca5a5;
+}
+
+:root.dark .widget-empty {
+  border-color: #4b5563;
+  background-color: #111827;
+  color: #9ca3af;
+}
+
+:root.dark .widget-loading::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
 }
 
 /* 高对比度模式 */

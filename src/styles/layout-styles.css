@@ -409,8 +409,8 @@ html.is-page-transitioning .banner-home-text-overlay {
     }
 }
 
-/* 移动端暗色模式文字阴影优化（仅横幅/全屏壁纸模式） */
-@media (max-width: 1023px) and (prefers-color-scheme: dark) {
+/* 移动端暗色模式文字阴影优化（仅横幅/全屏壁纸模式）；跟随站点 .dark 开关，不跟系统偏好 */
+@media (max-width: 1023px) {
     html.dark[data-wallpaper-mode="banner"] .banner-title,
     html.dark[data-wallpaper-mode="fullscreen"] .banner-title {
         text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
