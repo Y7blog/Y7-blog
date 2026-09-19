@@ -27,7 +27,7 @@ export const booknavConfig: BooknavGroup[] = [
 	{
 		id: "dev",
 		name: "区块链交易所",
-		icon: "material-symbols:code-rounded",
+		icon: "material-symbols:currency-exchange-rounded",
 		desc: "最高可返手续费30%",
 		weight: 100,
 		items: [
@@ -59,7 +59,7 @@ export const booknavConfig: BooknavGroup[] = [
 	{
 		id: "opensource",
 		name: "冲狗工具",
-		icon: "material-symbols:code-rounded",
+		icon: "material-symbols:rocket-launch-rounded",
 		desc: "捕捉热点，快速交易",
 		weight: 90,
 		items: [
@@ -75,7 +75,7 @@ export const booknavConfig: BooknavGroup[] = [
 	{
 		id: "design",
 		name: "会员充值",
-		icon: "material-symbols:palette-outline-rounded",
+		icon: "material-symbols:card-membership-rounded",
 		desc: "会员充值更省钱，优惠更多",
 		weight: 90,
 		items: [
@@ -98,7 +98,7 @@ export const booknavConfig: BooknavGroup[] = [
 	{
 		id: "tools",
 		name: "VPN",
-		icon: "material-symbols:build-outline-rounded",
+		icon: "material-symbols:vpn-lock-rounded",
 		desc: "安全稳定，自由连接全球",
 		weight: 80,
 		items: [
@@ -115,7 +115,7 @@ export const booknavConfig: BooknavGroup[] = [
 	{
 		id: "img",
 		name: "图文工具",
-		icon: "material-symbols:auto-stories-outline-rounded",
+		icon: "material-symbols:image-rounded",
 		desc: "无需注册，快速生成图片链接",
 		weight: 80,
 		items: [
@@ -132,7 +132,7 @@ export const booknavConfig: BooknavGroup[] = [
 	{
 		id: "resources",
 		name: "查询工具",
-		icon: "material-symbols:auto-stories-outline-rounded",
+		icon: "material-symbols:query-stats-rounded",
 		desc: "多维查询，快人一步",
 		weight: 70,
 		items: [

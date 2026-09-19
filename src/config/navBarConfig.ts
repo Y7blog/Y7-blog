@@ -175,7 +175,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 	Booknav: {
 		name: "工具",
 		url: "/booknav/",
-		icon: "material-symbols:bookmarks",
+		icon: "material-symbols:home-repair-service-rounded",
 		pageKey: "booknav",
 	},
 	Bilibili: {
