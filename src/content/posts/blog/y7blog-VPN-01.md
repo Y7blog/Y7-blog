@@ -43,9 +43,11 @@ seriesOrder: 1
 
 **购买 VPN / 节点：**
 
-👉 [查看 VPN 服务及套餐](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 服务商后台支持多种邮箱注册，每天有1小时免费试用
+👉 【[查看 VPN 服务及套餐](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 】
 
-注：以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。
+服务商后台支持多种邮箱注册，每天有1小时免费试用
+
+<Badge type="tip">注：</Badge> <Badge type="note">以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。</Badge>
 
 **用量参考：**我每天刷刷推特（X），看看油管(YouTube)，玩玩AI，一个月用量不到200G，
 
@@ -61,9 +63,9 @@ seriesOrder: 1
 
 如果自己不会注册海外ID，可以自行购买独享海外ID
 
-👉 [查看 Apple ID 获取方式](https://huojian.iosapp.icu/?aff=CE3V6S4A) ，
+👉 【[查看 Apple ID 获取方式](https://huojian.iosapp.icu/?aff=CE3V6S4A) 】，
 
-注：以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。
+<Badge type="tip">注：</Badge> <Badge type="note">以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。</Badge>
 
 建议购买美区ID，大多数AI工具或者交易所等软件对美区ID都很友好
 
@@ -131,6 +133,8 @@ seriesOrder: 1
 
 👉 Shadowrocket[点我直达](https://apps.apple.com/us/app/shadowrocket/id932747118)
 
+<Badge type="tip">注：</Badge> <Badge type="note">以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。</Badge>
+
 这个是需要付费的，下载量和评分就能看出来好不好用
 
 ![苹果客户端](https://www.y7img.ccwu.cc/file/1790094531063_苹果客户端介绍1.png)
@@ -181,7 +185,7 @@ seriesOrder: 1
 
 👉 [查看 Apple ID 获取方式](https://huojian.iosapp.icu/?aff=CE3V6S4A)
 
-注：以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。
+<Badge type="tip">注：</Badge> <Badge type="note">以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。</Badge>
 
 ---
 
