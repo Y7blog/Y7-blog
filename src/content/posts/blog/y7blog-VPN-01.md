@@ -49,7 +49,8 @@ seriesOrder: 1
 
 <Badge type="tip">注：</Badge> <Badge type="note">以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。</Badge>
 
-**用量参考：**我每天刷刷推特（X），看看油管(YouTube)，玩玩AI，一个月用量不到200G，
+**用量参考：**
+我每天刷刷推特（X），看看油管(YouTube)，玩玩AI，一个月用量不到200G
 
 正常使用买标准套餐200G就够了，还不限设备数，电脑、安卓手机、苹果手机可以共用一个号。
 
@@ -63,7 +64,7 @@ seriesOrder: 1
 
 如果自己不会注册海外ID，可以自行购买独享海外ID
 
-👉 【[查看 Apple ID 获取方式](https://huojian.iosapp.icu/?aff=CE3V6S4A) 】，
+👉 【[查看 Apple ID 获取方式](https://huojian.iosapp.icu/?aff=CE3V6S4A) 】
 
 <Badge type="tip">注：</Badge> <Badge type="note">以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。</Badge>
 
@@ -81,7 +82,7 @@ seriesOrder: 1
 
 **完成第一步VPN服务商后台注册和购买套餐之后**
 
-在服务商后台
+在服务商后台【[后台入口](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 】
 
 **找到左侧文档教程**
 
@@ -113,12 +114,15 @@ seriesOrder: 1
 
 ## 第一步：登陆 Apple ID
 
-**如果你用的是共享海外ID**
-注意1，登陆的 是App Store（应用商店） 的id，而 不是 系统设置 里面iCloud的 Apple ID！
+**【共享海外ID】**
 
-注意2，当弹出的Apple ID安全性画面，选择"其他选项"->"不要升级"，切勿开启双重认证！
+注意1：登陆的是 App Store（应用商店）的ID，而不是系统设置里面 iCloud 的 Apple ID！
 
-**独享海外ID**如果登陆系统设置里面iCloud的 Apple ID也要关闭iCloud里面的功能，安全意识要有！！！
+注意2：当弹出的 Apple ID 安全性画面，选择"其他选项"->"不要升级"，切勿开启双重认证！
+
+**【独享海外ID】**
+
+如果登陆系统设置里面iCloud的 Apple ID 也要关闭 iCloud 里面的功能，安全意识要有！！！
 
 
 ### ⚠️ 使用第三方 Apple ID 时需要特别注意
@@ -139,7 +143,7 @@ seriesOrder: 1
 
 ![苹果客户端](https://www.y7img.ccwu.cc/file/1790094531063_苹果客户端介绍1.png)
 
-下载完成后，在服务商后台
+下载完成后，在服务商后台【[后台入口](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 】
 
 **找到左侧文档教程**
 
@@ -156,7 +160,7 @@ seriesOrder: 1
 
 **完成第一步VPN服务商后台注册和购买套餐之后**
 
-在服务商后台
+在服务商后台【[后台入口](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 】
 
 **找到左侧文档教程**
 
