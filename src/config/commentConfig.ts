@@ -21,7 +21,7 @@ export const commentConfig: CommentConfig = {
 		jsUrl: "https://cdn.jsdelivr.net/npm/twikoo@1.7.14/dist/twikoo.min.js",
 		// Twikoo 自定义 CSS 文件地址，为空则不加载
 		// 带版本号参数：样式更新时递增 v 值，避免 CDN/浏览器缓存旧样式
-		cssUrl: "/assets/css/twikoo-custom.css?v=10",
+		cssUrl: "/assets/css/twikoo-custom.css?v=11",
 		// 游客兜底头像：DiceBear 按邮箱哈希生成（同邮箱恒定同一头像，不同邮箱各不相同）
 		dicebearStyle: "adventurer",
 		// 管理员（博主）评论专属头像，跟随站点头像设置（profileConfig.avatar）

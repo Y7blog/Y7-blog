@@ -166,6 +166,21 @@ const config = {
     }
     return Math.abs(hash).toString(16).padStart(8, "0");
   }
+  // sha256hex(邮箱)：与后端渲染评论头像用的哈希一致（无 crypto.subtle 时退化为简易哈希）。
+  // 「点击头像随机更换」用它把所选头像按邮箱哈希记账，评论列表回填时才能对上号。
+  function gbSha256Hex(str, cb) {
+    var fallback = function () { cb(gbSimpleHash(str)); };
+    if (window.crypto && window.crypto.subtle) {
+      crypto.subtle
+        .digest("SHA-256", new TextEncoder().encode(str))
+        .then(function (buf) {
+          cb(Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, "0"); }).join(""));
+        })
+        .catch(fallback);
+    } else {
+      fallback();
+    }
+  }
   function gbExtractHash(src) {
     var m = src.match(/\/(?:avatar|seed)[\/=]?([0-9a-f]{8,64})/i);
     return m ? m[1] : null;
@@ -179,32 +194,35 @@ const config = {
     if (!img || !mailInput) return;
     img.title = "头像随邮箱自动生成";
     var mail = String(mailInput.value || "").trim().toLowerCase();
-    if (!mail) return;
+    if (!mail) {
+      img.classList.add("gb-avatar-fixed");
+      return;
+    }
     var qq = mail.match(/^(\d{5,12})@qq\.com$/i);
     if (qq) {
+      img.classList.add("gb-avatar-fixed");
       gbSetFormPreview(img, "https://q1.qlogo.cn/g?b=qq&nk=" + qq[1] + "&s=100");
       return;
     }
     var adminEmail = (config.adminEmail || "").trim().toLowerCase();
     var adminAvatar = (config.adminAvatar || "").trim();
     if (adminEmail && mail === adminEmail && adminAvatar) {
+      img.classList.add("gb-avatar-fixed");
       gbSetFormPreview(img, adminAvatar);
       return;
     }
-    var backendUrl = gbGetBackendAvatar(mail);
-    if (backendUrl) {
-      var hash = gbExtractHash(backendUrl);
-      gbSetFormPreview(img, hash ? gbDiceBearUrl(hash) : backendUrl, "点击头像随机更换");
-      return;
-    }
-    var storedUrl = "";
-    try { storedUrl = localStorage.getItem("gb-avatar-url") || ""; } catch (e) {}
-    if (storedUrl) {
-      gbSetFormPreview(img, storedUrl, "点击头像随机更换");
+    // QQ / 管理员之外的邮箱：未发过评论可点选更换，发过则锁定（仅提示，点击无效）
+    var locked = gbIsAvatarLocked(mail);
+    img.classList.toggle("gb-avatar-fixed", locked);
+    var lockTip = "已发布评论，头像不可更换";
+    var chosenUrl = gbGetChosenAvatar(mail);
+    if (chosenUrl) {
+      var hash = gbExtractHash(chosenUrl);
+      gbSetFormPreview(img, hash ? gbDiceBearUrl(hash) : chosenUrl, locked ? lockTip : "点击头像随机更换");
       return;
     }
     var setDiceBear = function (hash) {
-      gbSetFormPreview(img, gbDiceBearUrl(hash), "点击头像随机更换");
+      gbSetFormPreview(img, gbDiceBearUrl(hash), locked ? lockTip : "点击头像随机更换");
     };
     if (window.crypto && window.crypto.subtle) {
       crypto.subtle
@@ -223,51 +241,146 @@ const config = {
     gbAvatarTimer = setTimeout(gbRewriteFormAvatar, 250);
   }
 
-  // 获取某邮箱在后端绑定的头像（发送评论后自动缓存）
-  function gbGetBackendAvatar(mail) {
+  // 获取某邮箱已点选的头像（「点击头像随机更换」时按邮箱写入，长期记住该邮箱的选择）
+  function gbGetChosenAvatar(mail) {
     try { return localStorage.getItem("gb-avatar-email:" + mail) || ""; } catch (e) { return ""; }
   }
 
-  // 发送评论后捕获后端返回的头像，按邮箱存入 localStorage
-  function gbCapturePostSubmitAvatar() {
-    var sendBtn = document.querySelector(".tk-submit .tk-send");
-    if (!sendBtn || sendBtn.dataset.gbCapture) return;
-    sendBtn.dataset.gbCapture = "1";
-    sendBtn.addEventListener("click", function () {
-      var mailInput = document.querySelector(".tk-submit input[name='mail']");
-      if (!mailInput) return;
-      var mail = String(mailInput.value || "").trim().toLowerCase();
-      if (!mail) return;
-      var container = document.querySelector(".tk-comments-container");
-      if (!container) return;
-      var existing = container.querySelectorAll(".tk-comment");
-      var existingSet = new Set();
-      existing.forEach(function (c) { existingSet.add(c); });
-      var tries = 0;
-      var observer = new MutationObserver(function () {
-        tries++;
-        var all = container.querySelectorAll(".tk-comment");
-        var found = null;
-        all.forEach(function (c) { if (!existingSet.has(c)) found = c; });
-        if (!found && tries > 30) { observer.disconnect(); return; }
-        if (!found) return;
-        observer.disconnect();
-        var newImg = found.querySelector(".tk-avatar-img");
-        if (!newImg) return;
-        var src = newImg.getAttribute("src") || "";
-        if (src) {
-          var storedSrc = src;
-          var wm = src.match(/\/avatar\/([0-9a-f]{16,64})/i);
-          if (wm && src.indexOf("dicebear") === -1) {
-            storedSrc = "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + wm[1];
-          }
-          try { localStorage.setItem("gb-avatar-email:" + mail, storedSrc); } catch (e) {}
-          gbRewriteFormAvatar();
+  // 「已用该邮箱发送过评论」锁定标记：发送成功后该邮箱头像固定，不再响应点选更换
+  function gbIsAvatarLocked(mail) {
+    try { return localStorage.getItem("gb-avatar-locked:" + mail) === "1"; } catch (e) { return false; }
+  }
+  function gbLockAvatar(mail) {
+    try { localStorage.setItem("gb-avatar-locked:" + mail, "1"); } catch (e) {}
+  }
+
+  // 该邮箱已知的全部头像哈希（本地算的 sha256 + 后端实际渲染用过的哈希）。
+  // 后端哈希算法与本地未必一致（md5/sha256），换头像时必须把所有已知映射
+  // 一并换成新头像——否则后端哈希那条旧映射仍指向第一次选的头像，表现为「换不了」。
+  function gbKnownHashes(mail) {
+    try {
+      var arr = JSON.parse(localStorage.getItem("gb-avatar-hashes:" + mail) || "[]");
+      return Array.isArray(arr)
+        ? arr.filter(function (h) { return /^[0-9a-f]{8,64}$/i.test(h); })
+        : [];
+    } catch (e) { return []; }
+  }
+  function gbRememberHash(mail, hash) {
+    if (!hash || !/^[0-9a-f]{8,64}$/i.test(hash)) return;
+    var list = gbKnownHashes(mail);
+    if (list.indexOf(hash) !== -1) return;
+    list.push(hash);
+    try { localStorage.setItem("gb-avatar-hashes:" + mail, JSON.stringify(list)); } catch (e) {}
+  }
+
+  // 发送评论后：锁定该邮箱头像（不再可点选更换），并把后端实际渲染出的头像哈希
+  // 也映射到所点选的头像（后端用 md5 或 sha256 皆可覆盖），保证发出的评论显示的
+  // 就是刚选的这个头像；无点选记录时按邮箱缓存后端头像
+  function gbArmSubmitCapture(mail) {
+    var container = document.querySelector(".tk-comments-container");
+    if (!container) return;
+    // 请求发出瞬间的正文原文：用于在渲染后的列表里认出刚发出的这条评论
+    //（发送成功后 Twikoo 会清空输入框；正文框是表单里唯一的 textarea，无 name 属性）
+    var msgInput = document.querySelector(".tk-submit textarea");
+    var msgText = msgInput ? String(msgInput.value || "").replace(/\s+/g, "") : "";
+    var existing = container.querySelectorAll(".tk-comment");
+    var existingSet = new Set();
+    existing.forEach(function (c) { existingSet.add(c); });
+    var tries = 0;
+    var lastNew = null;
+    var firstNewAt = 0;
+    var observer = new MutationObserver(function () {
+      tries++;
+      var all = container.querySelectorAll(".tk-comment");
+      var found = null;
+      all.forEach(function (c) {
+        if (existingSet.has(c)) return;
+        if (!firstNewAt) firstNewAt = Date.now();
+        lastNew = c;
+        if (!found && msgText) {
+          var content = c.querySelector(".tk-content");
+          // 正文按空白压缩后比对：Markdown/表情渲染会改动文本，无法精确匹配
+          if (content && content.textContent.replace(/\s+/g, "") === msgText) found = c;
         }
       });
-      observer.observe(container, { childList: true, subtree: true });
-      setTimeout(function () { observer.disconnect(); }, 10000);
+      // 正文匹配不上时退回「最后一个新节点」：正常追加场景它就是刚发的评论。
+      // 出现新节点 3 秒后仍未匹配上，或超过 30 个变动批次，就不再等
+      if (!found && lastNew && (tries > 30 || Date.now() - firstNewAt > 3000)) found = lastNew;
+      if (!found) return;
+      observer.disconnect();
+      // 新评论已确认出现：兜底再锁一次（正常情况网络层挂钩已先行锁定）
+      gbLockAvatar(mail);
+      var newImg = found.querySelector(".tk-avatar-img");
+      if (!newImg) { gbRewriteFormAvatar(); return; }
+      var src = newImg.getAttribute("src") || "";
+      if (!src) { gbRewriteFormAvatar(); return; }
+      var chosenUrl = gbGetChosenAvatar(mail);
+      var wm = src.match(/\/avatar\/([0-9a-f]{16,64})/i);
+      if (wm) {
+        // 记住该邮箱在后端实际使用的哈希，下次点击换头像时才能把这条映射一并更新
+        gbRememberHash(mail, wm[1]);
+        var targetUrl = chosenUrl;
+        if (!targetUrl && src.indexOf("dicebear") === -1) {
+          targetUrl = "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + wm[1];
+          try { localStorage.setItem("gb-avatar-email:" + mail, targetUrl); } catch (e) {}
+        }
+        if (targetUrl) {
+          try { localStorage.setItem("gb-avatar-hash:" + wm[1], targetUrl); } catch (e) {}
+        }
+      }
+      // 重跑列表增强：刚发出的评论立即按映射显示点选头像，与输入框预览一致
+      applyChatEnhancements();
+      gbRewriteFormAvatar();
     });
+    observer.observe(container, { childList: true, subtree: true });
+    setTimeout(function () { observer.disconnect(); }, 10000);
+  }
+
+  // 网络层发送挂钩：Twikoo 通过 XMLHttpRequest 以
+  // { event: "COMMENT_SUBMIT", mail, comment, ... } 提交评论。在请求体里拿到
+  // 准确的提交邮箱，后端响应含 result.id（发送成功）后立即锁定该邮箱头像。
+  // 锁定挂在网络层而非「发送按钮点击」或「等新评论出现在列表」：回复、
+  // 表情/Markdown 正文、Ctrl+Enter 发送、评论审核中暂不显示等情况下同样可靠。
+  function gbInstallSendHook() {
+    if (window.__gbTwikooSendHook) return;
+    window.__gbTwikooSendHook = true;
+    var origSend = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.send = function (body) {
+      var xhr = this;
+      var mail = "";
+      try {
+        var req = JSON.parse(body);
+        if (req && req.event === "COMMENT_SUBMIT") {
+          mail = String(req.mail || "").trim().toLowerCase();
+        }
+      } catch (e) {}
+      if (mail) {
+        gbArmSubmitCapture(mail);
+        // 请求发出即先锁定：后端响应可能要数秒，期间不允许再点选更换。
+        // 后端明确返回失败（非 200 或无 result.id）时回滚——仅回滚本次新加的锁，
+        // 之前已锁定的邮箱不受一次失败发送影响
+        var wasLocked = gbIsAvatarLocked(mail);
+        gbLockAvatar(mail);
+        gbRewriteFormAvatar();
+        xhr.addEventListener("load", function () {
+          try {
+            var ok = false;
+            if (xhr.status === 200) {
+              var res = JSON.parse(xhr.responseText);
+              ok = !!(res && res.result && res.result.id);
+            }
+            if (ok) {
+              gbLockAvatar(mail);
+            } else if (!wasLocked) {
+              try { localStorage.removeItem("gb-avatar-locked:" + mail); } catch (e) {}
+            }
+            gbRewriteFormAvatar();
+            setTimeout(gbRewriteFormAvatar, 1200);
+          } catch (e) {}
+        });
+      }
+      return origSend.apply(this, arguments);
+    };
   }
 
   // 评论增强：绝对时间、复制消息按钮、输入框头像预览（幂等，可重复执行）
@@ -277,7 +390,7 @@ const config = {
 
     // 输入框头像实时预览
     gbRewriteFormAvatar();
-    gbCapturePostSubmitAvatar();
+    gbInstallSendHook();
 
     // 0) 内联评论数：同步到「评论区」标题旁（文章/动态页）
     var inline = document.querySelector("[data-inline-count]");
@@ -318,28 +431,35 @@ const config = {
       act.appendChild(btn);
     });
 
-    // 5) 头像：管理员（带博主徽章）用专属头像；游客用 DiceBear 按邮箱哈希生成
+    // 5) 头像：管理员（带博主徽章）用专属头像；游客优先「点选头像」，否则按邮箱哈希生成 DiceBear
     // （同一邮箱哈希恒定同一头像，不同邮箱各不相同；QQ 原生头像保留）
+    // 每次重跑都按最新点选记录重算——中途再点头像换一个，历史评论与新评论都会跟着更新
     var adminAvatar = (config.adminAvatar || "").trim();
     container.querySelectorAll(".tk-comment").forEach(function (c) {
       var img = c.querySelector(".tk-avatar-img");
       if (!img) return;
       var isMaster = !!c.querySelector(".tk-tag-green");
       if (isMaster && adminAvatar) {
-        if (img.dataset.gbAvatar !== "admin") {
-          img.dataset.gbAvatar = "admin";
-          img.setAttribute("src", adminAvatar);
-        }
+        img.dataset.gbAvatar = "admin";
+        if (img.getAttribute("src") !== adminAvatar) img.setAttribute("src", adminAvatar);
         return;
       }
-      if (img.dataset.gbAvatar) return; // 已处理（含 QQ 原生头像保留）
       var src = img.getAttribute("src") || "";
-      if (!src || src.indexOf("qlogo.cn") !== -1) return;
-      if (src.indexOf("dicebear") !== -1) { img.dataset.gbAvatar = "dice"; return; }
+      if (!src || src.indexOf("qlogo.cn") !== -1) return; // QQ 原生头像保留
+      // 首次遇到的后端哈希记在节点上：src 被改写成 DiceBear 后仍能反查点选记录
       var m = src.match(/\/avatar\/([0-9a-f]{16,64})/i);
-      if (!m) return; // 哈希结构不匹配则不处理
+      if (m) img.dataset.gbHash = m[1];
+      var hash = m ? m[1] : img.dataset.gbHash || "";
+      if (!hash) {
+        if (src.indexOf("dicebear") !== -1) img.dataset.gbAvatar = "dice";
+        return; // 无哈希可循则不动
+      }
       img.dataset.gbAvatar = "dice";
-      img.setAttribute("src", "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + m[1]);
+      var chosenUrl = "";
+      try { chosenUrl = localStorage.getItem("gb-avatar-hash:" + hash) || ""; } catch (e) {}
+      var target = chosenUrl || "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + hash;
+      // 值未变化不写 src：避免触发自身监听器造成 200ms 轮询循环
+      if (img.getAttribute("src") !== target) img.setAttribute("src", target);
     });
 
     // 4) 刷新/设置代理按钮：放到信息填写框右上角（原按钮行整体隐藏，点击代理到最新原节点）
@@ -421,11 +541,30 @@ const config = {
       if (/^\d{5,12}@qq\.com$/i.test(mail)) return;
       var adminEmail = (config.adminEmail || "").trim().toLowerCase();
       if (adminEmail && mail === adminEmail) return;
-      if (gbGetBackendAvatar(mail)) return;
+      // 已用该邮箱发送过评论：头像已固定，不再响应点选更换
+      if (gbIsAvatarLocked(mail)) return;
       var randomSeed = "r_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
       var randomUrl = "https://api.dicebear.com/9.x/" + diceStyle + "/svg?seed=" + randomSeed;
-      try { localStorage.setItem("gb-avatar-url", randomUrl); } catch (e) {}
+      // 所选头像绑定邮箱：预览立即生效；发布后评论列表按「邮箱哈希 → 所选头像」回填，
+      // 保证发出去的评论显示的就是刚选的这个头像（同一浏览器内）。
+      try { localStorage.setItem("gb-avatar-email:" + mail, randomUrl); } catch (e) {}
+      // 把该邮箱「所有已知哈希」的映射一并换成新头像（本地 sha256 + 后端用过的哈希），
+      // 并立即重刷评论列表——中途换头像时，历史评论与新评论都会跟着更新
+      var applyChosenToHashes = function () {
+        gbKnownHashes(mail).forEach(function (h) {
+          try { localStorage.setItem("gb-avatar-hash:" + h, randomUrl); } catch (e) {}
+        });
+        applyChatEnhancements();
+      };
+      gbSha256Hex(mail, function (hash) {
+        gbRememberHash(mail, hash);
+        applyChosenToHashes();
+      });
       gbSetFormPreview(img, randomUrl, "点击头像随机更换");
+      // Twikoo 原生预览会在输入邮箱后约 1s 异步回写头像地址，可能覆盖点选结果；
+      // 延迟强制回写两次（gbRewriteFormAvatar 会重新读取所选头像并对新节点挂好守卫）
+      setTimeout(gbRewriteFormAvatar, 400);
+      setTimeout(gbRewriteFormAvatar, 1200);
     });
   }
 

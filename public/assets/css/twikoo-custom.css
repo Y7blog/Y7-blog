@@ -155,6 +155,11 @@
   cursor: pointer;
 }
 
+/* 头像不可点选更换（QQ 邮箱 / 管理员 / 已发布评论锁定）时去掉手型光标 */
+.twikoo .tk-submit .tk-avatar .tk-avatar-img.gb-avatar-fixed {
+  cursor: default;
+}
+
 .twikoo .tk-avatar .tk-avatar-img svg,
 .twikoo .tk-avatar .tk-avatar-img svg path {
   fill: currentColor;
