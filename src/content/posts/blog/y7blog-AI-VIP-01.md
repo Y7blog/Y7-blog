@@ -200,7 +200,7 @@ seriesOrder: 1
 
 * 护照（有效期内）
 
-*  10U 资金
+* 10U 资金
 
 👉 [注册申请交易所账号](https://web3.bitget.com/share/1e1lnT?inviteCode=Y7UK88888)
 
