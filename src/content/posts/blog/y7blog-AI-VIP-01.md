@@ -1,5 +1,5 @@
 ---
-title: ChatGPT Plus 0元优惠领取教程：虚拟U卡注册、海外地址证明与订阅支付指南
+title: ChatGPT Plus 0元优惠领取教程：虚拟U卡注册、海外证明与订阅支付指南
 published: 2026-09-23
 pinned: false
 draft: false
@@ -19,7 +19,9 @@ seriesOrder: 1
 
 相比免费版本，Plus 提供更高的使用额度，以及更多模型和功能的使用权限。
 
-不过，ChatGPT Plus 并不是所有人都需要立即付费订阅。有时候，OpenAI 会向符合条件的用户提供限时免费试用或其他优惠活动。
+不过，ChatGPT Plus 并不是所有人都需要立即付费订阅。
+
+有时候，OpenAI 会向符合条件的用户提供限时免费试用或其他优惠活动。
 
 如果你的账号恰好获得了 0 元 Plus 优惠资格，就可以按照活动规则完成领取。
 
@@ -63,15 +65,12 @@ seriesOrder: 1
 
 **提前准备：**
 
-       - 护照（有效期内）
+* 护照（有效期内）
+* 身份证
+* 银行卡号
+* 10U资金
 
-       - 身份证
-
-       - 银行卡号
-
-       - 10U资金
-
-       护照很好办，要提前去当地办，一般需要等15天左右
+护照很好办，要提前去当地办，一般需要等15天左右
 
 目的是为了办理虚拟U卡，作为GPT Plus会员支付卡使用。
 
@@ -109,9 +108,9 @@ seriesOrder: 1
 
 **提前准备：**
 
-       - 身份证照片
+* 身份证照片
 
-       - 银行卡号
+* 银行卡号
 
 👉 [注册跨境电商账号](https://s.worldfirst.com.cn/3vfLQZ3V?default_source=WF-Vk00000yDF0I&referral_id=WF-Vk00000yDF0I)
 
@@ -130,41 +129,68 @@ seriesOrder: 1
 ![第3步](https://www.y7img.ccwu.cc/file/动态图标/1790533837116_第3步个人店铺1.png)
 [/grid]
 
+---
+
+[grid]
 ![第4步](https://www.y7img.ccwu.cc/file/动态图标/1790533855072_第4步经营类目1.png)
 ![第5步](https://www.y7img.ccwu.cc/file/动态图标/1790533879695_第5步人脸认证1.png)
 ![第6步](https://www.y7img.ccwu.cc/file/动态图标/1790533894560_第6步上传身份证1.png)
+[/grid]
+
+---
+
+[grid]
 ![第7步](https://www.y7img.ccwu.cc/file/动态图标/1790533924189_第7步扫码人脸认证1.png)
 ![第8步](https://www.y7img.ccwu.cc/file/动态图标/1790533956808_第8步补充英文名1.png)
 ![第9步](https://www.y7img.ccwu.cc/file/动态图标/1790533973222_第9步等待审核5分钟左右1.png)
+[/grid]
+
+---
+
+[grid]
 ![第10步](https://www.y7img.ccwu.cc/file/动态图标/1790533992424_第10步增加商铺收款账户1.png)
 ![第11步](https://www.y7img.ccwu.cc/file/动态图标/1790534006786_第11步新增账户平台1.png)
 ![第12步](https://www.y7img.ccwu.cc/file/动态图标/1790534032265_第12步绑定银行卡1.png)
 ![第13步](https://www.y7img.ccwu.cc/file/动态图标/1790534047450_第13步填写银行卡信息1.png)
+[/grid]
+
+---
+
+[grid]
 ![第14步](https://www.y7img.ccwu.cc/file/动态图标/1790534072681_第14步还是选择亚马逊1.png)
 ![第15步](https://www.y7img.ccwu.cc/file/动态图标/1790534080103_第15步境外收款账户1.png)
 ![第16步](https://www.y7img.ccwu.cc/file/动态图标/1790534094957_第16步等待账户审核1.png)
 ![第17步](https://www.y7img.ccwu.cc/file/动态图标/1790534112058_第17步开通地址证明1.png)
+[/grid]
 
 ### 3. 如何申请海外提供的证明文件？
 
 完成账户申请后，可以查看账户后台是否提供账户信息证明、收款账户证明或其他业务文件。
 
+[grid]
 ![第18步](https://www.y7img.ccwu.cc/file/动态图标/1790534208273_第18步开具账户证明1.png)
 ![第19步](https://www.y7img.ccwu.cc/file/动态图标/1790534230049_第19步账户证明地址1.png)
-
+[/grid]
 
 海外证明文件地址填写进入下面这个网站
 
 [海外地址查询](https://auspost.com.au/postcode)
 
+[grid]
 ![第20步](https://www.y7img.ccwu.cc/file/动态图标/1790534258879_第20步地址查询1.png)
 ![第21步](https://www.y7img.ccwu.cc/file/动态图标/1790534320060_第21步地址查询城市1.png)
 ![第22步](https://www.y7img.ccwu.cc/file/动态图标/1790534325678_第22步地址城市选择1.png)
 ![第23步](https://www.y7img.ccwu.cc/file/动态图标/1790534366302_第23步地址选择1.png)
+[/grid]
+
+---
+
+[grid]
 ![第24步](https://www.y7img.ccwu.cc/file/动态图标/1790534421811_第24步地址获取1.png)
 ![第25步](https://www.y7img.ccwu.cc/file/动态图标/1790534434895_第25步地址复制1.png)
 ![第26步](https://www.y7img.ccwu.cc/file/动态图标/1790534461768_第26步地址填写1.png)
 ![第27步](https://www.y7img.ccwu.cc/file/动态图标/1790534488408_第27步下载账户证明1.png)
+[/grid]
 
 ---
 
@@ -172,9 +198,9 @@ seriesOrder: 1
 
 **提前准备：**
 
-       - 护照（有效期内）
+* 护照（有效期内）
 
-       - 10U 资金
+*  10U 资金
 
 👉 [注册申请交易所账号](https://web3.bitget.com/share/1e1lnT?inviteCode=Y7UK88888)
 
@@ -209,11 +235,15 @@ seriesOrder: 1
 ![第3步](https://www.y7img.ccwu.cc/file/动态图标/1790538122620_虚拟卡申请3.png)
 [/grid]
 
+---
+
 [grid]
 ![第4步](https://www.y7img.ccwu.cc/file/动态图标/1790538178003_虚拟卡申请4.png)
 ![第5步](https://www.y7img.ccwu.cc/file/动态图标/1790538213519_虚拟卡申请5.png)
 ![第6步](https://www.y7img.ccwu.cc/file/动态图标/1790538227495_虚拟卡申请6.png)
 [/grid]
+
+---
 
 [grid]
 ![第7步](https://www.y7img.ccwu.cc/file/动态图标/1790538245923_虚拟卡申请7.png)
