@@ -25,7 +25,7 @@ export const booknavPageConfig: BooknavPageConfig = {
 // 每个数组项是一个分类组，分类组内的 items 是该分类下的书签
 export const booknavConfig: BooknavGroup[] = [
 	{
-		id: "dev",
+		id: "Exchange",
 		name: "区块链交易所",
 		icon: "material-symbols:currency-exchange-rounded",
 		desc: "最高可返手续费30%",
@@ -57,7 +57,7 @@ export const booknavConfig: BooknavGroup[] = [
 		],
 	},
 	{
-		id: "opensource",
+		id: "Altcoins",
 		name: "冲狗工具",
 		icon: "material-symbols:rocket-launch-rounded",
 		desc: "捕捉热点，快速交易",
@@ -73,7 +73,7 @@ export const booknavConfig: BooknavGroup[] = [
 		],
 	},
 	{
-		id: "design",
+		id: "member",
 		name: "会员充值",
 		icon: "material-symbols:card-membership-rounded",
 		desc: "会员充值更省钱，优惠更多",
@@ -96,7 +96,24 @@ export const booknavConfig: BooknavGroup[] = [
 		],
 	},
 	{
-		id: "tools",
+		id: "member",
+		name: "账号购买",
+		icon: "material-symbols:card-membership-rounded",
+		desc: "账号注册更省心，优惠更多",
+		weight: 90,
+		items: [
+			{
+				title: "Apple ID",
+				url: "https://huojian.iosapp.icu/?aff=CE3V6S4A",
+				desc: "苹果Apple ID，独享账号",
+				icon: "https://www.y7img.ccwu.cc/file/动态图标/1790764947993_apple_id.png",
+				weight: 10,
+			},
+	
+		],
+	},
+	{
+		id: "node",
 		name: "VPN",
 		icon: "material-symbols:vpn-lock-rounded",
 		desc: "安全稳定，自由连接全球",
@@ -107,6 +124,23 @@ export const booknavConfig: BooknavGroup[] = [
 				url: "https://cruise.54678999.xyz/#/register?code=9dF4lfAb",
 				desc: "高速稳定，每天免费1小时",
 				icon: "https://www.y7img.ccwu.cc/file/1788890088487_logo-VPN512.jpg",
+				weight: 10,
+			},
+			
+		],
+	},
+	{
+		id: "server",
+		name: "服务器",
+		icon: "material-symbols:vpn-lock-rounded",
+		desc: "匿名独立服务器，云服务器",
+		weight: 80,
+		items: [
+			{
+				title: "WawaNode",
+				url: "https://wawanode.com/r/y7wawanode",
+				desc: "VPS 自动开通，9 条产品线解决不同需求",
+				icon: "https://www.y7img.ccwu.cc/file/动态图标/1790765776875_wawanode.png",
 				weight: 10,
 			},
 			
@@ -130,7 +164,7 @@ export const booknavConfig: BooknavGroup[] = [
 		],
 	},
 	{
-		id: "resources",
+		id: "Inquiry",
 		name: "查询工具",
 		icon: "material-symbols:query-stats-rounded",
 		desc: "多维查询，快人一步",
