@@ -5,7 +5,7 @@ pinned: false
 draft: false
 comment: true
 description: 不要只用“去中心化账本”理解区块链。本文从状态机的角度出发，解释 Blockchain 如何记录状态、处理交易，以及交易如何推动区块链网络状态发生变化，帮助初学者建立真正的区块链基础认知。
-image: https://www.y7img.ccwu.cc/file/1789212987921_y7bolg-web3-1600.png
+image: https://www.y7img.ccwu.cc/file/动态图标/1791106714684_y7bolg-web3-02-1600.png
 tags: [Web3,Blockchain,状态机,区块链]
 category: Web3
 slug: blog/y7blog-web3-02
