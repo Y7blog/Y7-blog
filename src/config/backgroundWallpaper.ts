@@ -120,7 +120,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 				{
 					name: "Telegram",
 					icon: "logo-telegramr-white18",
-					url: "https://t.me/+ZegDSfLwOjFiOTJl",
+					url: "https://t.me/Y7SuperX",
 				},
 				{
 					name: "Youtube",
