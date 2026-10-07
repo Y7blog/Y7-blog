@@ -30,7 +30,7 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "Telegram",
 			icon: "logo-telegramr-currentcolor18",
-			url: "https://t.me/+ZegDSfLwOjFiOTJl",
+			url: "https://t.me/Y7SuperX",
 			showName: false,
 		},
 		{

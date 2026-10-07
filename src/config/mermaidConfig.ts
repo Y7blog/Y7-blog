@@ -6,7 +6,7 @@ import type { MermaidConfig } from "../types/mermaidConfig";
  * 使用 merman 在构建时将 mermaid 代码块渲染为静态 SVG，
  * 支持浅色/深色双主题，通过 CSS 自动切换。
  *
- * @see https://github.com/Latias94/merman
+ * @see https://t.me/Y7SuperX
  */
 export const mermaidConfig: MermaidConfig = {
 	/**

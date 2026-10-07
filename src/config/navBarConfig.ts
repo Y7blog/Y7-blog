@@ -77,7 +77,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			},
 			{
 				name: "TG",
-				url: "https://t.me/+ZegDSfLwOjFiOTJl",
+				url: "https://t.me/Y7SuperX",
 				external: true,
 				icon: "logo-telegramr-currentcolor16",
 			},
