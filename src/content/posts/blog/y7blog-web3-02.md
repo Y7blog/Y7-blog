@@ -1,5 +1,5 @@
 ---
-title: 区块链到底是什么？从状态机理解 Blockchain
+title: 01｜区块链到底是什么？从状态机理解 Blockchain
 published: 2026-10-04
 pinned: false
 draft: false
