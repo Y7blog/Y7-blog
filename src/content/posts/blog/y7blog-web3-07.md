@@ -5,7 +5,7 @@ pinned: false
 draft: false
 comment: true
 description: 本文面向区块链零基础用户，介绍 MetaMask 钱包的基本作用、账户地址、私钥、助记词与网络等概念，并讲解首次创建钱包的步骤和安全注意事项，帮助你迈出进入 Web3 的第一步。
-image: https://www.y7img.ccwu.cc/file/动态图标/1792166954064_y7blog-web3-06-1600.png
+image: https://www.y7img.ccwu.cc/file/动态图标/1792348523026_y7blog-web3-07-1600.png
 tags: [MetaMask,Web3 钱包,钱包地址,助记词,区块链入门]
 category: Web3
 slug: blog/y7blog-web3-07
@@ -445,7 +445,11 @@ MetaMask 支持多个网络，但不同网络的配置和支持情况可能随�
 
 为什么交易提交后，还要等待区块确认？
 
-下一篇，我们就从一次简单的 Token 转账开始，拆解一笔区块链交易从签名、广播到打包确认的完整过程。
+下一篇
+
+[[y7blog-web3-08]]
+
+我们就从一次简单的 Token 转账开始，拆解一笔区块链交易从签名、广播到打包确认的完整过程。
 
 从那时起，你就不只是拥有一个钱包，而是开始理解钱包如何真正与区块链交互了。
 
