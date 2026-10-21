@@ -1,5 +1,5 @@
 ---
-title: 09｜什么是智能合约？它为什么可以自动执行？
+title: 08｜什么是智能合约？它为什么可以自动执行？
 published: 2026-10-15
 pinned: false
 draft: false
