@@ -306,7 +306,9 @@ Web3 火了，我研究 Web3。
 
 **4U/月就能用200G流量节点。**
 
-**👉 Clash Verge + VPN 节点[点我购买](https://cruise.54678999.xyz/#/register?code=9dF4lfAb)
+**👉 Clash Verge + VPN 节点[点我购买]()
+
+**广告位（需要稳定可靠纯净的服务商）**
 
 **👉 Clash Verge 安装教程和 VPN 设置教程陆续会发布，未发布前已经购买的请联系鱼七，一对一指导。
 
@@ -348,7 +350,9 @@ Web3 火了，我研究 Web3。
 
 X Premium蓝标3月仅需4U
 
-**👉 X Premium & Telegram 会员优惠入口[ 点我充值](https://ronvip.pages.dev/?ref=RP6G2I5B6E1A1J611I)
+**👉 X Premium & Telegram 会员优惠入口[ 点我充值]()
+
+**广告位（需要稳定可靠纯净的服务商）**
 
 具体价格、套餐以及服务规则，以页面当前显示为准。
 

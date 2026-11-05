@@ -43,7 +43,9 @@ seriesOrder: 1
 
 **购买 VPN / 节点：**
 
-👉 【[查看 VPN 服务及套餐](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 】
+👉 【查看 VPN 服务及套餐】
+
+**广告位（需要稳定可靠纯净的服务商）**
 
 服务商后台支持多种邮箱注册，每天有1小时免费试用
 
@@ -63,7 +65,9 @@ seriesOrder: 1
 
 如果自己不会注册海外ID，可以自行购买独享海外ID
 
-👉 【[查看 Apple ID 获取方式](https://huojian.iosapp.icu/?aff=CE3V6S4A) 】
+👉 【查看 Apple ID 获取方式】联系博主获取
+
+**广告位（需要稳定可靠未进垃圾网站收录名单的服务商）**
 
 <Badge type="tip">注：</Badge> <Badge type="note">以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。</Badge>
 
@@ -81,7 +85,9 @@ seriesOrder: 1
 
 **完成第一步VPN服务商后台注册和购买套餐之后**
 
-在服务商后台【[后台入口](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 】
+在服务商后台【[后台入口]() 】
+
+**广告位（需要稳定可靠纯净的服务商）**
 
 **找到左侧文档教程**
 
@@ -142,7 +148,9 @@ seriesOrder: 1
 
 ![苹果客户端](https://www.y7img.ccwu.cc/file/1790094531063_苹果客户端介绍1.png)
 
-下载完成后，在服务商后台【[后台入口](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 】
+下载完成后，在服务商后台【[后台入口]() 】
+
+**广告位（需要稳定可靠纯净的服务商）**
 
 **找到左侧文档教程**
 
@@ -159,7 +167,9 @@ seriesOrder: 1
 
 **完成第一步VPN服务商后台注册和购买套餐之后**
 
-在服务商后台【[后台入口](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 】
+在服务商后台【[后台入口]() 】
+
+**广告位（需要稳定可靠纯净的服务商）**
 
 **找到左侧文档教程**
 
@@ -182,11 +192,15 @@ seriesOrder: 1
 
 **VPN服务/客户端下载**
 
-👉 [查看 VPN 服务及套餐](https://cruise.54678999.xyz/#/register?code=9dF4lfAb) 
+👉 [查看 VPN 服务及套餐]() 
+
+**广告位（需要稳定可靠纯净的服务商）**
 
 **苹果海外账号**
 
-👉 [查看 Apple ID 获取方式](https://huojian.iosapp.icu/?aff=CE3V6S4A)
+👉 [查看 Apple ID 获取方式]联系博主获取
+
+**广告位（需要稳定可靠未进垃圾网站收录名单的服务商）**
 
 <Badge type="tip">注：</Badge> <Badge type="note">以上链接指向第三方服务商，具体套餐、价格及售后政策请以服务商页面为准。</Badge>
 

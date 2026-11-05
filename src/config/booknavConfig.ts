@@ -81,15 +81,15 @@ export const booknavConfig: BooknavGroup[] = [
 		items: [
 			{
 				title: "Twitter",
-				url: "https://ronvip.pages.dev/?ref=RP6G2I5B6E1A1J611I",
-				desc: "3个月X Premium会员低至4U",
+				url: "",
+				desc: "广告位",
 				icon: "https://www.y7img.ccwu.cc/file/1788886627451_logo-Twitter400.jpg",
 				weight: 10,
 			},
 			{
 				title: "Telegram",
-				url: "https://ronvip.pages.dev/?ref=RP6G2I5B6E1A1J611I",
-				desc: "充值TG会员，支持链上支付",
+				url: "",
+				desc: "广告位",
 				icon: "https://www.y7img.ccwu.cc/file/1788887765905_logo-tg512.png",
 				weight: 9,
 			},
@@ -104,8 +104,8 @@ export const booknavConfig: BooknavGroup[] = [
 		items: [
 			{
 				title: "Apple ID",
-				url: "https://huojian.iosapp.icu/?aff=CE3V6S4A",
-				desc: "苹果Apple ID，独享账号",
+				url: "",
+				desc: "广告位",
 				icon: "https://www.y7img.ccwu.cc/file/动态图标/1790764947993_apple_id.png",
 				weight: 10,
 			},
@@ -120,9 +120,9 @@ export const booknavConfig: BooknavGroup[] = [
 		weight: 80,
 		items: [
 			{
-				title: "云边VPN",
-				url: "https://cruise.54678999.xyz/#/register?code=9dF4lfAb",
-				desc: "高速稳定，每天免费1小时",
+				title: "VPN",
+				url: "",
+				desc: "广告位",
 				icon: "https://www.y7img.ccwu.cc/file/1788890088487_logo-VPN512.jpg",
 				weight: 10,
 			},
