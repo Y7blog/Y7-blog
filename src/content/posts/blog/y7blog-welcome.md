@@ -252,7 +252,7 @@ Web3 火了，我研究 Web3。
 
 **Web3钱包DEX注册邀请码：Y7BTC**
 
-**👉 DEX 注册 [点我进入](https://www.bsmkweb.cc/register?ref=Y7BTC)
+**👉 DEX 注册 [点我进入](https://web3.okx.com/join/Y7BTC)
 
 如果你本来就准备使用 OKX，可以通过我的邀请入口注册,返佣最高20%。
 
