@@ -5,7 +5,7 @@ pinned: false
 draft: false
 comment: true
 description: 你在 Etherscan 上打开一个合约地址，看到的往往只是一串看不懂的字节码——那到底是写了什么的合约？本文从零讲清「合约验证」是什么、为什么每个认真做项目的开发者都会验证源码，并手把手带你在 Remix、Etherscan 网页和 Hardhat / Foundry 三条路线上完成验证，最后教你验证失败时怎么排查、验证通过后怎么读源码判断风险。
-image: "https://www.y7img.ccwu.cc/file/1794039417237_y7blog-web3-15-1600.png"
+image: "https://www.y7img.ccwu.cc/file/动态图标/1794041823020_y7blog-web3-15-1600.png"
 tags: [智能合约,Etherscan,Solidity,合约验证,区块链开发]
 category: Web3
 slug: blog/y7blog-web3-15
