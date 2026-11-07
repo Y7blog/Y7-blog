@@ -1,11 +1,11 @@
 ---
 title: 14｜为什么智能合约要验证源码？Etherscan 合约验证教程
-published: 2026-11-07
+published: 2026-10-21
 pinned: false
 draft: false
 comment: true
 description: 你在 Etherscan 上打开一个合约地址，看到的往往只是一串看不懂的字节码——那到底是写了什么的合约？本文从零讲清「合约验证」是什么、为什么每个认真做项目的开发者都会验证源码，并手把手带你在 Remix、Etherscan 网页和 Hardhat / Foundry 三条路线上完成验证，最后教你验证失败时怎么排查、验证通过后怎么读源码判断风险。
-image: ""
+image: "https://www.y7img.ccwu.cc/file/1794039417237_y7blog-web3-15-1600.png"
 tags: [智能合约,Etherscan,Solidity,合约验证,区块链开发]
 category: Web3
 slug: blog/y7blog-web3-15
@@ -322,7 +322,9 @@ Foundry 会从你项目里的 `foundry.toml` 读取编译器版本、优化器�
 
 ## 下一篇预告
 
-下一篇是第 15 篇：**《ERC20 是什么？一个 Token 到底是怎么工作的？》**
+下一篇是第 15 篇：
+
+[[y7blog-web3-16]]
 
 我们会进入 Token 的世界：ERC20 这个标准到底规定了什么？一个代币的余额、转账、授权是怎么在合约里实现的？为什么几乎所有代币都长得差不多？到时候见。
 
