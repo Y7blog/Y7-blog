@@ -5,7 +5,7 @@ pinned: false
 draft: false
 comment: true
 description: 区块链浏览器（Blockchain Explorer）就是帮助我们查看链上公开数据的工具。本文以 Etherscan 为例，从交易哈希、发送方、接收方、交易状态、区块高度和 Gas 费用等基础信息入手，带你一步步看懂一笔链上交易，理解资产转账或智能合约交互究竟留下了哪些记录。
-image: https://www.y7img.ccwu.cc/file/动态图标/1792758155199_y7blog-web3-13-1600.png
+image: https://www.y7img.ccwu.cc/file/1794040310885_y7blog-web3-14-1600.png
 tags: [区块链基础,区块链浏览器,链上交易,Web3 入门,Etherscan]
 category: Web3
 slug: blog/y7blog-web3-14
