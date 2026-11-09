@@ -240,7 +240,9 @@ Aave、Compound 这类借贷协议，是 Oracle 最大的用户。
 
 ## 下一篇预告
 
-下一篇是第 18 篇：**《Chainlink Data Feeds 是什么？智能合约如何获得 BTC 价格？》**
+下一篇是第 18 篇：
+
+[[y7blog-web3-19]]
 
 今天我们讲清了 Oracle 为什么存在、为什么必须去中心化。下一篇我们就动手：打开 Chainlink 的官方文档，找到 BTC/USD 价格数据流的合约地址，写几行 Solidity 代码，让你自己的智能合约第一次「开口问价」——亲手读到链上的 BTC 价格。
 
