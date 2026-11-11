@@ -368,9 +368,7 @@ function mint(address to, uint256 amount) public {
 
 ---
 
-## 下一篇预告
-
-下一篇是第 17 篇：
+## 下一篇是第 17 篇：
 
 [[y7blog-web3-18]]
 
