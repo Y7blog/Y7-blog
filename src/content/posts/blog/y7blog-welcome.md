@@ -248,7 +248,7 @@ Web3 火了，我研究 Web3。
 
 **交易所注册邀请码：73333335**
 
-**👉 OKX 注册 [点我进入](https://www.topfgcnzqwl.com/join/73333335)
+**👉 OKX 注册 [点我进入](https://www.jongaccfett.com/join/73333335)
 
 **Web3钱包DEX注册邀请码：Y7BTC**
 

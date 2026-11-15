@@ -43,7 +43,7 @@ export const booknavConfig: BooknavGroup[] = [
 			},
 			{
 				title: "欧易OKX交易所",
-				url: "https://web3.okx.com/join/Y7BTC",
+				url: "https://www.jongaccfett.com/join/73333335",
 				desc: "专业安全，畅享加密交易",
 				weight: 9,
 			},
