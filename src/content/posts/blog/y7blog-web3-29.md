@@ -5,7 +5,7 @@ pinned: false
 draft: false
 comment: true
 description: 钱包里有 100 个 USDC，也有一张 NFT，同样是 Token，差别到底在哪？这篇从“同质化”和“非同质化”说起，对照 ERC20 和 ERC721 的记账方式、函数和用途，讲清楚 NFT 到底是什么、为什么每张都不一样、以及新手最容易踩的五个坑。
-image: PLACEHOLDER_COVER_URL
+image: https://www.y7img.ccwu.cc/file/背景/1794921179803_y7blog-web3-29-1600.png
 tags: [NFT,ERC721,ERC20,非同质化,Token标准]
 category: Web3
 slug: blog/y7blog-web3-29
