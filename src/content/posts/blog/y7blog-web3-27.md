@@ -309,9 +309,9 @@ LINK 的价格每天都在变，`getFee()` 返回的是 LINK 的数量。0.1 个
 
 ---
 
-## 下一篇预告
+## 下一篇是第 27 篇：
 
-下一篇是第 27 篇：**《从 Avalanche Fuji 到 Ethereum Sepolia：完整跨链实战》**
+[[y7blog-web3-28]]
 
 下一篇就把前面几篇的东西全部串起来：从 Fuji 到 Sepolia，钱包、Token、授权、LINK 手续费、智能合约和 CCIP，一步一步走完一次真正的跨链。到时候见。
 
