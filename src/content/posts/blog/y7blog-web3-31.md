@@ -317,9 +317,9 @@ event BatchMetadataUpdate(uint256 _fromTokenId, uint256 _toTokenId);
 
 ---
 
-## 下一篇预告
+## 下一篇是第 31 篇：
 
-下一篇是第 31 篇：**如何用 Solidity 创建一个 NFT 智能合约？**
+[[y7blog-web3-32]]
 
 前面几篇我们把 NFT 是什么、怎么工作、为什么能自己变都讲完了。下一篇开始动手：从 ERC721 合约开始，写出属于你自己的第一个 NFT 智能合约——继承哪个合约、怎么设置名字和符号、Mint 函数怎么写、Metadata 怎么接上去。
 
