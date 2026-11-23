@@ -1,5 +1,5 @@
 ---
-title: 34｜动态 NFT + Automation：让 NFT 自动改变属性
+title: 34｜动态 NFT + CRE：让 NFT 自动改变属性
 published: 2026-11-10
 pinned: false
 draft: false
@@ -347,9 +347,9 @@ Data Feeds 不是交易所的 tick 数据。**喂价只在价格波动超过偏�
 
 ---
 
-## 下一篇预告
+## 下一篇是第 35 篇：
 
-下一篇是第 35 篇：**什么是跨链 NFT？NFT 能不能从 Ethereum 移到另一条链？**
+[[y7blog-web3-36]]
 
 动态 NFT 能自己变了，下一个问题是：它能不能自己“搬家”？一张在 Ethereum 上 Mint 的 NFT，能不能移到 Avalanche 或者 Base 上？下一节先讲跨链 NFT 到底是什么意思，再讲它和 Token 跨链有什么不一样。
 
