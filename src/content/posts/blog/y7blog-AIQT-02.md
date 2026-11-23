@@ -8,7 +8,7 @@ description: OpenAI 利用 Codex 与 ChatGPT 协助研究人员搜索新型抗�
 image: https://www.y7img.ccwu.cc/file/1789567322600_y7blog-AI-02-1600.png
 tags: [AI,人工智能,AI科学研究,AI趋势,药物研发]
 category: AI
-slug: blog/y7blog-AI-02
+slug: blog/y7blog-AIQT-02
 series: "AI浅谈"
 seriesOrder: 2
 ---

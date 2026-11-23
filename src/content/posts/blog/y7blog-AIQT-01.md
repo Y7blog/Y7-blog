@@ -8,7 +8,7 @@ description: AI真正值得警惕的，也许不是它变得多聪明，而是�
 image: https://www.y7img.ccwu.cc/file/1789309557657_y7blog-AI-01-1600.png
 tags: [AI,AI Agent,AI安全,AI趋势,可验证智能]
 category: AI
-slug: blog/y7blog-AI-01
+slug: blog/y7blog-AIQT-01
 series: "AI浅谈"
 seriesOrder: 1
 ---
